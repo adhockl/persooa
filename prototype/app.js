@@ -439,7 +439,7 @@ function heroIllustrationSection({ eyebrow, title, lead, visual, variant = "dark
   const primaryVariant = isDark ? "heroDark" : "heroLight";
   const secondaryVariant = isDark ? "heroDarkSecondary" : "heroLightSecondary";
   const statsMarkup = stats.length
-    ? `<div class="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t ${isDark ? "border-white/12" : "border-[#DDE5F5]"} pt-6">${stats.map((stat) => `<div><strong class="hero-stat-value block text-3xl font-semibold">${stat.value}</strong><span class="hero-stat-label mt-1 block text-sm leading-5">${stat.label}</span></div>`).join("")}</div>`
+    ? `<div class="hero-stats mt-10 grid max-w-xl grid-cols-3 gap-4 border-t ${isDark ? "border-white/12" : "border-[#DDE5F5]"} pt-6">${stats.map((stat) => `<div><strong class="hero-stat-value block text-3xl font-semibold">${stat.value}</strong><span class="hero-stat-label mt-1 block text-sm leading-5">${stat.label}</span></div>`).join("")}</div>`
     : "";
   const secondaryMarkup = secondaryLabel && secondaryHref ? button(secondaryLabel, secondaryHref, secondaryVariant) : "";
 
@@ -477,6 +477,29 @@ function header() {
       </div>
     </a>`;
   }).join("");
+  const mobileOfferMenu = offerPages.map((page) => {
+    const path = l === "pl" ? `/oferta/${page.slug}` : `/en/offer/${page.enSlug}`;
+    const title = l === "pl" ? page.title : page.enTitle;
+    return `<a href="${href(path)}" class="mobile-offer-link">
+      <span>${icon(offerIcons[page.visualKey] || "circle", "h-4 w-4")}</span>
+      <span>${title}</span>
+    </a>`;
+  }).join("");
+  const navItems = [
+    [t("home"), l === "pl" ? "/" : "/en"],
+    ["Persooalize 360", l === "pl" ? "/persooalize-360" : "/en/persooalize-360"],
+    [t("about"), l === "pl" ? "/o-nas" : "/en/about"],
+    [t("growth"), l === "pl" ? "/growth-hub" : "/en/growth-hub"],
+    [t("blog"), l === "pl" ? "/blog" : "/en/blog"],
+    [t("contact"), l === "pl" ? "/kontakt" : "/en/contact"],
+  ];
+  const mobileNavLink = ([label, path]) => {
+    const target = href(path);
+    const isCurrent = current === path || (path === "/" && current === "/") || (path === "/en" && current === "/en");
+    return `<a class="mobile-nav-link" href="${target}" ${isCurrent ? "aria-current='page'" : ""}>${label}${icon("arrow-right", "h-4 w-4")}</a>`;
+  };
+  const mobilePrimaryNav = navItems.slice(0, 1).map(mobileNavLink).join("");
+  const mobileSecondaryNav = navItems.slice(1).map(mobileNavLink).join("");
   return `<header id="siteHeader" class="site-header fixed top-0 z-50 w-full border-b backdrop-blur">
     <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
       <a href="${href(l === "pl" ? "/" : "/en")}" class="flex items-center gap-3">
@@ -499,9 +522,29 @@ function header() {
         <a class="nav-link hover:text-[#015BFE]" href="${href(l === "pl" ? "/blog" : "/en/blog")}">${t("blog")}</a>
         <a class="nav-link hover:text-[#015BFE]" href="${href(l === "pl" ? "/kontakt" : "/en/contact")}">${t("contact")}</a>
       </nav>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3">
         <a href="${href(langSwitch)}" class="lang-switch hidden rounded-full border border-[#E6EAF2] px-3 py-2 text-sm font-medium text-[#0F1E34] transition hover:border-[#015BFE] hover:text-[#015BFE] sm:inline-flex">${l === "pl" ? "EN" : "PL"}</a>
-        <a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#015BFE] px-5 text-sm font-medium text-white transition hover:bg-[#0F1E34]"><span>${t("ask")}</span>${icon("send", "h-4 w-4")}</a>
+        <a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="header-cta hidden h-11 items-center justify-center gap-2 rounded-full bg-[#015BFE] px-5 text-sm font-medium text-white transition hover:bg-[#0F1E34] sm:inline-flex"><span>${t("ask")}</span>${icon("send", "h-4 w-4")}</a>
+        <button id="mobileMenuButton" class="mobile-menu-toggle inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#E6EAF2] bg-white text-[#0F1E34] transition hover:border-[#015BFE] hover:text-[#015BFE] lg:hidden" type="button" aria-label="${l === "pl" ? "Otwórz menu" : "Open menu"}" aria-controls="mobileMenu" aria-expanded="false">
+          <span class="mobile-menu-icon mobile-menu-icon--open">${icon("menu", "h-5 w-5")}</span>
+          <span class="mobile-menu-icon mobile-menu-icon--close">${icon("x", "h-5 w-5")}</span>
+        </button>
+      </div>
+      <div id="mobileMenu" class="mobile-menu lg:hidden" aria-hidden="true" hidden>
+        <div class="mx-auto max-w-7xl px-5 py-5 sm:px-6">
+          <nav class="mobile-menu-nav" aria-label="${l === "pl" ? "Menu mobilne" : "Mobile menu"}">
+            ${mobilePrimaryNav}
+            <details class="mobile-offer-details">
+              <summary>${t("offer")}${icon("chevron-down", "h-4 w-4")}</summary>
+              <div class="mobile-offer-grid">${mobileOfferMenu}</div>
+            </details>
+            ${mobileSecondaryNav}
+          </nav>
+          <div class="mobile-menu-actions">
+            <a href="${href(langSwitch)}" class="mobile-menu-secondary">${l === "pl" ? "English" : "Polski"}</a>
+            <a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="mobile-menu-primary">${t("ask")}${icon("send", "h-4 w-4")}</a>
+          </div>
+        </div>
       </div>
     </div>
   </header>`;
@@ -937,6 +980,7 @@ function render() {
   if (r.type === "legal") content = legalPage(r.title, r.legalType);
   document.getElementById("app").innerHTML = header() + content + footer();
   refreshIcons();
+  initMobileMenu();
   initHeaderTheme();
   initPageMotion();
   initCharts();
@@ -945,6 +989,56 @@ function render() {
 
 window.addEventListener("hashchange", render);
 render();
+
+function initMobileMenu() {
+  if (typeof window.__persooaMobileMenuCleanup === "function") {
+    window.__persooaMobileMenuCleanup();
+  }
+
+  const buttonEl = document.getElementById("mobileMenuButton");
+  const menuEl = document.getElementById("mobileMenu");
+  if (!buttonEl || !menuEl) {
+    window.__persooaMobileMenuCleanup = null;
+    return;
+  }
+
+  const setOpen = (isOpen) => {
+    buttonEl.setAttribute("aria-expanded", String(isOpen));
+    menuEl.hidden = !isOpen;
+    menuEl.setAttribute("aria-hidden", String(!isOpen));
+    document.documentElement.classList.toggle("mobile-menu-open", isOpen);
+  };
+
+  const toggleMenu = () => {
+    setOpen(buttonEl.getAttribute("aria-expanded") !== "true");
+  };
+
+  const closeOnLink = (event) => {
+    if (event.target.closest("a")) setOpen(false);
+  };
+
+  const closeOnEscape = (event) => {
+    if (event.key === "Escape") setOpen(false);
+  };
+
+  const closeOnDesktop = () => {
+    if (window.innerWidth >= 1024) setOpen(false);
+  };
+
+  setOpen(false);
+  buttonEl.addEventListener("click", toggleMenu);
+  menuEl.addEventListener("click", closeOnLink);
+  window.addEventListener("keydown", closeOnEscape);
+  window.addEventListener("resize", closeOnDesktop);
+
+  window.__persooaMobileMenuCleanup = () => {
+    buttonEl.removeEventListener("click", toggleMenu);
+    menuEl.removeEventListener("click", closeOnLink);
+    window.removeEventListener("keydown", closeOnEscape);
+    window.removeEventListener("resize", closeOnDesktop);
+    document.documentElement.classList.remove("mobile-menu-open");
+  };
+}
 
 function initHeaderTheme() {
   const headerEl = document.getElementById("siteHeader");
