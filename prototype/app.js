@@ -167,13 +167,20 @@ const careers = [
   { title: "Deweloper frontend", category: "Technologia", description: "Budujesz interfejsy, które użytkownicy chcą używać każdego dnia.", location: "Warszawa", type: "Pełny etat" },
 ];
 
+const blogAuthor = {
+  name: "Persooa Team",
+  role: "Redakcja Persooa",
+  enRole: "Persooa editorial team",
+  avatar: "../assets/source/photos/persooa1.png",
+};
+
 const blogPosts = [
-  { title: "CTA - co to jest? Przykłady skutecznych przycisków wezwań do działania", category: "Guide", slug: "/blog/cta-co-to-jest-przyklady-skutecznych-przyciskow-wezwan-do-dzialania", excerpt: "Definicja CTA, rodzaje wezwań do działania, miejsca publikacji i przykłady buttonów, które pomagają zwiększać konwersję." },
-  { title: "Dlaczego platforma CDP staje się ewolucją Twojego Marketing Automation", category: "CDP", slug: "/blog", excerpt: "Jak Customer Data Platform porządkuje dane i pozwala przejść od kampanii do decyzji w czasie rzeczywistym." },
-  { title: "Agenci AI - czym są i jak działają inteligentni agenci?", category: "AI agents", slug: "/blog", excerpt: "Praktyczne spojrzenie na agentów AI w sprzedaży, obsłudze, marketingu i operacjach." },
-  { title: "Co to jest Semantic Search? Vector Search vs Semantic Search", category: "AI search", slug: "/blog", excerpt: "Różnice między wyszukiwaniem semantycznym i wektorowym oraz ich wpływ na sprzedaż w e-commerce." },
-  { title: "Workflow automation: jak AI zamienia powtarzalne procesy w silnik wzrostu", category: "Automation", slug: "/blog", excerpt: "Jak mapować procesy, wybierać zadania dla agentów i mierzyć efekt automatyzacji." },
-  { title: "Churn prediction - czym jest i jak wspiera biznes?", category: "Retention", slug: "/blog", excerpt: "Jak predykcja odpływu pomaga szybciej reagować i projektować lepsze scenariusze retencji." },
+  { title: "CTA - co to jest? Przykłady skutecznych przycisków wezwań do działania", category: "Guide", slug: "/blog/cta-co-to-jest-przyklady-skutecznych-przyciskow-wezwan-do-dzialania", excerpt: "Definicja CTA, rodzaje wezwań do działania, miejsca publikacji i przykłady buttonów, które pomagają zwiększać konwersję.", date: "25 maja 2026", enDate: "May 25, 2026", readTime: "6 min czytania", enReadTime: "6 min read" },
+  { title: "Dlaczego platforma CDP staje się ewolucją Twojego Marketing Automation", category: "CDP", slug: "/blog", excerpt: "Jak Customer Data Platform porządkuje dane i pozwala przejść od kampanii do decyzji w czasie rzeczywistym.", date: "14 maja 2026", enDate: "May 14, 2026", readTime: "8 min czytania", enReadTime: "8 min read" },
+  { title: "Agenci AI - czym są i jak działają inteligentni agenci?", category: "AI agents", slug: "/blog", excerpt: "Praktyczne spojrzenie na agentów AI w sprzedaży, obsłudze, marketingu i operacjach.", date: "6 maja 2026", enDate: "May 6, 2026", readTime: "7 min czytania", enReadTime: "7 min read" },
+  { title: "Co to jest Semantic Search? Vector Search vs Semantic Search", category: "AI search", slug: "/blog", excerpt: "Różnice między wyszukiwaniem semantycznym i wektorowym oraz ich wpływ na sprzedaż w e-commerce.", date: "22 kwietnia 2026", enDate: "April 22, 2026", readTime: "5 min czytania", enReadTime: "5 min read" },
+  { title: "Workflow automation: jak AI zamienia powtarzalne procesy w silnik wzrostu", category: "Automation", slug: "/blog", excerpt: "Jak mapować procesy, wybierać zadania dla agentów i mierzyć efekt automatyzacji.", date: "10 kwietnia 2026", enDate: "April 10, 2026", readTime: "6 min czytania", enReadTime: "6 min read" },
+  { title: "Churn prediction - czym jest i jak wspiera biznes?", category: "Retention", slug: "/blog", excerpt: "Jak predykcja odpływu pomaga szybciej reagować i projektować lepsze scenariusze retencji.", date: "27 marca 2026", enDate: "March 27, 2026", readTime: "5 min czytania", enReadTime: "5 min read" },
 ];
 
 const illustrationMap = {
@@ -746,19 +753,39 @@ function blogPage() {
   </main>`;
 }
 
+function blogMeta(post, layout = "card") {
+  const l = lang();
+  const isArticle = layout === "article";
+  return `<div class="${isArticle ? "mt-8 flex flex-col gap-4 border-y border-[#E6EAF2] py-5 sm:flex-row sm:items-center sm:justify-between" : "mt-5 flex items-center gap-3"}">
+    <div class="flex min-w-0 items-center gap-3">
+      <img src="${blogAuthor.avatar}" alt="${blogAuthor.name}" class="${isArticle ? "h-12 w-12" : "h-10 w-10"} shrink-0 rounded-full object-cover ring-2 ring-white" />
+      <div class="min-w-0">
+        <p class="truncate text-sm font-medium text-[#0F1E34]">${blogAuthor.name}</p>
+        <p class="truncate text-xs text-[#595959]">${l === "pl" ? blogAuthor.role : blogAuthor.enRole}</p>
+      </div>
+    </div>
+    <div class="${isArticle ? "flex flex-wrap gap-x-4 gap-y-2 text-sm text-[#595959]" : "flex flex-wrap gap-x-3 gap-y-1 text-xs text-[#595959]"}">
+      <span class="inline-flex items-center gap-1.5">${icon("calendar-days", isArticle ? "h-4 w-4 text-[#015BFE]" : "h-3.5 w-3.5 text-[#015BFE]")}<span>${l === "pl" ? post.date : post.enDate}</span></span>
+      <span class="inline-flex items-center gap-1.5">${icon("clock", isArticle ? "h-4 w-4 text-[#015BFE]" : "h-3.5 w-3.5 text-[#015BFE]")}<span>${l === "pl" ? post.readTime : post.enReadTime}</span></span>
+    </div>
+  </div>`;
+}
+
 function postCard(post) {
   return `<article class="rounded-xl border border-[#E6EAF2] bg-white p-6 transition hover:border-[#015BFE]/40 hover:shadow-soft">
     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon("file-text", "h-5 w-5")}</div>
     <p class="mt-5 text-sm text-[#015BFE]">${post.category}</p>
     <h2 class="mt-3 text-2xl font-medium leading-tight">${post.title}</h2>
+    ${blogMeta(post)}
     <p class="mt-4 text-base leading-7 text-[#595959]">${post.excerpt}</p>
     <a href="${href(post.slug)}" class="mt-6 inline-flex items-center gap-2 font-medium text-[#015BFE]"><span>Czytaj więcej</span>${icon("arrow-right", "h-4 w-4")}</a>
   </article>`;
 }
 
 function postPage() {
+  const post = blogPosts[0];
   return `<main class="route-view">
-    ${section({ children: `<article class="mx-auto max-w-3xl"><p class="text-sm font-medium text-[#015BFE]">Blog / Conversion</p><h1 class="mt-5 text-5xl font-semibold leading-tight">CTA - co to jest? Przykłady skutecznych przycisków wezwań do działania</h1><p class="mt-6 text-lg leading-8 text-[#595959]">CTA, czyli Call to Action, to wezwanie do działania prowadzące użytkownika do kolejnego kroku: kontaktu, pobrania materiału, zapisu, przejścia do koszyka albo zakupu.</p><div class="mt-10 space-y-8 text-lg leading-8 text-[#0F1E34]"><h2 class="text-3xl font-semibold">Jakie są rodzaje CTA?</h2><p>Najczęściej spotykane formy to przyciski, linki tekstowe, bannery, formularze, pop-upy i sekcje kończące artykuł lub landing page.</p><h2 class="text-3xl font-semibold">Gdzie umieszczać CTA?</h2><p>CTA powinno pojawiać się tam, gdzie użytkownik rozumie wartość kolejnego kroku: w hero, po sekcji korzyści, przy case study, w treści bloga i przy finalnym formularzu.</p><h2 class="text-3xl font-semibold">Jak stworzyć skuteczne CTA?</h2><p>Dobre CTA jest konkretne, krótkie, widoczne i mówi o efekcie działania. Zamiast ogólnego „Wyślij” lepiej użyć komunikatu „Zapytaj o projekt” albo „Umów demo”.</p><h2 class="text-3xl font-semibold">Dlaczego warto stosować CTA?</h2><p>CTA porządkuje ścieżkę użytkownika, zmniejsza tarcie i pomaga mierzyć konwersję między treścią, ofertą i kontaktem sprzedażowym.</p></div></article>` })}
+    ${section({ children: `<article class="mx-auto max-w-3xl"><p class="text-sm font-medium text-[#015BFE]">Blog / Conversion</p><h1 class="mt-5 text-5xl font-semibold leading-tight">${post.title}</h1><p class="mt-6 text-lg leading-8 text-[#595959]">CTA, czyli Call to Action, to wezwanie do działania prowadzące użytkownika do kolejnego kroku: kontaktu, pobrania materiału, zapisu, przejścia do koszyka albo zakupu.</p>${blogMeta(post, "article")}<div class="mt-10 space-y-8 text-lg leading-8 text-[#0F1E34]"><h2 class="text-3xl font-semibold">Jakie są rodzaje CTA?</h2><p>Najczęściej spotykane formy to przyciski, linki tekstowe, bannery, formularze, pop-upy i sekcje kończące artykuł lub landing page.</p><h2 class="text-3xl font-semibold">Gdzie umieszczać CTA?</h2><p>CTA powinno pojawiać się tam, gdzie użytkownik rozumie wartość kolejnego kroku: w hero, po sekcji korzyści, przy case study, w treści bloga i przy finalnym formularzu.</p><h2 class="text-3xl font-semibold">Jak stworzyć skuteczne CTA?</h2><p>Dobre CTA jest konkretne, krótkie, widoczne i mówi o efekcie działania. Zamiast ogólnego „Wyślij” lepiej użyć komunikatu „Zapytaj o projekt” albo „Umów demo”.</p><h2 class="text-3xl font-semibold">Dlaczego warto stosować CTA?</h2><p>CTA porządkuje ścieżkę użytkownika, zmniejsza tarcie i pomaga mierzyć konwersję między treścią, ofertą i kontaktem sprzedażowym.</p></div></article>` })}
     ${ctaSection()}
   </main>`;
 }
