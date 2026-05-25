@@ -84,13 +84,14 @@ const teamPhotos = [
 ];
 
 const illustrationMap = {
-  hero: "../assets/source/ai-illustrations/1.jpg",
-  personalization: "../assets/source/ai-illustrations/2.jpg",
-  revenue: "../assets/source/ai-illustrations/3.jpg",
-  cdp: "../assets/source/ai-illustrations/4.jpg",
-  work: "../assets/source/ai-illustrations/5.jpg",
-  loyalty: "../assets/source/ai-illustrations/6.jpg",
-  search: "../assets/source/ai-illustrations/7.jpg",
+  hero: "../assets/exports/illustrations/homepage-hero.png",
+  personalization: "../assets/exports/illustrations/personalizacja-ai.png",
+  revenue: "../assets/exports/illustrations/agenci-przychodu.png",
+  cdp: "../assets/exports/illustrations/cdp.png",
+  work: "../assets/exports/illustrations/agenci-pracy.png",
+  loyalty: "../assets/exports/illustrations/program-lojalnosciowy.png",
+  roi: "../assets/exports/illustrations/roi-w-90dni.png",
+  search: "../assets/exports/illustrations/wyszukiwarka-ai.png",
 };
 
 const dictionary = {
@@ -184,12 +185,38 @@ function button(label, path = "/kontakt", variant = "primary") {
     primary: "bg-[#015BFE] text-white hover:bg-[#0F1E34] focus-visible:outline-[#015BFE]",
     secondary: "border border-[#0F1E34]/15 bg-white text-[#0F1E34] hover:border-[#015BFE] hover:text-[#015BFE] focus-visible:outline-[#015BFE]",
     light: "bg-white text-[#015BFE] hover:bg-[#F4F6FD] focus-visible:outline-white",
+    hero: "bg-white text-[#05070D] hover:bg-[#F4F6FD] focus-visible:outline-white",
+    heroSecondary: "border border-white/16 bg-white/0 text-white hover:bg-white hover:text-[#05070D] focus-visible:outline-white",
   };
   return `<a href="${href(path)}" class="${base} ${variants[variant]}">${label}</a>`;
 }
 
 function badge(label, dark = false) {
   return `<span class="inline-flex rounded-full ${dark ? "bg-white/10 text-white" : "bg-[#F4F6FD] text-[#015BFE]"} px-3 py-1 text-sm font-medium">${label}</span>`;
+}
+
+function heroIllustrationSection({ eyebrow, title, lead, visual, primaryLabel, primaryHref, secondaryLabel, secondaryHref, stats = [] }) {
+  const statsMarkup = stats.length
+    ? `<div class="mt-10 grid max-w-xl grid-cols-3 gap-4 border-t border-white/12 pt-6">${stats.map((stat) => `<div><strong class="block text-3xl font-semibold text-white">${stat.value}</strong><span class="mt-1 block text-sm leading-5 text-white/58">${stat.label}</span></div>`).join("")}</div>`
+    : "";
+  const secondaryMarkup = secondaryLabel && secondaryHref ? button(secondaryLabel, secondaryHref, "heroSecondary") : "";
+
+  return `<section data-header-theme="dark" class="hero-portal overflow-hidden pt-24 text-white md:pt-28">
+    <div class="relative mx-auto grid min-h-[720px] max-w-7xl items-center gap-10 px-5 pb-16 sm:px-6 md:pb-24 lg:grid-cols-12 lg:px-8">
+      <div class="relative z-10 max-w-2xl lg:col-span-6 lg:pr-8">
+        ${badge(eyebrow, true)}
+        <h1 class="mt-6 text-5xl font-semibold leading-none text-white md:text-6xl lg:text-7xl">${title}</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-white/72">${lead}</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">${button(primaryLabel, primaryHref, "hero")} ${secondaryMarkup}</div>
+        ${statsMarkup}
+      </div>
+      <div class="relative z-0 -mx-5 min-h-[360px] sm:mx-0 lg:absolute lg:inset-y-0 lg:left-[45%] lg:right-[-12%] lg:min-h-0">
+        <div class="hero-visual-stage h-full min-h-[360px] lg:min-h-[720px]">
+          <img src="${visual}" alt="" class="hero-visual-image" />
+        </div>
+      </div>
+    </div>
+  </section>`;
 }
 
 function header() {
@@ -267,30 +294,21 @@ function footer() {
 function homePage() {
   const l = lang();
   return `<main class="route-view">
-    <section data-header-theme="light" class="persooa-gradient overflow-hidden pt-20 md:pt-28">
-      <div class="mx-auto grid min-h-[720px] max-w-7xl items-center gap-12 px-5 pb-16 sm:px-6 md:pb-24 lg:grid-cols-12 lg:px-8">
-        <div class="lg:col-span-6">
-          ${badge(l === "pl" ? "#1 Synerise Partner w Europie" : "#1 Synerise Partner in Europe")}
-          <h1 class="mt-6 text-5xl font-semibold leading-none text-[#0F1E34] md:text-6xl lg:text-7xl">${l === "pl" ? "Dostarczamy ROI w 90 dni" : "We deliver ROI in 90 days"}</h1>
-          <p class="mt-6 max-w-2xl text-lg leading-8 text-[#595959]">${l === "pl" ? "Budujemy AI agents, CDP i marketing automation, które optymalizują pracę zespołów i generują przychód na fundamencie danych działających w czasie rzeczywistym." : "We build AI agents, CDP and marketing automation that optimize team workflows and generate revenue on a real-time data foundation."}</p>
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row">${button(t("ask"), l === "pl" ? "/kontakt" : "/en/contact")} ${button(t("secondary"), l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days", "secondary")}</div>
-        </div>
-        <div class="lg:col-span-6">
-          <div class="relative aspect-[5/4] overflow-hidden rounded-2xl bg-[#015BFE] shadow-soft">
-            <img src="../assets/source/ai-illustrations/1.jpg" alt="" class="h-full w-full object-cover opacity-88 mix-blend-screen" />
-            <div class="absolute inset-0 bg-gradient-to-br from-[#015BFE]/20 via-transparent to-[#0F1E34]/65"></div>
-            <div class="absolute bottom-6 left-6 right-6 rounded-2xl border border-white/16 bg-[#0F1E34]/78 p-6 text-white backdrop-blur">
-              <div class="text-sm text-white/64">Marketing Technology & AI</div>
-              <div class="mt-3 grid grid-cols-3 gap-4">
-                <div><strong class="text-3xl font-semibold">90</strong><p class="text-sm text-white/64">dni</p></div>
-                <div><strong class="text-3xl font-semibold">10x</strong><p class="text-sm text-white/64">ROI</p></div>
-                <div><strong class="text-3xl font-semibold">70+</strong><p class="text-sm text-white/64">wdrożeń</p></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    ${heroIllustrationSection({
+      eyebrow: l === "pl" ? "#1 Synerise Partner w Europie" : "#1 Synerise Partner in Europe",
+      title: l === "pl" ? "Dostarczamy ROI w 90 dni" : "We deliver ROI in 90 days",
+      lead: l === "pl" ? "Budujemy AI agents, CDP i marketing automation, które optymalizują pracę zespołów i generują przychód na fundamencie danych działających w czasie rzeczywistym." : "We build AI agents, CDP and marketing automation that optimize team workflows and generate revenue on a real-time data foundation.",
+      visual: illustrationMap.hero,
+      primaryLabel: t("ask"),
+      primaryHref: l === "pl" ? "/kontakt" : "/en/contact",
+      secondaryLabel: t("secondary"),
+      secondaryHref: l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days",
+      stats: [
+        { value: "90", label: l === "pl" ? "dni do pierwszego ROI" : "days to first ROI" },
+        { value: "10x", label: "ROI" },
+        { value: "70+", label: l === "pl" ? "wdrożeń" : "implementations" },
+      ],
+    })}
     ${section({ compact: true, children: `<p class="text-center text-lg font-medium text-[#0F1E34]">${t("trusted")}</p><div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">${["Orange","T-Mobile","Homla","Retail","Fashion","Beauty"].map(x=>`<div class="flex h-16 items-center justify-center rounded-xl border border-[#E6EAF2] bg-white text-sm font-medium text-[#595959]">${x}</div>`).join("")}</div>` })}
     ${section({ variant: "dark", children: `<div class="grid gap-10 lg:grid-cols-12"><div class="lg:col-span-5">${badge("Growth system", true)}<h2 class="mt-5 text-4xl font-semibold leading-tight md:text-5xl">${t("proof")}</h2></div><div class="lg:col-span-7"><p class="text-lg leading-8 text-white/72">${t("proofLead")}</p><div class="mt-10 grid grid-cols-2 gap-6 md:grid-cols-4">${["AOV","ARPU","Retencja","Konwersja"].map(x=>`<div class="rounded-xl border border-white/12 bg-white/[0.03] p-5"><div class="text-3xl font-semibold">+${x==="AOV"?"45":x==="ARPU"?"35":x==="Retencja"?"28":"30"}%</div><div class="mt-2 text-sm text-white/56">${x}</div></div>`).join("")}</div></div></div>` })}
     ${section({ children: `<div class="mx-auto max-w-3xl text-center">${badge("Oferta")}<h2 class="mt-5 text-4xl font-semibold leading-tight md:text-5xl">AI, CDP i automatyzacja dla e-commerce</h2><p class="mt-5 text-lg leading-8 text-[#595959]">Każdy obszar oferty ma własną podstronę, treść SEO i jasne CTA.</p></div><div class="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">${offerPages.map(offerCard).join("")}</div>` })}
@@ -320,7 +338,14 @@ function offerPage(page) {
   const lead = l === "pl" ? page.lead : page.enLead;
   const visual = offerVisual(page.slug);
   return `<main class="route-view">
-    ${section({ variant: "dark", children: `<div class="grid items-center gap-10 lg:grid-cols-12"><div class="lg:col-span-6">${badge(page.eyebrow, true)}<h1 class="mt-6 text-5xl font-semibold leading-none md:text-6xl">${title}</h1><p class="mt-6 max-w-3xl text-lg leading-8 text-white/72">${lead}</p><div class="mt-8">${button(t("ask"), l === "pl" ? "/kontakt" : "/en/contact")}</div></div><div class="lg:col-span-6"><div class="dark-illustration aspect-[16/11] rounded-2xl border border-white/12"><img src="${visual}" alt="" class="h-full w-full object-cover opacity-70 mix-blend-screen" /></div></div></div>` })}
+    ${heroIllustrationSection({
+      eyebrow: page.eyebrow,
+      title,
+      lead,
+      visual,
+      primaryLabel: t("ask"),
+      primaryHref: l === "pl" ? "/kontakt" : "/en/contact",
+    })}
     ${section({ children: `<div class="grid gap-10 lg:grid-cols-12"><div class="lg:col-span-5"><h2 class="text-4xl font-semibold leading-tight">Dla większej sprzedaży w e-commerce</h2><p class="mt-5 text-lg leading-8 text-[#595959]">Każdy e-commerce ma inne wyzwania. Dostarczamy rozwiązania, które działają tam, gdzie są potrzebne: w danych, personalizacji, automatyzacji i kanałach komunikacji.</p></div><div class="grid gap-4 md:grid-cols-2 lg:col-span-7">${page.bullets.map(x=>`<div class="rounded-xl border border-[#E6EAF2] bg-white p-6"><div class="text-sm text-[#015BFE]">Obszar</div><h3 class="mt-2 text-xl font-medium">${x}</h3></div>`).join("")}</div></div>` })}
     ${section({ variant: "lightBlue", children: `<div class="mx-auto max-w-3xl text-center"><h2 class="text-4xl font-semibold leading-tight">Jak to wdrażamy</h2><p class="mt-5 text-lg leading-8 text-[#595959]">Diagnozujemy dane, projektujemy scenariusze, konfigurujemy technologię i mierzymy wpływ na KPI.</p></div><div class="mt-12 grid gap-6 lg:grid-cols-4">${["Audyt","Strategia","Implementacja","Optymalizacja"].map((x,i)=>`<div class="rounded-xl bg-white p-6"><div class="text-sm text-[#015BFE]">0${i+1}</div><h3 class="mt-3 text-xl font-medium">${x}</h3><p class="mt-3 text-sm leading-6 text-[#595959]">Etap procesu przygotowany do rozwinięcia w finalnej treści.</p></div>`).join("")}</div>` })}
     ${ctaSection()}
@@ -334,7 +359,7 @@ function offerVisual(slug) {
     cdp: illustrationMap.cdp,
     "agenci-pracy": illustrationMap.work,
     "program-lojalnosciowy": illustrationMap.loyalty,
-    "roi-w-90dni": illustrationMap.hero,
+    "roi-w-90dni": illustrationMap.roi,
     "wyszukiwarka-ai": illustrationMap.search,
   };
   return map[slug] || illustrationMap.hero;

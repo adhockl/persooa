@@ -14,7 +14,7 @@ Stworzyc spojny styl ilustracji AI dla nowej strony Persooa.
 - wysoka jakosc, bez stockowego wygladu,
 - minimalistyczna forma,
 - mniej elementow, wiecej oddechu,
-- ilustracje maja wspierac layout, a nie dominowac nad trescia.
+- ilustracje w hero moga dominowac wizualnie po prawej stronie, ale nie moga konkurowac z tekstem.
 
 ## Zasada minimalizmu
 
@@ -86,15 +86,19 @@ Zastosowanie:
 
 ### 3. Ilustracje dla dark sections
 
-Wariant tylko do sekcji z ciemnym tlem.
+Wariant dla hero i najwazniejszych sekcji z ciemnym tlem.
 
 Zasady:
 
-- tlo lub glowne obszary moga byc Brand_Dark `#0F1E34`,
+- tlo lub glowne obszary moga byc near-black `#020306` albo Brand_Dark `#0F1E34`,
 - elementy akcentowe w Brand_Blue `#015BFE`,
+- dopuszczalny jest subtelny violet glow jako efekt swiatla, ale nie jako dominujaca paleta,
 - duzo kontrastu,
+- duzy, pojedynczy motyw po prawej stronie kadru,
+- mozliwy efekt portalu, plytki, modulu, orbity lub warstwy danych,
 - bez czarnych detali ginacych na tle,
-- obraz musi byc czytelny po osadzeniu w ciemnej sekcji.
+- obraz musi byc czytelny po osadzeniu w ciemnej sekcji,
+- lewa strona kadru musi zostawiac miejsce na tekst i gradient ochronny.
 
 Zastosowanie:
 
@@ -145,7 +149,7 @@ Minimalist premium B2B MarTech illustration object for Persooa, designed for tra
 ### Prompt bazowy: dark section
 
 ```txt
-Minimalist premium B2B MarTech illustration for a dark navy section of the Persooa website. Deep navy #0F1E34 background, restrained Brand Blue #015BFE accents, one clear abstract data/AI subject, subtle luminous connections, simple geometry, high contrast, elegant negative space. No text, no logo, no robots, no cyberpunk city, no overloaded data mesh, no purple/orange palette.
+Premium B2B MarTech hero illustration for Persooa in a dark portal style. Near-black #020306 background with restrained Brand Blue #015BFE glow and a very subtle violet light accent, one clear abstract data/AI/e-commerce subject on the right side, floating modular platforms, luminous rings or data paths, high contrast, generous empty space on the left for headline and CTA. Elegant, cinematic, controlled, not cyberpunk. No text, no logo, no people, no robots, no city, no overloaded data mesh, no orange palette.
 ```
 
 ## Zasady generowania
@@ -155,6 +159,8 @@ Minimalist premium B2B MarTech illustration for a dark navy section of the Perso
 - Jezeli ilustracja jest dla sekcji jasnej, domyslnie prosimy o biale lub bardzo jasne tlo.
 - Jezeli ilustracja ma byc uniwersalna, przygotowujemy wariant na przezroczystym tle.
 - Jezeli ilustracja jest ciemna, stosujemy ja tylko w dark sections.
+- Hero homepage i hero podstron ofertowych korzystaja z dark portal patternu.
+- Jezeli mamy tylko jasna ilustracje, osadzamy ja w hero przez dark overlay i blend, bez zmiany ukladu na karte.
 - Nie generujemy tekstu w obrazie.
 - Nie generujemy logo w obrazie.
 - Nie generujemy twarzy ani postaci, chyba ze zostanie to osobno zatwierdzone.
@@ -163,7 +169,25 @@ Minimalist premium B2B MarTech illustration for a dark navy section of the Perso
 ## Zatwierdzone przyklady
 
 ```txt
-TODO: linki lub nazwy plikow
+Do oceny klienta - pierwsza wygenerowana paczka minimalistycznych ilustracji:
+
+assets/exports/illustrations/homepage-hero.png
+assets/exports/illustrations/personalizacja-ai.png
+assets/exports/illustrations/agenci-przychodu.png
+assets/exports/illustrations/cdp.png
+assets/exports/illustrations/agenci-pracy.png
+assets/exports/illustrations/program-lojalnosciowy.png
+assets/exports/illustrations/roi-w-90dni.png
+assets/exports/illustrations/wyszukiwarka-ai.png
+```
+
+## Status pierwszej paczki
+
+```txt
+Status: robocze assety AI do prototypu
+Tlo: jasne / minimalistyczne
+Uzycie: karty oferty i hero podstron w prototypie
+Do decyzji: czy klient akceptuje kierunek, czy generujemy wariant v2
 ```
 
 ## Odrzucone przyklady

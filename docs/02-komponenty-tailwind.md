@@ -224,13 +224,23 @@ Standardowe szerokosci:
 
 ### HeroSection
 
+Domyslny pattern:
+
+- ciemny near-black background,
+- tekst po lewej,
+- dedykowana ilustracja po prawej jako duzy key visual,
+- ilustracja bez karty, ramki i mockupowego kontenera,
+- gradientowy overlay dla czytelnosci tekstu,
+- primary CTA jako bialy pill,
+- secondary CTA jako transparentny pill na dark background.
+
 Warianty:
 
-- homepage,
-- service page,
-- industry page,
-- case study page,
-- article page.
+- homepage z metrykami,
+- service page z dedykowana ilustracja,
+- industry page z dedykowana ilustracja,
+- case study page z obrazem klienta lub ilustracja,
+- article page bez dominujacej ilustracji, jezeli nie ma dedykowanego assetu.
 
 Elementy:
 
@@ -241,6 +251,12 @@ Elementy:
 - CTA secondary,
 - metryki,
 - obraz lub wizualizacja.
+
+Reguly:
+
+- kazda podstrona z dedykowana ilustracja korzysta z tego samego dark hero patternu,
+- nie tworzymy osobnych ramek visuali dla poszczegolnych ofert,
+- na mobile tresc jest przed ilustracja.
 
 ### OfferGrid
 

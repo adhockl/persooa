@@ -64,6 +64,83 @@ body {
     linear-gradient(135deg, #015bfe 0%, #015bfe 54%, #88afff 100%);
 }
 
+.hero-portal {
+  position: relative;
+  background:
+    radial-gradient(circle at 77% 47%, rgba(1, 91, 254, 0.28), transparent 26%),
+    radial-gradient(circle at 86% 70%, rgba(118, 72, 255, 0.18), transparent 22%),
+    linear-gradient(135deg, #020306 0%, #05070d 52%, #08101e 100%);
+  isolation: isolate;
+}
+
+.hero-portal::before,
+.hero-portal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-portal::before {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(90deg, transparent 0%, black 46%, transparent 100%);
+  opacity: 0.34;
+  z-index: -2;
+}
+
+.hero-portal::after {
+  background:
+    radial-gradient(circle at 69% 43%, rgba(255, 255, 255, 0.16), transparent 9%),
+    linear-gradient(90deg, #020306 0%, rgba(2, 3, 6, 0.9) 28%, rgba(2, 3, 6, 0.18) 58%, rgba(2, 3, 6, 0.72) 100%);
+  z-index: -1;
+}
+
+.hero-visual-stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-visual-stage::before,
+.hero-visual-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-visual-stage::before {
+  background:
+    radial-gradient(circle at 54% 44%, rgba(1, 91, 254, 0.48), transparent 20%),
+    radial-gradient(circle at 68% 60%, rgba(136, 175, 255, 0.24), transparent 22%),
+    radial-gradient(circle at 42% 70%, rgba(118, 72, 255, 0.16), transparent 18%);
+  filter: blur(18px);
+  z-index: 0;
+}
+
+.hero-visual-stage::after {
+  background:
+    linear-gradient(90deg, #020306 0%, rgba(2, 3, 6, 0.82) 18%, rgba(2, 3, 6, 0.08) 52%, rgba(2, 3, 6, 0.62) 100%),
+    linear-gradient(180deg, rgba(2, 3, 6, 0.82) 0%, transparent 25%, transparent 70%, rgba(2, 3, 6, 0.86) 100%);
+  z-index: 2;
+}
+
+.hero-visual-image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: saturate(1.22) contrast(1.08);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+}
+
 .dark-grid {
   background:
     linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
@@ -156,7 +233,7 @@ body {
 .site-header.is-over-dark {
   color: #fff;
   border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(15, 30, 52, 0.78);
+  background: rgba(2, 3, 6, 0.76);
 }
 
 .site-header.is-over-light {
@@ -177,6 +254,23 @@ body {
 
 .site-header.is-over-dark .lang-switch {
   border-color: rgba(255, 255, 255, 0.18);
+}
+
+.site-header.is-over-dark .nav-link[aria-current="page"] {
+  color: #fff;
+}
+
+@media (max-width: 1023px) {
+  .hero-portal::after {
+    background:
+      linear-gradient(180deg, rgba(2, 3, 6, 0.92) 0%, rgba(2, 3, 6, 0.74) 54%, #020306 100%);
+  }
+
+  .hero-visual-stage::after {
+    background:
+      linear-gradient(180deg, rgba(2, 3, 6, 0.74) 0%, rgba(2, 3, 6, 0.1) 42%, rgba(2, 3, 6, 0.86) 100%),
+      linear-gradient(90deg, rgba(2, 3, 6, 0.78), rgba(2, 3, 6, 0.1), rgba(2, 3, 6, 0.78));
+  }
 }
 
 .site-header.is-over-dark .nav-link:hover,

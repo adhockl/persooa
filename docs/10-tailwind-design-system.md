@@ -384,8 +384,16 @@ Hero split:
 ```txt
 lg:grid-cols-12
 text: lg:col-span-6
-visual: lg:col-span-6
+visual: lg:absolute lg:inset-y-0 lg:left-[45%] lg:right-[-12%]
 ```
+
+Reguly dla hero z dedykowana ilustracja:
+
+- tekst trzymamy po lewej w maksymalnie 6 kolumnach,
+- ilustracja jest duza, immersyjna i moze wychodzic poza prawy edge kontenera,
+- nie oprawiamy ilustracji w karte, mockup, ramke ani shadow-card,
+- overlay gradientowy musi chronić czytelnosc tekstu,
+- na mobile tekst jest pierwszy, ilustracja druga.
 
 Sekcja tekst + lista:
 
@@ -903,28 +911,35 @@ border top: border-white/12
 
 ## 32. Organism: Hero
 
-Homepage hero powinien miec:
+Domyslny hero dla homepage i podstron z dedykowana ilustracja jest ciemny, immersyjny i oparty o pattern key visual podobny do referencji "Portals":
 
 - eyebrow,
 - H1,
 - lead,
 - primary CTA,
 - secondary CTA,
-- visual lub image,
-- opcjonalnie metryki.
+- dedykowana ilustracje po prawej,
+- opcjonalnie metryki pod CTA.
 
-Wariant dark:
+Struktura:
 
 ```txt
-bg-brand-dark text-white
-hero-section padding
-visual: abstract gradient / AI illustration / brand photo
+section: bg-[#020306] text-white overflow-hidden pt-24 md:pt-28
+container: relative mx-auto grid min-h-[720px] max-w-7xl items-center lg:grid-cols-12
+content: relative z-10 max-w-2xl lg:col-span-6
+visual: lg:absolute lg:inset-y-0 lg:left-[45%] lg:right-[-12%]
+image: h-full w-full object-cover, bez ramki i bez karty
 ```
 
-Wariant blue:
+Warstwa wizualna:
 
 ```txt
-bg-brand-blue text-white
+background: near-black / brand-dark
+accent glow: Brand_Blue + opcjonalny maly violet glow
+grid/noise: bardzo subtelne, tylko po stronie visuala
+overlay: linear/radial gradients zapewniajace kontrast tekstu
+CTA primary: bialy pill na ciemnym tle
+CTA secondary: transparentny pill z border-white/16
 ```
 
 Reguly:
@@ -932,7 +947,10 @@ Reguly:
 - H1 musi byc konkretny i SEO-friendly,
 - Webflow content `Dostarczamy ROI w 90 Dni` moze byc baza,
 - nie uzywamy placeholderow z Webflow,
-- CTA musi byc widoczne nad foldem.
+- CTA musi byc widoczne nad foldem,
+- dedykowane ilustracje w hero zawsze stosuja ten sam dark portal pattern,
+- ilustracji nie przycinamy do malego prostokata; ma budowac tlo i kierunek ruchu,
+- jezeli ilustracja jest jasna, przyciemniamy ja overlayem i blendem zamiast zmieniac layout.
 
 ## 33. Organism: OfferGrid
 
