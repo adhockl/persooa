@@ -52,6 +52,20 @@ Zastosowanie:
 - statusy case studies,
 - oznaczenia "ROI w 90 dni", "AI", "E-commerce".
 
+### Icon
+
+Biblioteka:
+
+- Lucide.
+
+Zasady:
+
+- ikony liniowe,
+- jedna biblioteka ikon w calym projekcie,
+- ikona wspiera znaczenie elementu: CTA, karta, proces, formularz, nawigacja,
+- bazowe rozmiary: `h-4 w-4`, `h-5 w-5`, `h-6 w-6`,
+- wrapper ikon w kartach: `flex h-11 w-11 items-center justify-center rounded-xl bg-brand-light-blue text-brand-blue`.
+
 ### Card
 
 Warianty:
@@ -226,13 +240,17 @@ Standardowe szerokosci:
 
 Domyslny pattern:
 
-- ciemny near-black background,
 - tekst po lewej,
-- dedykowana ilustracja po prawej jako duzy key visual,
+- dedykowana ilustracja po prawej jako prosty produktowy visual,
+- ilustracja ma pelna wysokosc hero i jest przypieta do prawej krawedzi kontenera,
 - ilustracja bez karty, ramki i mockupowego kontenera,
 - gradientowy overlay dla czytelnosci tekstu,
-- primary CTA jako bialy pill,
-- secondary CTA jako transparentny pill na dark background.
+- layout jest identyczny dla wariantu light i dark.
+
+Warianty wizualne:
+
+- `dark`: near-black background, bialy tekst, bialy primary CTA, ilustracje z `assets/exports/illustrations/dark/`,
+- `light`: white/light-blue background, ciemny tekst, niebieski primary CTA, ilustracje z `assets/exports/illustrations/`.
 
 Warianty:
 
@@ -245,7 +263,7 @@ Warianty:
 Elementy:
 
 - eyebrow,
-- H1,
+- H1 z opcjonalnym `text-gradient-highlight` na wyróżnionym fragmencie,
 - lead paragraph,
 - CTA primary,
 - CTA secondary,
@@ -254,7 +272,9 @@ Elementy:
 
 Reguly:
 
-- kazda podstrona z dedykowana ilustracja korzysta z tego samego dark hero patternu,
+- kazda podstrona z dedykowana ilustracja moze korzystac z `light` albo `dark`,
+- wybrany wariant musi uzywac odpowiadajacego mu assetu ilustracji,
+- ilustracja ma jeden glowny motyw i nie moze wygladac jak rozbudowana scena sci-fi,
 - nie tworzymy osobnych ramek visuali dla poszczegolnych ofert,
 - na mobile tresc jest przed ilustracja.
 

@@ -18,6 +18,10 @@ Prototyp zawiera:
 
 - homepage,
 - podstrony ofertowe,
+- O nas,
+- Growth Hub,
+- Program Partnerski,
+- Persooalize 360,
 - blog listing,
 - przykladowy wpis blogowy,
 - kontakt,
@@ -57,6 +61,11 @@ Przyklady:
 http://localhost:4173/prototype/#/
 http://localhost:4173/prototype/#/oferta/personalizacja-ai
 http://localhost:4173/prototype/#/oferta/roi-w-90dni
+http://localhost:4173/prototype/#/oferta/marketing-automation-2-0
+http://localhost:4173/prototype/#/o-nas
+http://localhost:4173/prototype/#/growth-hub
+http://localhost:4173/prototype/#/program-partnerski
+http://localhost:4173/prototype/#/persooalize-360
 http://localhost:4173/prototype/#/blog
 http://localhost:4173/prototype/#/kontakt
 http://localhost:4173/prototype/#/en

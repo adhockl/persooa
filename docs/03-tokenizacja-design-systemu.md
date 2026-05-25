@@ -57,7 +57,31 @@ Finalne kolory wymagaja potwierdzenia z brandbookiem Persooa. Ponizszy zestaw je
 --color-brand-black: #000000;
 --color-accent-ai: #015BFE;
 --color-accent-light: #F4F6FD;
+--color-highlight-mint: #41DBC3;
+--color-highlight-violet: #4E3FF6;
+--gradient-text-highlight: linear-gradient(90deg, var(--color-highlight-mint) 0%, var(--color-highlight-violet) 100%);
 ```
+
+### Gradient tekstowy
+
+Gradient `#41DBC3 -> #4E3FF6` jest tokenem do wyrozniania fragmentow tresci w H1/H2/H3.
+
+```css
+.text-gradient-highlight {
+  background: var(--gradient-text-highlight);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+```
+
+Reguly:
+
+- stosujemy na krotkich `span` wewnatrz naglowkow,
+- nie kolorujemy gradientem calego dlugiego naglowka, jezeli pogarsza to czytelnosc,
+- nie stosujemy do body copy ani dlugich list,
+- gradient jest akcentem contentowym, nie zamiennikiem `--color-primary`.
 
 ### Kolory semantyczne
 
@@ -279,8 +303,13 @@ theme: {
       "brand-dark": "var(--color-brand-dark)",
       "accent-ai": "var(--color-accent-ai)",
       "accent-light": "var(--color-accent-light)",
+      "highlight-mint": "var(--color-highlight-mint)",
+      "highlight-violet": "var(--color-highlight-violet)",
       border: "var(--color-border)",
       muted: "var(--color-muted)"
+    },
+    backgroundImage: {
+      "text-highlight": "var(--gradient-text-highlight)"
     },
     borderRadius: {
       sm: "var(--radius-sm)",

@@ -8,11 +8,14 @@ Zrodla:
 
 - Webflow: `https://persooa.webflow.io/`
 - Obecna strona produkcyjna: `https://www.persooa.com/`
+- Relume export: `assets/source/relume/persooa-com/`
 - Figma brandbook: `Persooa Rebranding`
 
 Wazne:
 
 > Webflow traktujemy jako zrodlo roboczego contentu. Przed wdrozeniem tresci musza zostac sprawdzone jezykowo, SEO i biznesowo.
+
+> Relume export traktujemy jako zrodlo struktury sekcji i czesciowych tresci. W wielu plikach sa placeholdery Relume (`Short heading here`, `Lorem ipsum`, `Button`, `Contact us`, `info@relume.io`), wiec nie wolno przenosic ich 1:1 do produkcji.
 
 ## 2. Wersje jezykowe PL/EN
 

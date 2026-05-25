@@ -63,6 +63,8 @@ Light Blue: #F4F6FD
 Light Grey: #FAFAFA
 Black: #000000
 Grey: #595959
+Highlight Mint: #41DBC3
+Highlight Violet: #4E3FF6
 ```
 
 CSS variables:
@@ -71,6 +73,8 @@ CSS variables:
 :root {
   --color-brand-blue: #015BFE;
   --color-brand-dark: #0F1E34;
+  --color-highlight-mint: #41DBC3;
+  --color-highlight-violet: #4E3FF6;
   --color-white: #FFFFFF;
   --color-light-blue: #F4F6FD;
   --color-light-grey: #FAFAFA;
@@ -83,6 +87,8 @@ CSS variables:
   --color-border: #E6EAF2;
   --color-surface: var(--color-light-grey);
   --color-surface-blue: var(--color-light-blue);
+
+  --gradient-text-highlight: linear-gradient(90deg, var(--color-highlight-mint) 0%, var(--color-highlight-violet) 100%);
 }
 ```
 
@@ -96,10 +102,15 @@ colors: {
     white: "#FFFFFF",
     "light-blue": "#F4F6FD",
     "light-grey": "#FAFAFA",
+    "highlight-mint": "#41DBC3",
+    "highlight-violet": "#4E3FF6",
     black: "#000000",
     grey: "#595959"
   },
   border: "#E6EAF2"
+},
+backgroundImage: {
+  "text-highlight": "linear-gradient(90deg, #41DBC3 0%, #4E3FF6 100%)"
 }
 ```
 
@@ -128,6 +139,20 @@ Akcent:
 text-brand-blue
 bg-brand-blue
 ```
+
+Wyroznienie fragmentow naglowkow:
+
+```txt
+text-gradient-highlight
+bg-text-highlight bg-clip-text text-transparent
+```
+
+Reguly:
+
+- gradientu `#41DBC3 -> #4E3FF6` uzywamy tylko do fragmentow H1/H2/H3 lub krotkich emphasis spans,
+- nie stosujemy go do dlugich akapitow, przyciskow ani calych sekcji,
+- na ciemnym i jasnym tle tekst musi pozostac czytelny,
+- gradient nie zastepuje koloru primary `Brand Blue`.
 
 ### Ciemne sekcje
 
@@ -384,16 +409,20 @@ Hero split:
 ```txt
 lg:grid-cols-12
 text: lg:col-span-6
-visual: lg:absolute lg:inset-y-0 lg:left-[45%] lg:right-[-12%]
+visual: lg:absolute lg:inset-y-0 lg:left-[48%] lg:right-0
 ```
 
 Reguly dla hero z dedykowana ilustracja:
 
 - tekst trzymamy po lewej w maksymalnie 6 kolumnach,
-- ilustracja jest duza, immersyjna i moze wychodzic poza prawy edge kontenera,
+- ilustracja jest prosta, produktowa, ma pelna wysokosc hero i jest przypieta do prawej krawedzi kontenera,
+- ilustracja ma jeden glowny obiekt i maksymalnie kilka elementow pomocniczych,
 - nie oprawiamy ilustracji w karte, mockup, ramke ani shadow-card,
 - overlay gradientowy musi chronić czytelnosc tekstu,
-- na mobile tekst jest pierwszy, ilustracja druga.
+- na mobile tekst jest pierwszy, ilustracja druga,
+- wariant `dark` korzysta z ilustracji dark-mode,
+- wariant `light` korzysta z jasnej ilustracji.
+- wybrany fragment H1 powinien korzystac z `text-gradient-highlight`.
 
 Sekcja tekst + lista:
 
@@ -653,6 +682,12 @@ Reguly:
 
 ## 21. Atom: Icon
 
+Biblioteka:
+
+```txt
+Lucide
+```
+
 Rozmiary:
 
 ```txt
@@ -680,6 +715,7 @@ Reguly:
 - grubosc kreski spójna,
 - nie mieszamy wielu bibliotek ikon,
 - ikony musza miec znaczenie, nie dekoracje bez celu.
+- w prototypie ikony renderujemy przez `data-lucide`, a po zmianie routingu odswiezamy `lucide.createIcons()`.
 
 ## 22. Atom: Input
 
@@ -911,7 +947,7 @@ border top: border-white/12
 
 ## 32. Organism: Hero
 
-Domyslny hero dla homepage i podstron z dedykowana ilustracja jest ciemny, immersyjny i oparty o pattern key visual podobny do referencji "Portals":
+Hero dla homepage i podstron z dedykowana ilustracja ma dwa rownoprawne warianty do wyboru: `dark` i `light`. Oba korzystaja z tego samego ukladu: tekst po lewej, prosty produktowy visual po prawej, bez karty i bez ramki.
 
 - eyebrow,
 - H1,
@@ -921,36 +957,57 @@ Domyslny hero dla homepage i podstron z dedykowana ilustracja jest ciemny, immer
 - dedykowana ilustracje po prawej,
 - opcjonalnie metryki pod CTA.
 
+Warianty:
+
+```txt
+dark: near-black background, bialy tekst, bialy primary CTA, ilustracja z assets/exports/illustrations/dark/
+light: biale/jasnoniebieskie background, ciemny tekst, niebieski primary CTA, ilustracja z assets/exports/illustrations/
+```
+
 Struktura:
 
 ```txt
-section: bg-[#020306] text-white overflow-hidden pt-24 md:pt-28
+section: overflow-hidden pt-24 md:pt-28
 container: relative mx-auto grid min-h-[720px] max-w-7xl items-center lg:grid-cols-12
 content: relative z-10 max-w-2xl lg:col-span-6
-visual: lg:absolute lg:inset-y-0 lg:left-[45%] lg:right-[-12%]
-image: h-full w-full object-cover, bez ramki i bez karty
+visual: lg:absolute lg:inset-y-0 lg:left-[48%] lg:right-0
+image: h-full w-full object-cover object-right, bez ramki i bez karty
 ```
 
-Warstwa wizualna:
+Warstwa wizualna dark:
 
 ```txt
 background: near-black / brand-dark
-accent glow: Brand_Blue + opcjonalny maly violet glow
+accent: Brand_Blue + bardzo male akcenty Highlight Mint / Highlight Violet
 grid/noise: bardzo subtelne, tylko po stronie visuala
 overlay: linear/radial gradients zapewniajace kontrast tekstu
 CTA primary: bialy pill na ciemnym tle
 CTA secondary: transparentny pill z border-white/16
 ```
 
+Warstwa wizualna light:
+
+```txt
+background: white / Light_Blue
+accent: subtelny Brand_Blue + bardzo male akcenty Highlight Mint / Highlight Violet
+grid/noise: bardzo subtelne, jasnoniebieskie
+overlay: white gradients zapewniajace kontrast tekstu
+CTA primary: Brand_Blue pill
+CTA secondary: bialy pill z border brand-dark/14
+```
+
 Reguly:
 
 - H1 musi byc konkretny i SEO-friendly,
+- fragment H1 moze uzywac `text-gradient-highlight`, np. produkt, kategoria albo najwazniejszy wynik,
 - Webflow content `Dostarczamy ROI w 90 Dni` moze byc baza,
 - nie uzywamy placeholderow z Webflow,
 - CTA musi byc widoczne nad foldem,
-- dedykowane ilustracje w hero zawsze stosuja ten sam dark portal pattern,
-- ilustracji nie przycinamy do malego prostokata; ma budowac tlo i kierunek ruchu,
-- jezeli ilustracja jest jasna, przyciemniamy ja overlayem i blendem zamiast zmieniac layout.
+- dedykowane ilustracje w hero zawsze maja osobny asset light i dark,
+- ilustracji nie przycinamy do malego prostokata, ale nie budujemy z niej rozbudowanej sceny,
+- ilustracja ma byc spokojna: bez portali, light trails, czasteczek i zlozonych sieci danych,
+- dark nie uzywa jasnej ilustracji przyciemnionej samym CSS-em, jezeli istnieje plik dark-mode,
+- light nie uzywa ilustracji dark-mode.
 
 ## 33. Organism: OfferGrid
 
