@@ -147,18 +147,24 @@ const offerPages = [
 ];
 
 const teamPhotos = [
-  { name: "Arkadiusz Seredyn", file: "arkadiusz-seredyn-persooa.png", role: "Strategy & growth" },
-  { name: "Remigiusz Wojtczak", file: "remigiusz-wojtczak-persooa.png", role: "Technology & delivery" },
-  { name: "Karolina Borkowska", file: "karolina-borkowska-persooa.png", role: "Client success" },
-  { name: "Michał Szewczyk", file: "michal-szewczyk-persooa.png", role: "Data & automation" },
+  { name: "Arkadiusz Seredyn", file: "arkadiusz-seredyn-persooa.png", role: "Strategy & growth", bio: "Łączy strategię wzrostu, Synerise i pracę z klientami enterprise." },
+  { name: "Bartłomiej Kopeć", file: "bartlomiej-kopec-persooa.png", role: "Implementation & automation", bio: "Przekłada scenariusze marketing automation na działające wdrożenia." },
+  { name: "Kacper Chodak", file: "kacper-chodak-persooa.png", role: "Technology delivery", bio: "Wspiera architekturę rozwiązań, integracje i stabilne procesy delivery." },
+  { name: "Karolina Borkowska", file: "karolina-borkowska-persooa.png", role: "Client success", bio: "Dba o przełożenie strategii na czytelną współpracę i mierzalne efekty." },
+  { name: "Maciej Seredyn", file: "maciej-seredyn-persooa.png", role: "Business development", bio: "Pomaga markom znaleźć właściwą ścieżkę do wzrostu i personalizacji." },
+  { name: "Marcin Włodarczak", file: "marcin-wlodarczak-persooa.png", role: "Data & CDP", bio: "Porządkuje dane, integracje i fundament pod real-time customer experience." },
+  { name: "Michał Szewczyk", file: "michal-szewczyk-persooa.png", role: "Data & automation", bio: "Łączy analitykę, automatyzację i scenariusze aktywacji klientów." },
+  { name: "Radosław Opoczyński", file: "radosla-opoczynski-persooa.png", role: "Growth consulting", bio: "Wspiera zespoły w projektowaniu procesów, które dowożą wynik." },
+  { name: "Remigiusz Wojtczak", file: "remigiusz-wojtczak-persooa.png", role: "Technology & delivery", bio: "Odpowiada za technologiczną jakość wdrożeń i operacyjną przewidywalność." },
 ];
 
 const careers = [
-  ["Specjalista wdrożeń", "Wspierasz klientów w transformacji ich systemów marketingowych."],
-  ["Inżynier danych", "Projektujesz architektury, które obsługują miliony transakcji."],
-  ["Konsultant strategii", "Pomagasz markom znaleźć drogę do wzrostu przez personalizację."],
-  ["Kierownik produktu", "Definiujesz przyszłość naszych rozwiązań dla e-commerce."],
-  ["SEO & content specialist", "Zwiększasz widoczność Persooa w wyszukiwarkach i umysłach klientów."],
+  { title: "Specjalista wdrożeń", category: "Implementacja", description: "Wspierasz klientów w transformacji ich systemów marketingowych.", location: "Warszawa", type: "Pełny etat" },
+  { title: "Inżynier danych", category: "Technologia", description: "Projektujesz architektury, które obsługują miliony transakcji.", location: "Warszawa", type: "Pełny etat" },
+  { title: "Konsultant strategii", category: "Konsultacja", description: "Pomagasz markom znaleźć drogę do wzrostu przez personalizację.", location: "Warszawa", type: "Pełny etat" },
+  { title: "Kierownik produktu", category: "Produkt", description: "Definiujesz przyszłość naszych rozwiązań dla e-commerce.", location: "Warszawa", type: "Pełny etat" },
+  { title: "Specjalista SEO", category: "Marketing", description: "Zwiększasz widoczność Persooa w wyszukiwarkach i umysłach klientów.", location: "Warszawa", type: "Pełny etat" },
+  { title: "Deweloper frontend", category: "Technologia", description: "Budujesz interfejsy, które użytkownicy chcą używać każdego dnia.", location: "Warszawa", type: "Pełny etat" },
 ];
 
 const blogPosts = [
@@ -566,9 +572,19 @@ function offerCard(page) {
 }
 
 function teamCard(photo) {
-  return `<figure class="overflow-hidden rounded-2xl bg-white shadow-soft">
-    <img src="../assets/source/photos/${photo.file}" alt="${photo.name}" class="aspect-[4/5] w-full object-cover" />
-    <figcaption class="p-4"><div class="text-sm font-medium text-[#0F1E34]">${photo.name}</div><div class="mt-1 text-sm text-[#595959]">${photo.role}</div></figcaption>
+  return `<figure class="flex flex-col text-center">
+    <div class="mb-5 overflow-hidden rounded-2xl bg-[#F4F6FD] md:mb-6">
+      <img src="../assets/source/photos/${photo.file}" alt="${photo.name}" class="aspect-square w-full object-cover" />
+    </div>
+    <figcaption>
+      <h3 class="text-xl font-semibold leading-tight text-[#0F1E34]">${photo.name}</h3>
+      <p class="mt-1 text-base text-[#595959]">${photo.role}</p>
+      <p class="mx-auto mt-4 max-w-sm text-sm leading-6 text-[#595959]">${photo.bio}</p>
+      <div class="mt-5 flex justify-center gap-3 text-[#0F1E34]">
+        <span class="flex h-9 w-9 items-center justify-center rounded-full border border-[#E6EAF2]">${icon("linkedin", "h-4 w-4")}</span>
+        <span class="flex h-9 w-9 items-center justify-center rounded-full border border-[#E6EAF2]">${icon("mail", "h-4 w-4")}</span>
+      </div>
+    </figcaption>
   </figure>`;
 }
 
@@ -730,6 +746,161 @@ function refreshIcons() {
   });
 }
 
+function initCharts() {
+  if (typeof window.__persooaChartsCleanup === "function") {
+    window.__persooaChartsCleanup();
+  }
+
+  const canvases = Array.from(document.querySelectorAll('canvas[data-chart="roi-growth"]'));
+  if (!canvases.length || !window.Chart) {
+    window.__persooaChartsCleanup = null;
+    return;
+  }
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const charts = [];
+  const makeChart = (canvas) => {
+    if (canvas.__persooaChart) return;
+
+    const ctx = canvas.getContext("2d");
+    const style = getComputedStyle(document.documentElement);
+    const brandBlue = style.getPropertyValue("--brand-blue").trim() || "#015BFE";
+    const brandDark = style.getPropertyValue("--brand-dark").trim() || "#0F1E34";
+    const brandGrey = style.getPropertyValue("--brand-grey").trim() || "#595959";
+    const mint = style.getPropertyValue("--highlight-mint").trim() || "#41DBC3";
+    const violet = style.getPropertyValue("--highlight-violet").trim() || "#4E3FF6";
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.parentElement?.offsetHeight || 320);
+    gradient.addColorStop(0, "rgba(1, 91, 254, 0.2)");
+    gradient.addColorStop(1, "rgba(1, 91, 254, 0)");
+
+    const chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: JSON.parse(canvas.dataset.chartLabels || "[]"),
+        datasets: [
+          {
+            label: canvas.dataset.chartRevenueLabel,
+            data: JSON.parse(canvas.dataset.chartRevenue || "[]"),
+            borderColor: brandBlue,
+            backgroundColor: gradient,
+            pointBackgroundColor: "#FFFFFF",
+            pointBorderColor: brandBlue,
+            pointBorderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            borderWidth: 3,
+            fill: true,
+            tension: 0.38,
+          },
+          {
+            label: canvas.dataset.chartBaselineLabel,
+            data: JSON.parse(canvas.dataset.chartBaseline || "[]"),
+            borderColor: mint,
+            backgroundColor: "rgba(65, 219, 195, 0.08)",
+            pointBackgroundColor: "#FFFFFF",
+            pointBorderColor: mint,
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            borderWidth: 2,
+            borderDash: [8, 8],
+            fill: false,
+            tension: 0.38,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: reduceMotion ? false : {
+          duration: 1200,
+          easing: "easeOutQuart",
+        },
+        interaction: {
+          intersect: false,
+          mode: "index",
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            backgroundColor: brandDark,
+            borderColor: "rgba(255,255,255,0.12)",
+            borderWidth: 1,
+            titleColor: "#FFFFFF",
+            bodyColor: "rgba(255,255,255,0.78)",
+            displayColors: true,
+            padding: 12,
+            callbacks: {
+              label: (context) => `${context.dataset.label}: ${context.parsed.y}`,
+            },
+          },
+        },
+        scales: {
+          x: {
+            grid: {
+              color: "rgba(230, 234, 242, 0.78)",
+              drawBorder: false,
+            },
+            ticks: {
+              color: brandGrey,
+              font: {
+                family: "Kanit",
+                size: 13,
+              },
+            },
+          },
+          y: {
+            min: 90,
+            max: 200,
+            grid: {
+              color: "rgba(230, 234, 242, 0.9)",
+              drawBorder: false,
+            },
+            ticks: {
+              color: brandGrey,
+              stepSize: 25,
+              callback: (value) => `${value}`,
+              font: {
+                family: "Kanit",
+                size: 13,
+              },
+            },
+          },
+        },
+        elements: {
+          point: {
+            hoverBorderColor: violet,
+          },
+        },
+      },
+    });
+
+    canvas.__persooaChart = chart;
+    charts.push(chart);
+  };
+
+  let observer = null;
+  if (reduceMotion || !("IntersectionObserver" in window)) {
+    canvases.forEach(makeChart);
+  } else {
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          makeChart(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.2 });
+    canvases.forEach((canvas) => observer.observe(canvas));
+  }
+
+  window.__persooaChartsCleanup = () => {
+    if (observer) observer.disconnect();
+    charts.forEach((chart) => chart.destroy());
+  };
+}
+
 function render() {
   const r = route();
   let content = "";
@@ -747,6 +918,7 @@ function render() {
   refreshIcons();
   initHeaderTheme();
   initPageMotion();
+  initCharts();
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
