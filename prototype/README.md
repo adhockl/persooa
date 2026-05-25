@@ -8,6 +8,7 @@ Cel:
 - przetestowac design system Tailwind,
 - pokazac homepage i podstrony ofertowe,
 - pokazac animowany wykres danych ostylowany design systemem,
+- pokazac katalog Design System z chartami i atomami UI,
 - przygotowac strukture do przeniesienia do Astro albo Next.js po decyzji technologicznej.
 
 Uruchomienie:
@@ -20,6 +21,15 @@ Adres:
 
 ```txt
 http://localhost:4173/prototype/
+```
+
+Design System:
+
+```txt
+http://localhost:4173/prototype/#/design-system
+http://localhost:4173/prototype/#/design-system/charts
+http://localhost:4173/prototype/#/design-system/atomy-ui
+http://localhost:4173/prototype/#/design-system/sekcje
 ```
 
 Uwaga:

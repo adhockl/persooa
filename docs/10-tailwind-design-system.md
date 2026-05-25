@@ -853,7 +853,7 @@ Charty sluza do pokazania trendu, porownania scenariuszy, KPI oraz wynikow case 
 
 Rekomendacja:
 
-- w statycznym prototypie uzywamy `Chart.js` z CDN, poniewaz pasuje do obecnego stacku HTML/CSS/Vanilla JS i ma animacje out of the box,
+- w statycznym prototypie uzywamy `Chart.js` z CDN, poniewaz pasuje do obecnego stacku HTML/CSS/Vanilla JS i ma animacje out of the box; prototyp ma canvas fallback na wypadek niedostepnosci CDN,
 - w finalnym Next.js albo Astro z React islands rekomendowanym wyborem domyslnym jest `Recharts`, poniewaz latwo mapuje sie na komponenty React, `ResponsiveContainer` i tokeny design systemu,
 - przy bardzo rozbudowanych dashboardach, mapach ciepla, wielu seriach albo potrzebie zaawansowanej interakcji mozna rozwazyc `Apache ECharts`, ale tylko jesli zakres danych to uzasadnia.
 
@@ -1252,7 +1252,19 @@ Przed generowaniem calej strony tworzymy:
 - Header,
 - Footer,
 - Hero,
+- HeroTitleEffect,
+- LogoStrip,
+- ProblemSolutionCard,
+- ServiceCard,
+- FrameworkCard,
+- VisualSystemCard,
+- IntegrationTile,
+- ResultStat,
+- CxFrameworkPillar,
+- MigrationStepCard,
 - OfferGrid,
+- EngagementModelCard,
+- FaqItem,
 - StatsBand,
 - CaseStudyCard,
 - CTASection,

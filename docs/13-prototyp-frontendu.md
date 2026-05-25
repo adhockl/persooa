@@ -9,7 +9,7 @@ Powstal przed finalna decyzja technologiczna Astro vs Next.js, dlatego jest przy
 - HTML,
 - CSS,
 - Tailwind CDN,
-- Chart.js CDN dla przykladowego animowanego wykresu,
+- Chart.js CDN dla przykladowego animowanego wykresu, z canvas fallbackiem,
 - Vanilla JS,
 - dane stron zapisane w `app.js`.
 
@@ -23,6 +23,10 @@ Prototyp zawiera:
 - Growth Hub,
 - Program Partnerski,
 - Persooalize 360,
+- Design System,
+- katalog chartow,
+- katalog atomow UI,
+- katalog nowych komponentow sekcyjnych homepage,
 - blog listing,
 - przykladowy wpis blogowy,
 - kontakt,
@@ -68,6 +72,10 @@ http://localhost:4173/prototype/#/o-nas
 http://localhost:4173/prototype/#/growth-hub
 http://localhost:4173/prototype/#/program-partnerski
 http://localhost:4173/prototype/#/persooalize-360
+http://localhost:4173/prototype/#/design-system
+http://localhost:4173/prototype/#/design-system/charts
+http://localhost:4173/prototype/#/design-system/atomy-ui
+http://localhost:4173/prototype/#/design-system/sekcje
 http://localhost:4173/prototype/#/blog
 http://localhost:4173/prototype/#/kontakt
 http://localhost:4173/prototype/#/en
