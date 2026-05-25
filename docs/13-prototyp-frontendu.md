@@ -9,6 +9,7 @@ Powstal przed finalna decyzja technologiczna Astro vs Next.js, dlatego jest przy
 - HTML,
 - CSS,
 - Tailwind CDN,
+- Chart.js CDN dla przykladowego animowanego wykresu,
 - Vanilla JS,
 - dane stron zapisane w `app.js`.
 
@@ -32,6 +33,7 @@ Prototyp zawiera:
 - footer,
 - CTA,
 - reusable cards,
+- animowany wykres ROI ostylowany design systemem,
 - sekcje dark/blue/light,
 - wykorzystanie logo, fontu Kanit i referencji ilustracji.
 

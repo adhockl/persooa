@@ -7,6 +7,7 @@ Cel:
 - sprawdzic kierunek UI,
 - przetestowac design system Tailwind,
 - pokazac homepage i podstrony ofertowe,
+- pokazac animowany wykres danych ostylowany design systemem,
 - przygotowac strukture do przeniesienia do Astro albo Next.js po decyzji technologicznej.
 
 Uruchomienie:

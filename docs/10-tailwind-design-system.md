@@ -847,6 +847,47 @@ number: text-white
 label: text-white/64
 ```
 
+## 27.1 Molecule: ChartPanel
+
+Charty sluza do pokazania trendu, porownania scenariuszy, KPI oraz wynikow case studies. Nie powinny wygladac jak generyczny dashboard ani jak screenshot narzedzia.
+
+Rekomendacja:
+
+- w statycznym prototypie uzywamy `Chart.js` z CDN, poniewaz pasuje do obecnego stacku HTML/CSS/Vanilla JS i ma animacje out of the box,
+- w finalnym Next.js albo Astro z React islands rekomendowanym wyborem domyslnym jest `Recharts`, poniewaz latwo mapuje sie na komponenty React, `ResponsiveContainer` i tokeny design systemu,
+- przy bardzo rozbudowanych dashboardach, mapach ciepla, wielu seriach albo potrzebie zaawansowanej interakcji mozna rozwazyc `Apache ECharts`, ale tylko jesli zakres danych to uzasadnia.
+
+Struktura:
+
+```txt
+section: bg-brand-light-blue albo bg-white
+panel: rounded-2xl border border-border bg-white shadow-soft
+chart container: position relative, dedicated wrapper, min-h-[320px]
+legend: custom HTML, nie domyslna legenda biblioteki
+tooltip: brand-dark background, white text, subtle border
+```
+
+Tokeny:
+
+```txt
+primary series: Brand Blue #015BFE
+secondary series: Highlight Mint #41DBC3
+tertiary/accent: Highlight Violet #4E3FF6
+grid: Border #E6EAF2 with opacity
+axis text: Grey #595959
+tooltip bg: Brand Dark #0F1E34
+```
+
+Reguly:
+
+- kazdy chart musi miec tytul, kontekst i opis metryki,
+- osie i tooltipy musza uzywac fontu Kanit,
+- animacja ma byc spokojna: ok. 700-1200 ms, easing `easeOutQuart` lub zblizony,
+- respektujemy `prefers-reduced-motion` i wylaczamy animacje dla uzytkownikow z ograniczeniem ruchu,
+- chart nie moze zmieniac layoutu po zaladowaniu; wrapper ma miec stabilna wysokosc,
+- wykresy case studies uzywaja tylko danych zatwierdzonych przez klienta,
+- na mobile redukujemy liczbe labeli i nie upychamy legendy w plot area.
+
 ## 28. Molecule: CaseStudyCard
 
 Struktura:
