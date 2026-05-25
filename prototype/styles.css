@@ -1,0 +1,201 @@
+@font-face {
+  font-family: "Kanit";
+  src: url("../assets/source/fonts/Kanit-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kanit";
+  src: url("../assets/source/fonts/Kanit-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kanit";
+  src: url("../assets/source/fonts/Kanit-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kanit";
+  src: url("../assets/source/fonts/Kanit-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --brand-blue: #015bfe;
+  --brand-dark: #0f1e34;
+  --light-blue: #f4f6fd;
+  --light-grey: #fafafa;
+  --brand-grey: #595959;
+  --border: #e6eaf2;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Kanit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--brand-dark);
+  background: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.persooa-gradient {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(244, 246, 253, 0.95), transparent 28%),
+    linear-gradient(135deg, rgba(1, 91, 254, 0.08), rgba(1, 91, 254, 0) 45%),
+    #ffffff;
+}
+
+.blue-gradient {
+  background:
+    radial-gradient(circle at 25% 20%, rgba(255, 255, 255, 0.62), transparent 24%),
+    linear-gradient(135deg, #015bfe 0%, #015bfe 54%, #88afff 100%);
+}
+
+.dark-grid {
+  background:
+    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px),
+    var(--brand-dark);
+  background-size: 48px 48px;
+}
+
+.minimal-illustration {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(230, 234, 242, 0.9);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(1, 91, 254, 0.12), transparent 26%),
+    linear-gradient(135deg, #ffffff, #f4f6fd);
+}
+
+.minimal-illustration::before,
+.minimal-illustration::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.minimal-illustration::before {
+  width: 44%;
+  aspect-ratio: 1;
+  right: 14%;
+  top: 18%;
+  border: 24px solid rgba(1, 91, 254, 0.12);
+}
+
+.minimal-illustration::after {
+  width: 32%;
+  aspect-ratio: 1;
+  right: 28%;
+  bottom: 18%;
+  background: linear-gradient(135deg, rgba(1, 91, 254, 0.22), rgba(244, 246, 253, 0));
+}
+
+.minimal-illustration img {
+  position: relative;
+  z-index: 1;
+}
+
+.dark-illustration {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 70% 20%, rgba(1, 91, 254, 0.28), transparent 28%),
+    linear-gradient(135deg, #0f1e34, #091323);
+}
+
+.dark-illustration::before {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.nav-link[aria-current="page"] {
+  color: var(--brand-blue);
+}
+
+.nav-dropdown:hover .nav-dropdown-panel,
+.nav-dropdown:focus-within .nav-dropdown-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.nav-dropdown-panel {
+  max-width: calc(100vw - 48px);
+}
+
+.site-header {
+  transition:
+    background-color 220ms ease,
+    border-color 220ms ease,
+    color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.site-header .brand-logo {
+  transition: filter 220ms ease;
+}
+
+.site-header.is-over-dark {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(15, 30, 52, 0.78);
+}
+
+.site-header.is-over-light {
+  color: var(--brand-dark);
+  border-color: rgba(230, 234, 242, 0.9);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.site-header.is-over-dark .brand-logo {
+  filter: brightness(0) invert(1);
+}
+
+.site-header.is-over-dark .nav-link,
+.site-header.is-over-dark .nav-dropdown-trigger,
+.site-header.is-over-dark .lang-switch {
+  color: #fff;
+}
+
+.site-header.is-over-dark .lang-switch {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.site-header.is-over-dark .nav-link:hover,
+.site-header.is-over-dark .nav-dropdown-trigger:hover {
+  color: #ffffff;
+  opacity: 0.72;
+}
+
+.route-view {
+  animation: routeIn 220ms ease-out;
+}
+
+@keyframes routeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

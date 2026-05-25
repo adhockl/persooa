@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Persooa prototype</title>
+    <meta name="description" content="Statyczny prototyp frontendu Persooa oparty o Tailwind Design System." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                blue: "#015BFE",
+                dark: "#0F1E34",
+                "light-blue": "#F4F6FD",
+                "light-grey": "#FAFAFA",
+                grey: "#595959"
+              }
+            },
+            boxShadow: {
+              soft: "0 16px 40px rgba(15, 30, 52, 0.08)"
+            }
+          }
+        }
+      };
+    </script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
