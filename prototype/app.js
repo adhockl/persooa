@@ -113,7 +113,7 @@ const offerPages = [
     enSlug: "ai-search",
     title: "Wyszukiwarka AI",
     enTitle: "AI Search",
-    lead: "Pomóż klientom szybciej znaleźć właściwe produkty i zwiększ konwersję dzięki semantic search, personalizacji wyników i lepszemu product discovery.",
+    lead: "Zamień pole wyszukiwania w najskuteczniejszy kanał sprzedaży w swoim e-commerce",
     enLead: "Help customers find the right products faster and increase conversion with semantic search, personalized results and better product discovery.",
     eyebrow: "Oferta",
     visualKey: "search",
@@ -527,13 +527,13 @@ function designSystemTiles() {
       ["Charts", "Wszystkie typy wykresów, animacje, legendy i tokeny danych.", "/design-system/charts", "chart-no-axes-combined"],
       ["Atomy UI", "Buttony, badge, pola formularzy, statystyki, karty i podstawowe stany.", "/design-system/atomy-ui", "component"],
       ["Sekcje", "Nowe komponenty homepage: hero, karty, frameworki, case studies, FAQ i CTA.", "/design-system/sekcje", "layout-template"],
-      ["Ilustracje produktowe", "Briefy, kontekst i animowane układy UI dla ilustracji ofertowych.", "/design-system/ilustracje-produktowe", "image"],
+      ["Ilustracje", "Dwa typy ilustracji ofertowych: produktowe UI oraz konceptualne 3D.", "/design-system/ilustracje-produktowe", "image"],
     ]
     : [
       ["Charts", "All chart types, animations, legends and data tokens.", "/en/design-system/charts", "chart-no-axes-combined"],
       ["UI atoms", "Buttons, badges, fields, stats, cards and base states.", "/en/design-system/ui-atoms", "component"],
       ["Sections", "New homepage components: hero, cards, frameworks, case studies, FAQ and CTA.", "/en/design-system/sections", "layout-template"],
-      ["Product illustrations", "Briefs, context and animated UI compositions for offer illustrations.", "/en/design-system/product-illustrations", "image"],
+      ["Illustrations", "Two offer illustration types: product UI and conceptual 3D visuals.", "/en/design-system/product-illustrations", "image"],
     ];
   return tiles.map(([title, text, path, iconName]) => `<a href="${href(path)}" class="rounded-xl border border-[#E6EAF2] bg-white p-6 transition hover:border-[#015BFE]/40 hover:shadow-soft">
     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon(iconName, "h-5 w-5")}</div>
@@ -716,14 +716,14 @@ function footer() {
       ["Charts", "/design-system/charts"],
       ["Atomy UI", "/design-system/atomy-ui"],
       ["Sekcje", "/design-system/sekcje"],
-      ["Ilustracje produktowe", "/design-system/ilustracje-produktowe"],
+      ["Ilustracje", "/design-system/ilustracje-produktowe"],
     ]
     : [
       ["Overview", "/en/design-system"],
       ["Charts", "/en/design-system/charts"],
       ["UI atoms", "/en/design-system/ui-atoms"],
       ["Sections", "/en/design-system/sections"],
-      ["Product illustrations", "/en/design-system/product-illustrations"],
+      ["Illustrations", "/en/design-system/product-illustrations"],
     ];
   return `<footer class="bg-[#0F1E34] py-14 text-white">
     <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-12 lg:px-8">
@@ -1469,9 +1469,10 @@ function offerContextSection(page) {
 }
 
 function aiSearchOfferFeatureCard([title, text, value], index) {
-  return `<article class="product-feature-card rounded-xl border border-[#E6EAF2] bg-white p-5">
-    <div class="grid gap-6 lg:grid-cols-12 lg:items-start">
-      <div class="lg:col-span-5">
+  const directionClass = index % 2 === 1 ? "product-feature-card--reverse" : "";
+  return `<article class="product-feature-card product-feature-card--search ${directionClass} rounded-xl border border-[#E6EAF2] bg-white p-5 md:p-6">
+    <div class="product-feature-card__grid">
+      <div class="product-feature-card__copy">
         <div class="flex items-start justify-between gap-4">
           <div>
             <span class="text-sm font-semibold text-[#015BFE]">${String(index + 1).padStart(2, "0")}</span>
@@ -1481,20 +1482,131 @@ function aiSearchOfferFeatureCard([title, text, value], index) {
         </div>
         <p class="mt-5 text-base leading-7 text-[#595959]">${text}</p>
         <div class="mt-5 rounded-xl border border-[#E6EAF2] bg-[#FAFAFA] p-4">
-          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#015BFE]">Wartości biznesowe</p>
+          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#015BFE]">Wartości biznesowe:</p>
           <p class="mt-2 text-sm leading-6 text-[#595959]">${value}</p>
         </div>
       </div>
-      <div class="lg:col-span-7">${generatedProductIllustration(title, index)}</div>
+      <div class="product-feature-card__visual">${generatedProductIllustration(title, index, "generated-product-illustration--wide")}</div>
     </div>
   </article>`;
 }
 
+function offerPatternHero({ page, title, lead, visualKey, frameworkTarget = "framework-persooa" }) {
+  const l = lang();
+  const variant = heroVariant("dark");
+  const frameworkButton = `<md-outlined-button trailing-icon class="persooa-md-button persooa-md-button--hero-dark-secondary" onclick="document.getElementById('${frameworkTarget}')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"><span>${l === "pl" ? "Zobacz framework" : "See framework"}</span>${materialButtonSlotIcon("target")}</md-outlined-button>`;
+  return heroIllustrationSection({
+    eyebrow: page.eyebrow,
+    title,
+    lead,
+    visual: heroVisual(visualKey || page.visualKey, variant),
+    variant,
+    primaryLabel: t("ask"),
+    primaryHref: l === "pl" ? "/kontakt" : "/en/contact",
+    secondaryButtonMarkup: frameworkButton,
+  });
+}
+
+function offerPatternIntroSection({ eyebrow, title, text, proofItems = [] }) {
+  return section({ children: `<div class="grid gap-8 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      ${badge(eyebrow)}
+      <h2 class="mt-5 text-4xl font-semibold leading-tight">${title}</h2>
+    </div>
+    <div class="lg:col-span-7">
+      <p class="text-lg leading-8 text-[#595959]">${text}</p>
+      ${proofItems.length ? `<div class="mt-8 grid gap-4">${proofItems.map((item) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5">
+        <p class="text-base leading-7 text-[#595959]">${item}</p>
+      </article>`).join("")}</div>` : ""}
+    </div>
+  </div>` });
+}
+
+function offerPatternFeatureSection({ eyebrow, title, text = "", features, renderFeature }) {
+  return section({ children: `<div class="mx-auto max-w-3xl text-center">
+    ${badge(eyebrow)}
+    <h2 class="mt-5 text-4xl font-semibold leading-tight">${title}</h2>
+    ${text ? `<p class="mt-5 text-lg leading-8 text-[#595959]">${text}</p>` : ""}
+  </div>
+  <div class="mt-12 grid gap-6">${features.map(renderFeature).join("")}</div>` });
+}
+
+function offerPatternTechnologySection({ eyebrow, title, text, visual }) {
+  return section({ variant: "lightBlue", children: `<div class="grid gap-10 lg:grid-cols-12 lg:items-center">
+    <div class="lg:col-span-5">
+      ${badge(eyebrow)}
+      <h2 class="mt-5 text-4xl font-semibold leading-tight">${title}</h2>
+      <p class="mt-5 text-lg leading-8 text-[#595959]">${text}</p>
+    </div>
+    <div class="lg:col-span-7">${visual}</div>
+  </div>` });
+}
+
+function offerPatternFrameworkSection({ eyebrow, title, text, steps }) {
+  return section({
+    variant: "dark",
+    children: `<div class="grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        ${badge(eyebrow, true)}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">${title}</h2>
+        <p class="mt-5 text-lg leading-8 text-white/68">${text}</p>
+      </div>
+      <div class="grid gap-4 lg:col-span-8 md:grid-cols-2">${steps.map(([number, stepTitle, stepText, iconName]) => `<article class="rounded-xl border border-white/12 bg-white/[0.04] p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-[#41DBC3]">${icon(iconName, "h-5 w-5")}</div>
+          <span class="text-sm font-semibold text-[#41DBC3]">${number}</span>
+        </div>
+        <h3 class="mt-5 text-2xl font-semibold">${stepTitle}</h3>
+        <p class="mt-3 text-sm leading-6 text-white/68">${stepText}</p>
+      </article>`).join("")}</div>
+    </div>`,
+  });
+}
+
+function offerPatternImpactSection({ eyebrow, title, text, outcomes }) {
+  return section({ variant: "muted", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+    <div class="lg:col-span-5">
+      ${badge(eyebrow)}
+      <h2 class="mt-5 text-4xl font-semibold leading-tight">${title}</h2>
+      <p class="mt-5 text-lg leading-8 text-[#595959]">${text}</p>
+    </div>
+    <div class="grid gap-4 lg:col-span-7 md:grid-cols-2">${outcomes.map((outcome) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-6">
+      <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon("target", "h-5 w-5")}</div>
+      <h3 class="mt-5 text-xl font-semibold">${outcome}</h3>
+    </article>`).join("")}</div>
+  </div>` });
+}
+
+function offerPatternFinalCta({ eyebrow, title, text, primaryLabel, secondaryLabel, secondaryHref }) {
+  const l = lang();
+  return section({ variant: "dark", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+    <div class="lg:col-span-7">
+      ${badge(eyebrow, true)}
+      <h2 class="mt-5 text-4xl font-semibold leading-tight">${title}</h2>
+      <p class="mt-5 text-lg leading-8 text-white/68">${text}</p>
+    </div>
+    <div class="flex flex-wrap gap-4 lg:col-span-5 lg:justify-end">${button(primaryLabel, l === "pl" ? "/kontakt" : "/en/contact", "heroDark", "send")}${button(secondaryLabel, secondaryHref, "heroDarkSecondary", "target")}</div>
+  </div>` });
+}
+
+function offerPatternPage({ page, title, lead, visualKey, intro, featureSection, technologySection, frameworkSection, impactSection, finalCta }) {
+  return `<main class="route-view offer-pattern-page">
+    ${offerPatternHero({ page, title, lead, visualKey })}
+    ${offerPatternIntroSection(intro)}
+    ${offerPatternFeatureSection(featureSection)}
+    ${technologySection ? offerPatternTechnologySection(technologySection) : ""}
+    <div id="framework-persooa">${offerPatternFrameworkSection(frameworkSection)}</div>
+    ${offerPatternImpactSection(impactSection)}
+    ${offerPatternFinalCta(finalCta)}
+  </main>`;
+}
+
 function personalizationOfferFeatureCard([title, text, value], index) {
   const icons = ["database", "user-round-check", "sparkles", "workflow", "send", "chart-no-axes-combined"];
-  return `<article class="product-feature-card rounded-xl border border-[#E6EAF2] bg-white p-5">
-    <div class="grid gap-6 lg:grid-cols-12 lg:items-start">
-      <div class="lg:col-span-5">
+  const directionClass = index % 2 === 1 ? "product-feature-card--reverse" : "";
+  return `<article class="product-feature-card ${directionClass} rounded-xl border border-[#E6EAF2] bg-white p-5 md:p-6">
+    <div class="product-feature-card__grid">
+      <div class="product-feature-card__copy">
         <div class="flex items-start justify-between gap-4">
           <div>
             <span class="text-sm font-semibold text-[#015BFE]">${String(index + 1).padStart(2, "0")}</span>
@@ -1508,7 +1620,7 @@ function personalizationOfferFeatureCard([title, text, value], index) {
           <p class="mt-2 text-sm leading-6 text-[#595959]">${value}</p>
         </div>
       </div>
-      <div class="lg:col-span-7">${generatedPersonalizationProductIllustration(title, index)}</div>
+      <div class="product-feature-card__visual">${generatedPersonalizationProductIllustration(title, index)}</div>
     </div>
   </article>`;
 }
@@ -1644,75 +1756,63 @@ function aiSearchFrameworkSection() {
 function aiSearchProductPage(page) {
   const l = lang();
   const title = gradientTitleTail("Wyszukiwarka AI, która sprzedaje");
-  const lead = "Zamień pole wyszukiwania w najskuteczniejszy kanał sprzedaży w swoim e-commerce.";
-  const variant = heroVariant("dark");
-  const frameworkButton = `<md-outlined-button trailing-icon class="persooa-md-button persooa-md-button--hero-dark-secondary" onclick="document.getElementById('framework-persooa')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"><span>Zobacz framework</span>${materialButtonSlotIcon("target")}</md-outlined-button>`;
+  const lead = "Zamień pole wyszukiwania w najskuteczniejszy kanał sprzedaży w swoim e-commerce";
   const stats = [
-    ["20%", "średnio całkowitego przychodu może pochodzić z dobrze zoptymalizowanej wyszukiwarki"],
-    ["8-43%", "zakres udziału przychodu z wyszukiwarki zależnie od segmentu"],
-    ["40-60%", "użytkowników mobile zaczyna wizytę od skorzystania z wyszukiwarki"],
-    ["75%", "użytkowników oczekuje spersonalizowanych doświadczeń na stronie"],
+    "Dobrze zoptymalizowana wyszukiwarka w e-commerce może stanowić średnio 20% całkowitego przychodu. W zależności od segmentu wynik ten waha się od 8% do 43%",
+    "Od 40% do 60% użytkowników odwiedzających Twój e-sklep na urządzeniach mobilnych zaczyna swoją wizytę od skorzystania z wyszukiwarki",
+    "75% użytkowników oczekuje spersonalizowanych doświadczeń na stronie. Jeśli ich im nie zapewnisz, istnieje wysokie prawdopodobieństwo, że opuszczą Twoją stronę",
   ];
-  return `<main class="route-view">
-    ${heroIllustrationSection({
-      eyebrow: page.eyebrow,
-      title,
-      lead,
-      visual: heroVisual("search", variant),
-      variant,
-      primaryLabel: t("ask"),
-      primaryHref: l === "pl" ? "/kontakt" : "/en/contact",
-      secondaryButtonMarkup: frameworkButton,
-    })}
-    ${section({ children: `<div class="grid gap-8 lg:grid-cols-12">
-      <div class="lg:col-span-5">
-        ${badge("Dlaczego")}
-        <h2 class="mt-5 text-4xl font-semibold leading-tight">Dlaczego zwykła wyszukiwarka nie wystarcza?</h2>
-      </div>
-      <div class="lg:col-span-7">
-        <p class="text-lg leading-8 text-[#595959]">Wyszukiwarka wykorzystująca algorytmy AI działa niczym doświadczony sprzedawca w sklepie. Rozumie potrzeby klienta i podpowiada najtrafniejsze wyniki, tak aby klient znalazł poszukiwany produkt. W swoich podpowiedziach bierze pod uwagę historię zakupową, katalog produktów oraz wiele zmiennych odpowiadających za personalizację wyników.</p>
-        <div class="mt-8 grid gap-4 md:grid-cols-2">${stats.map(([value, label]) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5">
-          <strong class="text-4xl font-semibold text-[#015BFE]">${value}</strong>
-          <p class="mt-3 text-sm leading-6 text-[#595959]">${label}</p>
-        </article>`).join("")}</div>
-      </div>
-    </div>` })}
-    ${section({ variant: "lightBlue", children: `<div class="grid gap-10 lg:grid-cols-12 lg:items-center">
-      <div class="lg:col-span-5">
-        ${badge("Mechanika produktu")}
-        <h2 class="mt-5 text-4xl font-semibold leading-tight">Search jako kanał sprzedaży, personalizacji i merchandisingu</h2>
-        <p class="mt-5 text-lg leading-8 text-[#595959]">AI Search łączy intencję użytkownika z katalogiem produktów, regułami biznesowymi, rekomendacjami i analityką. Dzięki temu sklep nie pokazuje tylko listy wyników, ale prowadzi klienta do decyzji zakupowej.</p>
-        <div class="mt-8 grid gap-3">${["Rozumienie zapytań, literówek i synonimów", "Personalizacja kolejności wyników na podstawie zachowań", "Promowanie produktów i monetyzacja przestrzeni search", "Analityka fraz, filtrów i zapytań bez wyników"].map((item) => `<div class="flex items-start gap-3 rounded-xl border border-[#E6EAF2] bg-white p-4"><div class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F4F6FD] text-[#015BFE]">${icon("check-circle-2", "h-4 w-4")}</div><p class="text-sm leading-6 text-[#0F1E34]">${item}</p></div>`).join("")}</div>
-      </div>
-      <div class="lg:col-span-7">${generatedProductIllustration("Personalizacja wyników wyszukiwania", 5)}</div>
-    </div>` })}
-    ${section({ children: `<div class="mx-auto max-w-3xl text-center">
-      ${badge("Funkcje")}
-      <h2 class="mt-5 text-4xl font-semibold leading-tight">16 elementów wyszukiwarki AI, które pracują na przychód</h2>
-      <p class="mt-5 text-lg leading-8 text-[#595959]">Każdy moduł ma konkretną rolę w skracaniu ścieżki do produktu, ograniczaniu pustych wyników i zwiększaniu wartości ruchu z wyszukiwarki.</p>
-    </div>
-    <div class="mt-12 grid gap-6">${aiSearchIllustrationFeatures.map(aiSearchOfferFeatureCard).join("")}</div>` })}
-    <div id="framework-persooa">${aiSearchFrameworkSection()}</div>
-    ${section({ variant: "muted", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
-      <div class="lg:col-span-5">
-        ${badge("Efekt biznesowy")}
-        <h2 class="mt-5 text-4xl font-semibold leading-tight">Mniej pustych wyników, więcej sesji zakupowych domkniętych przez search</h2>
-        <p class="mt-5 text-lg leading-8 text-[#595959]">Wyszukiwarka staje się miejscem, w którym sklep rozumie intencję, dopasowuje ofertę i steruje ekspozycją produktów bez dokładania pracy po stronie zespołu IT.</p>
-      </div>
-      <div class="grid gap-4 lg:col-span-7 md:grid-cols-2">${page.outcomes.map((outcome) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-6">
-        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon("target", "h-5 w-5")}</div>
-        <h3 class="mt-5 text-xl font-semibold">${outcome}</h3>
-      </article>`).join("")}</div>
-    </div>` })}
-    ${section({ variant: "dark", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
-      <div class="lg:col-span-7">
-        ${badge("Następny krok", true)}
-        <h2 class="mt-5 text-4xl font-semibold leading-tight">Sprawdź, ile przychodu może odzyskać Twoja wyszukiwarka</h2>
-        <p class="mt-5 text-lg leading-8 text-white/68">Zaczniemy od analizy obecnych zapytań, pustych wyników, konwersji z search i jakości katalogu produktowego.</p>
-      </div>
-      <div class="flex flex-wrap gap-4 lg:col-span-5 lg:justify-end">${button("Umów konsultację", l === "pl" ? "/kontakt" : "/en/contact", "heroDark", "send")}${button("Zobacz ROI", l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days", "heroDarkSecondary", "target")}</div>
-    </div>` })}
-  </main>`;
+  const frameworkSteps = [
+    ["01", "Diagnoza search", "Analizujemy frazy, zapytania bez wyników, CTR wyników, konwersję z wyszukiwarki, jakość katalogu i miejsca utraty użytkowników.", "search"],
+    ["02", "Model i konfiguracja", "Dobieramy algorytmy rankingu, synonimy, atrybuty, reguły promowania, personalizację oraz integrację z katalogiem produktów.", "settings"],
+    ["03", "Testy i wdrożenie", "Uruchamiamy testy A/B, mierzymy wpływ konfiguracji na konwersję, przychód i CTR, a następnie publikujemy zwycięskie ustawienia.", "flask-conical"],
+    ["04", "Optymalizacja ciągła", "Rozwijamy analitykę, rekomendacje, retail media, listingi produktowe i nowe scenariusze w oparciu o dane sprzedażowe.", "trending-up"],
+  ];
+  return offerPatternPage({
+    page,
+    title,
+    lead,
+    visualKey: "search",
+    intro: {
+      eyebrow: "Dlaczego",
+      title: "Dlaczego zwykła wyszukiwarka nie wystarcza?",
+      text: "Wyszukiwarka wykorzystująca algorytmy AI, działa niczym doświadczony sprzedawca w sklepie. Rozumie potrzeby klienta i podpowiada najtrafniejsze wyniki, tak aby klient znalazł poszukiwany produkt. W swoich podpowiedziach bierze pod uwagę historię zakupową, katalog produktów oraz wiele zmiennych odpowiadających za personalizację wyników.",
+      proofItems: stats,
+    },
+    featureSection: {
+      eyebrow: "Funkcje",
+      title: "16 elementów wyszukiwarki AI",
+      text: "Każdy moduł ma swoje miejsce w jednym patternie strony: opis problemu, wartość biznesowa i czytelna ilustracja funkcji.",
+      features: aiSearchIllustrationFeatures,
+      renderFeature: aiSearchOfferFeatureCard,
+    },
+    technologySection: {
+      eyebrow: "&lt;moduł MCP ready&gt;",
+      title: "MCP ready - gotowy na agentów AI",
+      text: "Synerise jest MCP ready: udostępnia swój silnik behawioralny przez Model Context Protocol - otwarty standard, którym posługują się wiodące modele i agenci AI. Zgodność z A2A dopina drugą stronę: asystent rozmawia z innymi agentami - obsługi klienta, logistyki, płatności - bez zamkniętych integracji punkt-do-punktu.",
+      visual: mcpReadyIllustration(),
+    },
+    frameworkSection: {
+      eyebrow: "Framework Persooa",
+      title: "Od audytu wyszukiwarki do skalowania przychodu",
+      text: "Ten moduł jest stałym elementem patternu ofertowego: pokazuje, jak przechodzimy od diagnozy i konfiguracji do testów, wdrożenia i ciągłej optymalizacji.",
+      steps: frameworkSteps,
+    },
+    impactSection: {
+      eyebrow: "Efekt biznesowy",
+      title: "Search jako mierzalny kanał sprzedaży",
+      text: "Wyszukiwarka przestaje być tylko polem w nagłówku sklepu. Staje się miejscem, które rozumie intencję, skraca ścieżkę do produktu i pokazuje wpływ na KPI.",
+      outcomes: page.outcomes,
+    },
+    finalCta: {
+      eyebrow: "Następny krok",
+      title: "Zaprojektujmy wyszukiwarkę jako kanał przychodu",
+      text: "Zaczniemy od analizy obecnych zapytań, pustych wyników, konwersji z search i jakości katalogu produktowego.",
+      primaryLabel: "Umów konsultację",
+      secondaryLabel: "Zobacz ROI",
+      secondaryHref: l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days",
+    },
+  });
 }
 
 function offerPage(page) {
@@ -1785,6 +1885,17 @@ function designSystemSectionsPage() {
       description: l === "pl" ? "Nagłówek sekcji z badge, numerem, tytułem i opisem." : "Section header with badge, number, title and supporting copy.",
       wide: true,
       children: homeHeader({ eyebrow: "Challenges", num: "01", title: "Your challenges, our solutions", text: "A reusable heading pattern for long homepage sections." }),
+    }),
+    designComponentPreview({
+      title: "Offer page pattern",
+      description: l === "pl" ? "Jeden wzorzec dla podstron ofertowych: od hero po CTA." : "One reusable pattern for offer subpages: from hero to CTA.",
+      wide: true,
+      children: `<div class="grid gap-3">
+        ${[["Hero", "Offer promise + primary action"], ["Intro", "Problem, context and proof points"], ["Features", "Alternating left/right feature sections"], ["Technology", "Conceptual 3D module when needed"], ["Framework", "Persooa delivery process"], ["Impact + CTA", "KPI outcomes and next step"]].map(([title, text], index) => `<div class="flex items-center gap-4 rounded-xl border border-[#E6EAF2] bg-white p-4">
+          <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F4F6FD] text-sm font-semibold text-[#015BFE]">${String(index + 1).padStart(2, "0")}</span>
+          <div><h3 class="text-lg font-semibold">${title}</h3><p class="text-sm leading-6 text-[#595959]">${text}</p></div>
+        </div>`).join("")}
+      </div>`,
     }),
     designComponentPreview({
       title: "Logo strip",
@@ -1909,22 +2020,22 @@ function designSystemSectionsPage() {
 }
 
 const aiSearchIllustrationFeatures = [
-  ["Korekta literówek i synonimy", "Wyszukiwarka automatycznie koryguje literówki i rozpoznaje synonimy, dzięki czemu zwraca trafne wyniki nawet przy nieprecyzyjnych lub błędnie wpisanych zapytaniach. Użytkownik szybciej znajduje produkt bez konieczności poprawiania zapytania. Dla sklepu oznacza to niższy wskaźnik porzucenia — aż 30% odwiedzających opuszcza e-sklep, gdy wyszukiwarka nie zwraca żadnych wyników.", "Redukcja porzuceń o nawet 30%, więcej domkniętych sesji zakupowych, mniejsza utrata ruchu na błędnych zapytaniach.", "Pokaż pole wyszukiwania z błędnym zapytaniem, automatyczną korektą i trzema trafnymi kartami produktu."],
-  ["Autouzupełnianie", "Wyszukiwarka wyświetla proponowane frazy i produkty już po wpisaniu pierwszego znaku — w czasie poniżej 0,3 sekundy. Sugestie bazują na popularności wyszukiwań oraz skuteczności wyników, które generują, dzięki czemu użytkownik szybciej trafia do pożądanego produktu. Sklep zyskuje kontrolę: może definiować listy promowanych fraz według celów sprzedażowych oraz blokować wyrażenia, które nie powinny się pojawiać w podpowiedziach.", "Skrócenie ścieżki do produktu, wyższa konwersja z pola wyszukiwania, sterowanie sprzedażą poprzez promowane frazy.", "Pokaż aktywne pole search, listę sugestii, promowaną frazę i małą metrykę czasu reakcji 0,3 s."],
-  ["Brak wyników wyszukiwania", "Wyszukiwarka przeszukuje nie tylko nazwę i markę, ale także kolor, atrybuty, kategorie i pełny opis produktu, co znacząco zwiększa szansę na trafny wynik. Jeśli mimo to system nie znajdzie żadnego dopasowania, prezentuje produkty rekomendowane na podstawie modelu behawioralnego użytkownika — zamiast pustej strony klient widzi propozycje. W zoptymalizowanym sklepie średni odsetek wyszukiwań bez wyników spada z 13% do 1-5%.", "Spadek wyszukiwań bez wyników z 13% do 1-5%, ratowanie sesji rekomendacjami, więcej ruchu konwertującego.", "Pokaż stan zero-result zamieniony w sekcję rekomendacji: puste zapytanie, trzy rekomendacje i wskaźnik 1-5%."],
-  ["Monetyzacja wyszukiwarki", "Wyszukiwarka umożliwia kontrolowane wypozycjonowanie produktów partnerów handlowych na czołowych miejscach wyników — podobnie jak w modelu retail media. Użytkownik wciąż otrzymuje trafne wyniki, a sklep generuje dodatkowy strumień przychodów z opłat sponsorowanych. To szansa na monetyzację najcenniejszej przestrzeni w e-sklepie bez konieczności budowania osobnej platformy reklamowej.", "Nowy strumień przychodów z opłat sponsorowanych, wyższa marża na ruchu z wyszukiwarki, monetyzacja bez osobnej platformy ad-tech.", "Pokaż listę wyników z oznaczonym sponsorowanym produktem, budżetem partnera i zachowaną trafnością wyników."],
-  ["Testy A/B", "Wyszukiwarka pozwala uruchamiać testy A/B różnych konfiguracji — algorytmów rankingu, reguł promowania, sortowań — i porównywać ich wpływ na konwersję, przychody oraz CTR. Decyzje opierasz na danych, a nie intuicji, dzięki czemu stopniowo dostrajasz wyszukiwarkę do swojego asortymentu i klientów. Według badań Monetate optymalizacja przez testy A/B może podnieść konwersję nawet o 50%.", "Wzrost konwersji nawet o 50% (badania Monetate), decyzje oparte na danych zamiast intuicji, ciągła optymalizacja przychodu.", "Pokaż dwa warianty rankingu A/B, prosty wykres upliftu i zwycięski wariant z etykietą winner."],
-  ["Personalizacja wyników", "Wyszukiwarka analizuje zachowania, historię zakupów i preferencje każdego użytkownika, aby na pierwszych miejscach pokazywać produkty najbardziej dopasowane do jego potrzeb. Klient szybciej trafia na to, czego szuka, i czuje, że sklep go rozumie. Dla sklepu oznacza to wyższe konwersje, większą wartość koszyka i lepsze doświadczenie zakupowe — 75% użytkowników oczekuje dziś spersonalizowanych doświadczeń.", "Wyższa konwersja i wartość koszyka (AOV), większa lojalność klientów, odpowiedź na oczekiwania 75% kupujących.", "Pokaż profil klienta połączony z listą wyników, gdzie pierwsze pozycje są opisane jako dopasowane do preferencji."],
-  ["Filtrowanie po atrybutach", "Użytkownik może zawężać wyniki po dowolnym atrybucie produktu — marce, kolorze, rozmiarze, cenie, dostępności czy własnych cechach z katalogu. Filtry pozwalają szybko dotrzeć do produktów spełniających konkretne kryteria zamiast przeglądać długą listę wyników. Skraca to ścieżkę zakupową, redukuje porzucanie sesji i przekłada się bezpośrednio na wzrost konwersji.", "Skrócenie ścieżki zakupowej, mniej porzuconych sesji, wyższa konwersja na długich listach wyników.", "Pokaż panel filtrów z aktywnymi chipami oraz listę produktów zawężoną do konkretnego koloru i rozmiaru."],
-  ["Sortowanie wyników", "Wyszukiwarka dynamicznie zmienia kolejność prezentowanych produktów w odpowiedzi na preferencje użytkownika — żadne pozycje nie znikają, ale najtrafniejsze trafiają na samą górę listy. Klient dostaje to, co najbardziej go interesuje, bez konieczności scrollowania. Dla sklepu oznacza to wyższe CTR na czołowych pozycjach i większą szansę na sprzedaż popularnych lub strategicznych produktów.", "Wyższy CTR na czołowych pozycjach, większa sprzedaż produktów strategicznych, mniej scrollowania = szybsza decyzja.", "Pokaż listę produktów przed i po sortowaniu, z linią wskazującą awans najtrafniejszego produktu na pierwsze miejsce."],
-  ["Promowanie produktów", "Bez pomocy dewelopera możesz wypozycjonować dowolny produkt na czele wyników — globalnie lub dla wybranych segmentów klientów. To narzędzie marketingowe pozwala szybko reagować na promocje, wyprzedaże sezonowe, nowości czy nadmiar magazynowy, dopasowując wystawę do bieżących celów sprzedażowych. Klient widzi produkty trafniej dopasowane do swojej grupy, a sklep może w czasie rzeczywistym sterować widocznością swojego asortymentu.", "Szybka reakcja na promocje i sezony bez pracy IT, upłynnianie nadmiaru magazynowego, sterowanie ekspozycją w czasie rzeczywistym.", "Pokaż prosty panel merchandisingowy: reguła segmentu, promowany produkt i podgląd pozycji numer 1."],
-  ["Historia wyszukiwania cross-device", "Wyszukiwarka synchronizuje historię zapytań i ostatnio przeglądanych produktów między urządzeniami — komputerem, smartfonem i tabletem. Klient może zacząć wyszukiwanie na telefonie w drodze do pracy i bez wysiłku dokończyć zakup wieczorem na laptopie. Dla sklepu oznacza to więcej domkniętych konwersji w wielokanałowych ścieżkach zakupowych i mniejsze ryzyko utraty klienta między sesjami.", "Więcej domkniętych konwersji w ścieżkach wielokanałowych, mniejsza utrata klienta między sesjami, lepsze doświadczenie omnichannel.", "Pokaż trzy urządzenia połączone linią, wspólną historię zapytań i produkt kontynuowany na laptopie."],
-  ["Podpowiedzi popularnych fraz", "Wyszukiwarka pokazuje statystycznie najczęściej wyszukiwane frazy w sklepie oraz te, które zyskują popularność w czasie rzeczywistym. Klient, który jeszcze nie wie czego dokładnie szuka, dostaje inspirację od razu po kliknięciu w pole wyszukiwania. Sklep może dzięki temu wzmacniać sprzedaż bestsellerów, eksponować sezonowe trendy i przyspieszać odkrywanie nowo wprowadzonego asortymentu.", "Wzmocnienie sprzedaży bestsellerów, szybsze odkrywanie nowości, monetyzacja trendów sezonowych.", "Pokaż dropdown po kliknięciu w search: popularne frazy, trendujące tagi i bestseller jako rekomendacja."],
-  ["Analityka", "Moduł analityczny prezentuje najczęściej wyszukiwane frazy, najpopularniejsze filtry, zapytania bez wyników oraz wskaźniki konwersji z wyszukiwarki. Daje to zespołowi sklepu wgląd w realne potrzeby klientów — czego szukają, czego nie znajdują i czego brakuje w ofercie. Na tej podstawie możesz rozszerzać asortyment, dostrajać wyszukiwarkę i podejmować decyzje merchandisingowe oparte na twardych danych.", "Decyzje merchandisingowe oparte na danych, identyfikacja luk w asortymencie, niższe ryzyko błędnych zakupów towaru.", "Pokaż lekki dashboard z wykresem fraz, listą no-result i rekomendacją uzupełnienia asortymentu."],
-  ["Wyszukiwanie wizualne", "Użytkownik może wyszukać produkty poprzez przesłanie zdjęcia zamiast wpisywania zapytania. System analizuje kształty, kolory i tekstury obrazu, a następnie znajduje wizualnie podobne pozycje w katalogu. To rozwiązanie szczególnie cenne w branżach takich jak moda, wnętrzarstwo czy DIY — klient nie musi znać nazwy ani opisu produktu, by go znaleźć, a sklep ma szansę dotrzeć do osoby, która inaczej zrezygnowałaby z poszukiwań.", "Dotarcie do klientów, którzy nie znają nazwy produktu, przewaga konkurencyjna w modzie/wnętrzach, wyższa konwersja na ruchu mobilnym.", "Pokaż upload zdjęcia, analizę obrazu i trzy wizualnie podobne produkty w formie siatki."],
-  ["Wyszukiwanie głosowe", "Użytkownik może wyszukać produkt wypowiadając zapytanie zamiast je wpisywać — szczególnie wygodnie na urządzeniach mobilnych. System rozpoznaje mowę, interpretuje intencję i zwraca trafne wyniki, co przyspiesza dotarcie do produktu i obniża friction zakupowy. Funkcja zwiększa dostępność sklepu — użyteczna w ruchu, dla osób z niepełnosprawnościami oraz dla rosnącej grupy klientów preferujących konwersacyjne interakcje.", "Niższy friction zakupowy na mobile, szersza dostępność sklepu (w tym WCAG), gotowość na rosnący kanał asystentów głosowych.", "Pokaż mikrofon, falę głosu, transkrypcję zapytania i wynik dopasowany do intencji."],
-  ["Rozumienie języka naturalnego", "Wyszukiwarka interpretuje zapytania w pełnych zdaniach i potocznym języku, tak jak klient zadałby pytanie sprzedawcy w sklepie stacjonarnym. Wykorzystując przetwarzanie języka naturalnego (NLP) i wyszukiwanie semantyczne, rozumie złożone zapytania typu „czerwone buty sportowe do biegania w deszczu poniżej 300 zł” i zwraca wyniki uwzględniające wszystkie kryteria naraz. Klient otrzymuje trafniejsze wyniki bez uczenia się składni zapytań, a sklep zyskuje przewagę nad konkurencją opartą na klasycznym dopasowaniu słów kluczowych — szczególnie przy długich i głosowych zapytaniach.", "Trafniejsze wyniki na long-tail i zapytaniach głosowych, przewaga nad klasycznym keyword search, wyższa konwersja na złożonych zapytaniach.", "Pokaż długie zapytanie rozbite na intencje: kolor, typ produktu, zastosowanie, budżet i warunki."],
-  ["Filtrowanie na listingach produktów", "Ten sam silnik AI, który obsługuje wyszukiwarkę, może napędzać również strony kategorii i listingi produktów — z personalizowaną kolejnością, filtrami opartymi na atrybutach katalogu i regułami merchandisingowymi. Klient na stronie kategorii widzi produkty ułożone według swoich preferencji i może w kilka kliknięć zawęzić wybór, co znacząco skraca ścieżkę zakupową. Dla sklepu oznacza to spójne doświadczenie między wyszukiwarką a PLP, lepsze wykorzystanie ruchu z kategorii oraz wyższe konwersje na najważniejszych stronach katalogu.", "Wyższa konwersja na PLP i kategoriach, spójne doświadczenie między wyszukiwarką a listingami, lepsze wykorzystanie ruchu z kategorii.", "Pokaż stronę kategorii z AI rankingiem, filtrami i tym samym panelem reguł co w wyszukiwarce."],
+  ["Korekta literówek i synonimy", "Wyszukiwarka automatycznie koryguje literówki i rozpoznaje synonimy, dzięki czemu zwraca trafne wyniki nawet przy nieprecyzyjnych lub błędnie wpisanych zapytaniach. Użytkownik szybciej znajduje produkt bez konieczności poprawiania zapytania. Dla sklepu oznacza to niższy wskaźnik porzucenia — aż 30% odwiedzających opuszcza e-sklep, gdy wyszukiwarka nie zwraca żadnych wyników.", "redukcja porzuceń o nawet 30%, więcej domkniętych sesji zakupowych, mniejsza utrata ruchu na błędnych zapytaniach"],
+  ["Autouzupełnianie", "Wyszukiwarka wyświetla proponowane frazy i produkty już po wpisaniu pierwszego znaku — w czasie poniżej 0,3 sekundy. Sugestie bazują na popularności wyszukiwań oraz skuteczności wyników, które generują, dzięki czemu użytkownik szybciej trafia do pożądanego produktu. Sklep zyskuje kontrolę: może definiować listy promowanych fraz według celów sprzedażowych oraz blokować wyrażenia, które nie powinny się pojawiać w podpowiedziach.", "skrócenie ścieżki do produktu, wyższa konwersja z pola wyszukiwania, sterowanie sprzedażą poprzez promowane frazy"],
+  ["Brak wyników wyszukiwania", "Wyszukiwarka przeszukuje nie tylko nazwę i markę, ale także kolor, atrybuty, kategorie i pełny opis produktu, co znacząco zwiększa szansę na trafny wynik. Jeśli mimo to system nie znajdzie żadnego dopasowania, prezentuje produkty rekomendowane na podstawie modelu behawioralnego użytkownika — zamiast pustej strony klient widzi propozycje. W zoptymalizowanym sklepie średni odsetek wyszukiwań bez wyników spada z 13% do 1-5%.", "spadek wyszukiwań bez wyników z 13% do 1--5%, ratowanie sesji rekomendacjami, więcej ruchu konwertującego"],
+  ["Monetyzacja wyszukiwarki", "Wyszukiwarka umożliwia kontrolowane wypozycjonowanie produktów partnerów handlowych na czołowych miejscach wyników — podobnie jak w modelu retail media. Użytkownik wciąż otrzymuje trafne wyniki, a sklep generuje dodatkowy strumień przychodów z opłat sponsorowanych. To szansa na monetyzację najcenniejszej przestrzeni w e-sklepie bez konieczności budowania osobnej platformy reklamowej.", "nowy strumień przychodów z opłat sponsorowanych, wyższa marża na ruchu z wyszukiwarki, monetyzacja bez osobnej platformy ad-tech"],
+  ["Testy A/B", "Wyszukiwarka pozwala uruchamiać testy A/B różnych konfiguracji — algorytmów rankingu, reguł promowania, sortowań — i porównywać ich wpływ na konwersję, przychody oraz CTR. Decyzje opierasz na danych, a nie intuicji, dzięki czemu stopniowo dostrajasz wyszukiwarkę do swojego asortymentu i klientów. Według badań Monetate optymalizacja przez testy A/B może podnieść konwersję nawet o 50%.", "wzrost konwersji nawet o 50% (badania Monetate), decyzje oparte na danych zamiast intuicji, ciągła optymalizacja przychodu"],
+  ["Personalizacja wyników", "Wyszukiwarka analizuje zachowania, historię zakupów i preferencje każdego użytkownika, aby na pierwszych miejscach pokazywać produkty najbardziej dopasowane do jego potrzeb. Klient szybciej trafia na to, czego szuka, i czuje, że sklep go rozumie. Dla sklepu oznacza to wyższe konwersje, większą wartość koszyka i lepsze doświadczenie zakupowe — 75% użytkowników oczekuje dziś spersonalizowanych doświadczeń.", "wyższa konwersja i wartość koszyka (AOV), większa lojalność klientów, odpowiedź na oczekiwania 75% kupujących"],
+  ["Filtrowanie po atrybutach", "Użytkownik może zawężać wyniki po dowolnym atrybucie produktu — marce, kolorze, rozmiarze, cenie, dostępności czy własnych cechach z katalogu. Filtry pozwalają szybko dotrzeć do produktów spełniających konkretne kryteria zamiast przeglądać długą listę wyników. Skraca to ścieżkę zakupową, redukuje porzucanie sesji i przekłada się bezpośrednio na wzrost konwersji.", "skrócenie ścieżki zakupowej, mniej porzuconych sesji, wyższa konwersja na długich listach wyników"],
+  ["Sortowanie wyników", "Wyszukiwarka dynamicznie zmienia kolejność prezentowanych produktów w odpowiedzi na preferencje użytkownika — żadne pozycje nie znikają, ale najtrafniejsze trafiają na samą górę listy. Klient dostaje to, co najbardziej go interesuje, bez konieczności scrollowania. Dla sklepu oznacza to wyższe CTR na czołowych pozycjach i większą szansę na sprzedaż popularnych lub strategicznych produktów.", "wyższy CTR na czołowych pozycjach, większa sprzedaż produktów strategicznych, mniej scrollowania = szybsza decyzja"],
+  ["Promowanie produktów", "Bez pomocy dewelopera możesz wypozycjonować dowolny produkt na czele wyników — globalnie lub dla wybranych segmentów klientów. To narzędzie marketingowe pozwala szybko reagować na promocje, wyprzedaże sezonowe, nowości czy nadmiar magazynowy, dopasowując wystawę do bieżących celów sprzedażowych. Klient widzi produkty trafniej dopasowane do swojej grupy, a sklep może w czasie rzeczywistym sterować widocznością swojego asortymentu.", "szybka reakcja na promocje i sezony bez pracy IT, upłynnianie nadmiaru magazynowego, sterowanie ekspozycją w czasie rzeczywistym"],
+  ["Historia wyszukiwania cross-device", "Wyszukiwarka synchronizuje historię zapytań i ostatnio przeglądanych produktów między urządzeniami — komputerem, smartfonem i tabletem. Klient może zacząć wyszukiwanie na telefonie w drodze do pracy i bez wysiłku dokończyć zakup wieczorem na laptopie. Dla sklepu oznacza to więcej domkniętych konwersji w wielokanałowych ścieżkach zakupowych i mniejsze ryzyko utraty klienta między sesjami.", "więcej domkniętych konwersji w ścieżkach wielokanałowych, mniejsza utrata klienta między sesjami, lepsze doświadczenie omnichannel"],
+  ["Podpowiedzi popularnych fraz", "Wyszukiwarka pokazuje statystycznie najczęściej wyszukiwane frazy w sklepie oraz te, które zyskują popularność w czasie rzeczywistym. Klient, który jeszcze nie wie czego dokładnie szuka, dostaje inspirację od razu po kliknięciu w pole wyszukiwania. Sklep może dzięki temu wzmacniać sprzedaż bestsellerów, eksponować sezonowe trendy i przyspieszać odkrywanie nowo wprowadzonego asortymentu.", "wzmocnienie sprzedaży bestsellerów, szybsze odkrywanie nowości, monetyzacja trendów sezonowych"],
+  ["Analityka", "Moduł analityczny prezentuje najczęściej wyszukiwane frazy, najpopularniejsze filtry, zapytania bez wyników oraz wskaźniki konwersji z wyszukiwarki. Daje to zespółowi sklepu wgląd w realne potrzeby klientów — czego szukają, czego nie znajdują i czego brakuje w ofercie. Na tej podstawie możesz rozszerzać asortyment, dostrajać wyszukiwarkę i podejmować decyzje merchandisingowe oparte na twardych danych.", "decyzje merchandisingowe oparte na danych, identyfikacja luk w asortymencie, niższe ryzyko błędnych zakupów towaru"],
+  ["Wyszukiwanie wizualne", "Użytkownik może wyszukać produkty poprzez przesłanie zdjęcia zamiast wpisywania zapytania. System analizuje kształty, kolory i tekstury obrazu, a następnie znajduje wizualnie podobne pozycje w katalogu. To rozwiązanie szczególnie cenne w branżach takich jak moda, wnętrzarstwo czy DIY — klient nie musi znać nazwy ani opisu produktu, by go znaleźć, a sklep ma szansę dotrzeć do osoby, która inaczej zrezygnowałaby z poszukiwań.", "dotarcie do klientów, którzy nie znają nazwy produktu, przewaga konkurencyjna w modzie/wnętrzach, wyższa konwersja na ruchu mobilnym"],
+  ["Wyszukiwanie głosowe", "Użytkownik może wyszukać produkt wypowiadając zapytanie zamiast je wpisywać — szczególnie wygodnie na urządzeniach mobilnych. System rozpoznaje mowę, interpretuje intencję i zwraca trafne wyniki, co przyspiesza dotarcie do produktu i obniża friction zakupowy. Funkcja zwiększa dostępność sklepu — użyteczna w ruchu, dla osób z niepełnosprawnościami oraz dla rosnącej grupy klientów preferujących konwersacyjne interakcje (asystenci głosowi).", "niższy friction zakupowy na mobile, szersza dostępność sklepu (w tym WCAG), gotowość na rosnący kanał asystentów głosowych"],
+  ["Rozumienie języka naturalnego", "Wyszukiwarka interpretuje zapytania w pełnych zdaniach i potocznym języku, tak jak klient zadałby pytanie sprzedawcy w sklepie stacjonarnym. Wykorzystując przetwarzanie języka naturalnego (NLP) i wyszukiwanie semantyczne, rozumie złożone zapytania typu „czerwone buty sportowe do biegania w deszczu poniżej 300 zł” i zwraca wyniki uwzględniające wszystkie kryteria naraz. Klient otrzymuje trafniejsze wyniki bez uczęszczania się składni zapytań, a sklep zyskuje przewagę nad konkurencją opartą na klasycznym dopasowaniu słów kluczowych — szczególnie przy długich i głosowych zapytaniach.", "trafniejsze wyniki na long-tail i zapytaniach głosowych, przewaga nad klasycznym keyword search, wyższa konwersja na złożonych zapytaniach"],
+  ["Filtrowanie na listingach produktów", "Ten sam silnik AI, który obsługuje wyszukiwarkę, może napędzać również strony kategorii i listingi produktów — z personalizowaną kolejnością, filtrami opartymi na atrybutach katalogu i regułami merchandisingowymi. Klient na stronie kategorii widzi produkty ułożone według swoich preferencji i może w kilka kliknięć zawęzić wybór, co znacząco skraca ścieżkę zakupową. Dla sklepu oznacza to spójne doświadczenie między wyszukiwarką a PLP, lepsze wykorzystanie ruchu z kategorii oraz wyższe konwersje na najważniejszych stronach katalogu.", "wyższa konwersja na PLP i kategoriach, spójne doświadczenie między wyszukiwarką a listingami, lepsze wykorzystanie ruchu z kategorii"],
 ];
 
 const productIllustrationAssets = [
@@ -1946,6 +2057,8 @@ const productIllustrationAssets = [
   "16-plp-filtering.png",
 ];
 
+const productIllustrationAssetVersion = "ai-search-ui-rebuild-20260529";
+
 const personalizationIllustrationAssets = [
   "01-data-integration.png",
   "02-customer-profile.png",
@@ -1966,10 +2079,21 @@ const personalizationIllustrationFeatures = [
 
 const productIllustrationBasePrompt = "Very simple e-commerce AI product UI illustration. Show only one full Material Design 3 inspired interface screen with a sparse layout matched to the current offer: one focused product UI surface, maximum 2-3 cards or rows, maximum 1 small metric chip, and optional maximum 1 rounded action button. Do not include a visible top title/header with the product name such as AI Search or AI Personalization. Small readable UI labels, source names, metric labels, profile labels, product names and button text are allowed and should look like a realistic product interface. Buttons must match the Persooa website style: pill-shaped, very rounded, flat MD3 filled/outlined/tonal buttons, no gradient, no square corners. No Persooa logo, no Persooa wordmark, no client logo, no brand mark. Use flat Material color surfaces: Brand Blue #015BFE and neutral UI colors should dominate. Gradient is allowed only as a tiny non-button accent such as an AI badge or small ranking indicator; never on buttons. Product photos inside cards should show products only in black, grey or blue colorways. White or very light #F4F6FD background, thin #E6EAF2 borders, 8-16px radius on cards, flat MD3 surfaces, no heavy shadows, no 3D glass, no decorative objects. Simplicity rule: fewer elements than a dashboard, no split-screen comparison unless explicitly requested, no more than one chart/metric, no dense tables, no busy labels. Important negative prompt: no people, no hands, no phones photographed in a scene, no boxes, no shoes or objects outside product cards, no side decorations, no floating panels outside the UI, no abstract shapes in the background, no extra left/right visual elements, no city, no robots, no particles, no glow trails, no dark cyber style, no stock-photo scene. Elements should be suitable for staggered fade-in animation: primary UI element first, cards/rows second, metric or button last.";
 
-function generatedProductIllustration(title, index) {
+const conceptualIllustrationBasePrompt = "Premium abstract isometric 3D glass illustration for Persooa website modules. Use translucent rounded glass tiles, soft blue glow, thin glowing connection lines, a central concept hub and 3-5 smaller connected nodes. The image should communicate an abstract technology idea such as MCP Ready, AI agents, data flow, orchestration or system integration without showing a product UI screen. White or very pale blue background, airy 16:9 composition, brand blue #015BFE with small teal accents, soft studio lighting, subtle shadows, frosted glass and polished enterprise AI mood. No ecommerce product cards, no dashboard tables, no browser chrome, no real products, no people, no phones, no Persooa logo, no client logo, no dark cyber style, no busy labels, no decorative clutter. Optional tiny text is allowed only when it is central to the concept and can render cleanly.";
+
+const mcpReadyIllustrationAssetVersion = "mcp-ready-illustration-20260529";
+
+function generatedProductIllustration(title, index, className = "") {
   const fileName = productIllustrationAssets[index] || productIllustrationAssets[0];
-  return `<figure class="generated-product-illustration" aria-label="${title}">
-    <img src="../assets/exports/illustrations/generated/product-illustrations/${fileName}" alt="${title}" loading="lazy" />
+  const figureClass = ["generated-product-illustration", className].filter(Boolean).join(" ");
+  return `<figure class="${figureClass}" aria-label="${title}">
+    <img src="../assets/exports/illustrations/generated/product-illustrations/${fileName}?v=${productIllustrationAssetVersion}" alt="${title}" loading="lazy" />
+  </figure>`;
+}
+
+function mcpReadyIllustration() {
+  return `<figure class="generated-product-illustration conceptual-illustration" aria-label="MCP Ready - Model Context Protocol dla agentów AI">
+    <img src="../assets/exports/illustrations/generated/product-illustrations/mcp-ready-agents.png?v=${mcpReadyIllustrationAssetVersion}" alt="MCP Ready - abstrakcyjna ilustracja agentów AI połączonych przez Model Context Protocol" loading="eager" />
   </figure>`;
 }
 
@@ -2154,10 +2278,11 @@ function productIllustrationFeatureCard([title, text, value, context], index) {
 function designSystemProductIllustrationsPage() {
   const l = lang();
   return `<main class="route-view">
-    ${section({ children: `<div class="grid gap-10 lg:grid-cols-12 lg:items-center"><div class="lg:col-span-5">${badge(l === "pl" ? "Ilustracje produktowe" : "Product illustrations")}<h1 class="mt-6 text-5xl font-semibold leading-none md:text-6xl">${l === "pl" ? "Ilustracje produktowe dla oferty" : "Product illustration system"}</h1><p class="mt-6 text-lg leading-8 text-[#595959]">${l === "pl" ? "Katalog pokazuje aktualny wzorzec dla ilustracji produktowych: prosty ekran Material UI, karty produktów, jeden akcent metryki i button jak na stronie Persooa." : "This catalog shows the current product illustration pattern: simple Material UI screen, product cards, one metric accent and a button matching the Persooa website."}</p></div><div class="lg:col-span-7">${productIllustrationPreviewExample()}</div></div>` })}
+    ${section({ children: `<div class="grid gap-10 lg:grid-cols-12 lg:items-center"><div class="lg:col-span-5">${badge(l === "pl" ? "Ilustracje" : "Illustrations")}<h1 class="mt-6 text-5xl font-semibold leading-none md:text-6xl">${l === "pl" ? "System ilustracji dla oferty" : "Offer illustration system"}</h1><p class="mt-6 text-lg leading-8 text-[#595959]">${l === "pl" ? "W design systemie rozróżniamy dwa typy ilustracji: produktowe ekrany UI do opisywania funkcji oraz konceptualne ilustracje 3D do modułów technologicznych, takich jak MCP Ready." : "The design system separates two illustration types: product UI screens for feature explanations and conceptual 3D visuals for technology modules such as MCP Ready."}</p></div><div class="lg:col-span-7">${productIllustrationPreviewExample()}</div></div>` })}
+    ${section({ children: `<div class="mx-auto max-w-3xl text-center">${badge(l === "pl" ? "2 typy" : "2 types")}<h2 class="mt-5 text-4xl font-semibold leading-tight">${l === "pl" ? "Dwa prompty, dwa zastosowania" : "Two prompts, two use cases"}</h2></div><div class="mt-12 grid gap-6 lg:grid-cols-2"><article class="rounded-xl border border-[#E6EAF2] bg-white p-5"><div>${productIllustrationPreviewExample()}</div><h3 class="mt-6 text-2xl font-semibold">${l === "pl" ? "01. Ilustracje produktowe UI" : "01. Product UI illustrations"}</h3><p class="mt-3 text-base leading-7 text-[#595959]">${l === "pl" ? "Używamy ich przy funkcjach produktu: search, rekomendacje, filtry, sortowanie, analityka. To ma wyglądać jak prosty ekran narzędzia." : "Use them for product features: search, recommendations, filters, sorting and analytics. They should look like a simple product screen."}</p></article><article class="rounded-xl border border-[#E6EAF2] bg-white p-5"><div>${mcpReadyIllustration()}</div><h3 class="mt-6 text-2xl font-semibold">${l === "pl" ? "02. Ilustracje konceptualne 3D" : "02. Conceptual 3D illustrations"}</h3><p class="mt-3 text-base leading-7 text-[#595959]">${l === "pl" ? "Używamy ich przy modułach technologicznych, integracjach i warstwach architektury. To nie jest ekran produktu, tylko metafora systemu." : "Use them for technology modules, integrations and architecture layers. This is not a product screen, but a system metaphor."}</p></article></div>` })}
     ${section({ variant: "lightBlue", children: `<div class="grid gap-10 lg:grid-cols-12"><div class="lg:col-span-4">${badge("Benchmark")}<h2 class="mt-5 text-4xl font-semibold leading-tight">${l === "pl" ? "Kierunek wizualny" : "Visual direction"}</h2><p class="mt-5 text-lg leading-8 text-[#595959]">${l === "pl" ? "Bardzo proste Material UI e-commerce: search bar, 2-3 karty produktu, jedna metryka i ewentualnie jeden button. Buttony jak na stronie Persooa: pill, mocno zaokrąglone, płaskie filled/outlined/tonal, bez gradientu." : "Very simple Material e-commerce UI: search bar, 2-3 product cards, one metric and optionally one button. Buttons like Persooa website buttons: pill-shaped, strongly rounded, flat filled/outlined/tonal, no gradient."}</p></div><div class="grid gap-4 lg:col-span-8 md:grid-cols-3">${[["UI only", "Bez scenek, ludzi, telefonów, pudełek, dekoracji i obiektów poza interfejsem."], ["Material", "Search bar, cards, chips, Material Symbols i pill buttony zgodne ze stroną."], ["Simplicity", "Maksymalnie 2-3 produkty, jedna metryka, jasna hierarchia i dużo światła."]].map(([title, text]) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5"><h3 class="text-xl font-medium">${title}</h3><p class="mt-3 text-sm leading-6 text-[#595959]">${text}</p></article>`).join("")}</div></div>` })}
     ${section({ children: `<div class="grid gap-10 lg:grid-cols-12"><div class="lg:col-span-5">${badge("Brief")}<h2 class="mt-5 text-4xl font-semibold leading-tight">Wyszukiwarka AI, która sprzedaje</h2><p class="mt-5 text-lg leading-8 text-[#595959]">Zamień pole wyszukiwania w najskuteczniejszy kanał sprzedaży w swoim e-commerce.</p></div><div class="grid gap-4 lg:col-span-7 md:grid-cols-3">${[["Cel", "Pokazać search jako prosty, czytelny fragment produktu."], ["Mechanika", "Search bar, ranking AI, 2-3 produkty i jedna metryka wyniku."], ["Animacja", "Elementy mogą wchodzić jako fade-in: search, produkty, metryka albo button."]].map(([title, text]) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5"><h3 class="text-xl font-medium">${title}</h3><p class="mt-3 text-sm leading-6 text-[#595959]">${text}</p></article>`).join("")}</div></div>` })}
-    ${section({ variant: "dark", children: `<div class="grid gap-8 lg:grid-cols-12"><div class="lg:col-span-5">${badge("Prompt", true)}<h2 class="mt-5 text-4xl font-semibold leading-tight">${l === "pl" ? "Prompt bazowy do ilustracji produktowych" : "Base product illustration prompt"}</h2><p class="mt-5 text-lg leading-8 text-white/68">${l === "pl" ? "Ten prompt jest katalogowym kierunkiem dla nowych ilustracji: sam interfejs produktowy, bez dodatkowej scenografii." : "This is the catalog direction for new illustrations: product UI only, without extra scenery."}</p></div><div class="lg:col-span-7"><div class="rounded-xl border border-white/12 bg-white/[0.04] p-6 text-sm leading-7 text-white/72"><p>${productIllustrationBasePrompt}</p></div></div></div>` })}
+    ${section({ variant: "dark", children: `<div class="grid gap-8 lg:grid-cols-12"><div class="lg:col-span-4">${badge("Prompty", true)}<h2 class="mt-5 text-4xl font-semibold leading-tight">${l === "pl" ? "Dwa prompty bazowe" : "Two base prompts"}</h2><p class="mt-5 text-lg leading-8 text-white/68">${l === "pl" ? "Dobieramy prompt do funkcji sekcji: UI dla funkcji produktu, 3D koncept dla technologii i integracji." : "Choose the prompt by section purpose: UI for product features, 3D concept for technology and integration modules."}</p></div><div class="grid gap-5 lg:col-span-8"><article class="rounded-xl border border-white/12 bg-white/[0.04] p-6"><h3 class="text-xl font-semibold text-white">${l === "pl" ? "01. Ilustracje produktowe UI" : "01. Product UI illustrations"}</h3><p class="mt-4 text-sm leading-7 text-white/72">${productIllustrationBasePrompt}</p></article><article class="rounded-xl border border-white/12 bg-white/[0.04] p-6"><h3 class="text-xl font-semibold text-white">${l === "pl" ? "02. Ilustracje konceptualne 3D" : "02. Conceptual 3D illustrations"}</h3><p class="mt-4 text-sm leading-7 text-white/72">${conceptualIllustrationBasePrompt}</p></article></div></div>` })}
   </main>`;
 }
 
