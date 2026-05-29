@@ -8,7 +8,8 @@ Powstal przed finalna decyzja technologiczna Astro vs Next.js, dlatego jest przy
 
 - HTML,
 - CSS,
-- Tailwind CDN,
+- Material Design 3 / Material Web,
+- lokalna warstwa `prototype/material.css` zamiast runtime Tailwind CDN,
 - Chart.js CDN dla przykladowego animowanego wykresu, z canvas fallbackiem,
 - Vanilla JS,
 - dane stron zapisane w `app.js`.

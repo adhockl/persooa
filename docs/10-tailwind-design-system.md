@@ -1,8 +1,14 @@
-# Tailwind Design System dla strony Persooa
+# Material Design 3 / Material Web dla strony Persooa
 
 ## 1. Cel dokumentu
 
-Ten dokument opisuje reuzywalny design system strony Persooa oparty o Tailwind CSS.
+Ten dokument opisuje reuzywalny design system strony Persooa po migracji z Tailwind CSS na kierunek Material Design 3 / Material Web.
+
+Aktualny prototyp nie laduje juz runtime Tailwind CDN. Warstwa UI sklada sie z:
+
+- komponentow Material Web dla akcji i atomow interaktywnych,
+- lokalnych tokenow Material Design 3 w `prototype/material.css`,
+- brandowych komponentow i layoutow Persooa w `prototype/styles.css`.
 
 Design system ma byc neutralny technologicznie. Oznacza to, ze mozna go wdrozyc zarowno w Astro, jak i w Next.js. Na tym etapie definiujemy:
 

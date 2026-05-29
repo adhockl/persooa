@@ -4,39 +4,25 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Persooa prototype</title>
-    <meta name="description" content="Statyczny prototyp frontendu Persooa oparty o Tailwind Design System." />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              brand: {
-                blue: "#015BFE",
-                dark: "#0F1E34",
-                "light-blue": "#F4F6FD",
-                "light-grey": "#FAFAFA",
-                "highlight-mint": "#41DBC3",
-                "highlight-violet": "#4E3FF6",
-                grey: "#595959"
-              }
-            },
-            backgroundImage: {
-              "text-highlight": "linear-gradient(90deg, #41DBC3 0%, #4E3FF6 100%)"
-            },
-            boxShadow: {
-              soft: "0 16px 40px rgba(15, 30, 52, 0.08)"
-            }
-          }
+    <meta name="description" content="Statyczny prototyp frontendu Persooa oparty o Material Design 3 i Material Web." />
+    <script type="importmap">
+      {
+        "imports": {
+          "@material/web/": "https://esm.run/@material/web/"
         }
-      };
+      }
     </script>
+    <script type="module">
+      import "@material/web/all.js";
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,400..600,0..1,0" />
+    <link rel="stylesheet" href="./material.css?v=footer-logo-filter-20260529" />
     <link rel="stylesheet" href="./styles.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   </head>
   <body>
     <div id="app"></div>
-    <script src="./app.js?v=synerise-hero-badge-20260525"></script>
+    <script src="./app.js?v=product-illustration-single-example-20260529"></script>
   </body>
 </html>

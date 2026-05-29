@@ -5,11 +5,17 @@ To jest pierwszy statyczny prototyp strony Persooa.
 Cel:
 
 - sprawdzic kierunek UI,
-- przetestowac design system Tailwind,
+- przetestowac kierunek Material Design 3 / Material Web,
 - pokazac homepage i podstrony ofertowe,
 - pokazac animowany wykres danych ostylowany design systemem,
 - pokazac katalog Design System z chartami i atomami UI,
 - przygotowac strukture do przeniesienia do Astro albo Next.js po decyzji technologicznej.
+
+Stack UI:
+
+- Material Web dla akcji i atomow interaktywnych,
+- lokalna warstwa `material.css` z tokenami Material Design 3 i kompatybilnoscia layoutu prototypu,
+- bez runtime Tailwind CDN.
 
 Uruchomienie:
 

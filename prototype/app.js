@@ -4,14 +4,14 @@ const offerPages = [
     enSlug: "ai-personalization",
     title: "Personalizacja AI",
     enTitle: "AI Personalization",
-    lead: "Dostosuj doświadczenia klientów w czasie rzeczywistym. Łączymy dane, AI i automatyzację, aby każdy użytkownik widział właściwy komunikat, ofertę i rekomendację w najlepszym momencie.",
-    enLead: "Personalize customer experiences in real time. We combine data, AI and automation so every user sees the right message, offer and recommendation at the right moment.",
+    lead: "Dostosuj doświadczenia klientów w czasie rzeczywistym i zamień marketing w system, który zwiększa sprzedaż, retencję i wartość koszyka.",
+    enLead: "Personalize customer experiences in real time and turn marketing into a system that increases sales, retention and basket value.",
     eyebrow: "Oferta",
     visualKey: "personalization",
-    problem: "Większość e-commerce ma dane, ale nie wykorzystuje ich w decyzjach podejmowanych tu i teraz. Efekt to generyczne kampanie, niższa konwersja i utracony potencjał retencji.",
-    solution: "Projektujemy scenariusze personalizacji oparte o behavioralne CDP, predykcje AI, rekomendacje produktowe i automatyczne kampanie w kanałach komunikacji.",
-    bullets: ["Integracja danych", "Personalizacja AI", "Automatyzacja kampanii", "Aktywacja kanałów", "Lifecycle management", "Analityka wspierana przez AI"],
-    outcomes: ["Wyższa konwersja z ruchu", "Wzrost AOV i ARPU", "Większa retencja", "Mniej ręcznej pracy w marketingu"],
+    problem: "Klienci oczekują trafnych rekomendacji, spójnych komunikatów i ofert dopasowanych do ich intencji. Bez połączenia danych, kanałów i decyzji w czasie rzeczywistym personalizacja szybko staje się zbiorem ręcznych kampanii.",
+    solution: "Projektujemy scenariusze personalizacji oparte o profil klienta, zachowania, katalog produktów, rekomendacje, Next Best Offer oraz automatyzacje lifecycle.",
+    bullets: ["Integracja danych", "Profil klienta 360", "Rekomendacje AI", "Next Best Offer", "Aktywacja omnichannel", "Analityka scenariuszy"],
+    outcomes: ["Wyższa konwersja", "Większy koszyk", "Lepsza retencja", "Mniej ręcznej pracy"],
     faq: [
       ["Czy personalizacja wymaga dużego zespołu po stronie klienta?", "Nie. Najpierw wybieramy scenariusze o wysokim wpływie, a konfigurację i optymalizację prowadzimy wspólnie z zespołem klienta."],
       ["Od czego zaczyna się wdrożenie?", "Od audytu danych, mapy ścieżek klienta i wyboru scenariuszy, które mogą najszybciej przełożyć się na sprzedaż."],
@@ -300,6 +300,7 @@ const routes = {
   "/design-system/charts": { type: "design-system-charts" },
   "/design-system/atomy-ui": { type: "design-system-atoms" },
   "/design-system/sekcje": { type: "design-system-sections" },
+  "/design-system/ilustracje-produktowe": { type: "design-system-product-illustrations" },
   "/o-nas": { type: "about" },
   "/growth-hub": { type: "growth" },
   "/program-partnerski": { type: "partners" },
@@ -314,6 +315,7 @@ const routes = {
   "/en/design-system/charts": { type: "design-system-charts", lang: "en" },
   "/en/design-system/ui-atoms": { type: "design-system-atoms", lang: "en" },
   "/en/design-system/sections": { type: "design-system-sections", lang: "en" },
+  "/en/design-system/product-illustrations": { type: "design-system-product-illustrations", lang: "en" },
   "/en/about": { type: "about", lang: "en" },
   "/en/growth-hub": { type: "growth", lang: "en" },
   "/en/partners": { type: "partners", lang: "en" },
@@ -369,6 +371,31 @@ function cardCta(label, path, dark = false) {
   return `<a href="${href(path)}" class="mt-6 inline-flex items-center gap-2 text-sm font-semibold ${dark ? "text-[#41DBC3] hover:text-white" : "text-[#015BFE] hover:text-[#0F1E34]"}"><span>${label}</span>${icon("arrow-right", "h-4 w-4")}</a>`;
 }
 
+const materialButtonIconNames = {
+  "arrow-right": "arrow_forward",
+  "book-open": "menu_book",
+  "briefcase-business": "business_center",
+  brain: "psychology",
+  calculator: "calculate",
+  "chart-no-axes-combined": "monitoring",
+  code: "code",
+  component: "widgets",
+  database: "database",
+  gift: "redeem",
+  handshake: "handshake",
+  send: "send",
+  target: "ads_click",
+};
+
+function materialButtonIcon(iconName = "arrow-right", className = "") {
+  const name = materialButtonIconNames[iconName] || iconName || "arrow_forward";
+  return `<span class="material-symbols-rounded persooa-button-icon ${className}" aria-hidden="true">${name}</span>`;
+}
+
+function materialButtonSlotIcon(iconName = "arrow-right") {
+  return materialButtonIcon(iconName, "persooa-button-icon--slot").replace("<span ", '<span slot="icon" ');
+}
+
 function section({ variant = "white", compact = false, children }) {
   const variants = {
     white: "bg-white text-[#0F1E34]",
@@ -388,21 +415,22 @@ function icon(name, className = "h-5 w-5") {
 }
 
 function button(label, path = "/kontakt", variant = "primary", iconName = "arrow-right") {
-  const base = "inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-base font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
+  const base = "persooa-md-button";
   const variants = {
-    primary: "bg-[#015BFE] text-white hover:bg-[#0F1E34] focus-visible:outline-[#015BFE]",
-    secondary: "border border-[#0F1E34]/15 bg-white text-[#0F1E34] hover:border-[#015BFE] hover:text-[#015BFE] focus-visible:outline-[#015BFE]",
-    light: "bg-white text-[#015BFE] hover:bg-[#F4F6FD] focus-visible:outline-white",
-    heroDark: "bg-white text-[#05070D] hover:bg-[#F4F6FD] focus-visible:outline-white",
-    heroDarkSecondary: "border border-white/16 bg-white/0 text-white hover:bg-white hover:text-[#05070D] focus-visible:outline-white",
-    heroLight: "bg-[#015BFE] text-white hover:bg-[#0F1E34] focus-visible:outline-[#015BFE]",
-    heroLightSecondary: "border border-[#0F1E34]/14 bg-white text-[#0F1E34] hover:border-[#015BFE] hover:text-[#015BFE] focus-visible:outline-[#015BFE]",
+    primary: ["md-filled-button", "persooa-md-button--primary"],
+    secondary: ["md-outlined-button", "persooa-md-button--secondary"],
+    light: ["md-filled-tonal-button", "persooa-md-button--light"],
+    heroDark: ["md-filled-button", "persooa-md-button--hero-dark"],
+    heroDarkSecondary: ["md-outlined-button", "persooa-md-button--hero-dark-secondary"],
+    heroLight: ["md-filled-button", "persooa-md-button--primary"],
+    heroLightSecondary: ["md-outlined-button", "persooa-md-button--secondary"],
   };
-  return `<a href="${href(path)}" class="${base} ${variants[variant]}"><span>${label}</span>${icon(iconName, "h-4 w-4")}</a>`;
+  const [tag, className] = variants[variant] || variants.primary;
+  return `<${tag} trailing-icon href="${href(path)}" class="${base} ${className}"><span>${label}</span>${materialButtonSlotIcon(iconName)}</${tag}>`;
 }
 
 function badge(label, dark = false) {
-  return `<span class="inline-flex rounded-full ${dark ? "bg-white/10 text-white" : "bg-[#F4F6FD] text-[#015BFE]"} px-3 py-1 text-sm font-medium">${label}</span>`;
+  return `<span class="md-chip ${dark ? "md-chip--dark" : "md-chip--light"}">${label}</span>`;
 }
 
 function syneriseLogo({ dark = false } = {}) {
@@ -499,11 +527,13 @@ function designSystemTiles() {
       ["Charts", "Wszystkie typy wykresów, animacje, legendy i tokeny danych.", "/design-system/charts", "chart-no-axes-combined"],
       ["Atomy UI", "Buttony, badge, pola formularzy, statystyki, karty i podstawowe stany.", "/design-system/atomy-ui", "component"],
       ["Sekcje", "Nowe komponenty homepage: hero, karty, frameworki, case studies, FAQ i CTA.", "/design-system/sekcje", "layout-template"],
+      ["Ilustracje produktowe", "Briefy, kontekst i animowane układy UI dla ilustracji ofertowych.", "/design-system/ilustracje-produktowe", "image"],
     ]
     : [
       ["Charts", "All chart types, animations, legends and data tokens.", "/en/design-system/charts", "chart-no-axes-combined"],
       ["UI atoms", "Buttons, badges, fields, stats, cards and base states.", "/en/design-system/ui-atoms", "component"],
       ["Sections", "New homepage components: hero, cards, frameworks, case studies, FAQ and CTA.", "/en/design-system/sections", "layout-template"],
+      ["Product illustrations", "Briefs, context and animated UI compositions for offer illustrations.", "/en/design-system/product-illustrations", "image"],
     ];
   return tiles.map(([title, text, path, iconName]) => `<a href="${href(path)}" class="rounded-xl border border-[#E6EAF2] bg-white p-6 transition hover:border-[#015BFE]/40 hover:shadow-soft">
     <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon(iconName, "h-5 w-5")}</div>
@@ -560,7 +590,7 @@ function titleToPlainText(value) {
     .trim();
 }
 
-function heroIllustrationSection({ eyebrow, title, lead, visual, variant = "dark", primaryLabel, primaryHref, secondaryLabel, secondaryHref, stats = [], logoMarkup = "" }) {
+function heroIllustrationSection({ eyebrow, title, lead, visual, variant = "dark", primaryLabel, primaryHref, secondaryLabel, secondaryHref, secondaryButtonMarkup = "", stats = [], logoMarkup = "" }) {
   const isDark = variant === "dark";
   const primaryVariant = isDark ? "heroDark" : "heroLight";
   const secondaryVariant = isDark ? "heroDarkSecondary" : "heroLightSecondary";
@@ -568,7 +598,7 @@ function heroIllustrationSection({ eyebrow, title, lead, visual, variant = "dark
   const statsMarkup = stats.length
     ? `<div class="hero-stats mt-10 grid max-w-xl grid-cols-3 gap-4 border-t ${isDark ? "border-white/12" : "border-[#DDE5F5]"} pt-6">${stats.map((stat) => `<div><strong class="hero-stat-value block text-3xl font-semibold">${stat.value}</strong><span class="hero-stat-label mt-1 block text-sm leading-5">${stat.label}</span></div>`).join("")}</div>`
     : "";
-  const secondaryMarkup = secondaryLabel && secondaryHref ? button(secondaryLabel, secondaryHref, secondaryVariant) : "";
+  const secondaryMarkup = secondaryButtonMarkup || (secondaryLabel && secondaryHref ? button(secondaryLabel, secondaryHref, secondaryVariant) : "");
 
   return `<section data-header-theme="${isDark ? "dark" : "light"}" class="scroll-section hero-shell hero-shell--${variant} overflow-hidden pt-24 md:pt-28">
     <div class="hero-visual-backdrop hero-visual-stage hero-visual-stage--${variant}">
@@ -652,7 +682,7 @@ function header() {
       </nav>
       <div class="flex items-center gap-2 sm:gap-3">
         <a href="${href(langSwitch)}" class="lang-switch hidden rounded-full border border-[#E6EAF2] px-3 py-2 text-sm font-medium text-[#0F1E34] transition hover:border-[#015BFE] hover:text-[#015BFE] sm:inline-flex">${l === "pl" ? "EN" : "PL"}</a>
-        <a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="header-cta hidden h-11 items-center justify-center gap-2 rounded-full bg-[#015BFE] px-5 text-sm font-medium text-white transition hover:bg-[#0F1E34] sm:inline-flex"><span>${t("ask")}</span>${icon("send", "h-4 w-4")}</a>
+        <a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="header-cta hidden h-11 items-center justify-center gap-2 rounded-full bg-[#015BFE] px-5 text-sm font-medium text-white transition hover:bg-[#0F1E34] sm:inline-flex"><span>${t("ask")}</span>${materialButtonIcon("send")}</a>
         <button id="mobileMenuButton" class="mobile-menu-toggle inline-flex h-11 w-11 items-center justify-center rounded-full border border-[#E6EAF2] bg-white text-[#0F1E34] transition hover:border-[#015BFE] hover:text-[#015BFE] lg:hidden" type="button" aria-label="${l === "pl" ? "Otwórz menu" : "Open menu"}" aria-controls="mobileMenu" aria-expanded="false">
           <span class="mobile-menu-icon mobile-menu-icon--open">${icon("menu", "h-5 w-5")}</span>
           <span class="mobile-menu-icon mobile-menu-icon--close">${icon("x", "h-5 w-5")}</span>
@@ -670,7 +700,7 @@ function header() {
           </nav>
           <div class="mobile-menu-actions">
             <a href="${href(langSwitch)}" class="mobile-menu-secondary">${l === "pl" ? "English" : "Polski"}</a>
-            <a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="mobile-menu-primary">${t("ask")}${icon("send", "h-4 w-4")}</a>
+            <a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="mobile-menu-primary">${t("ask")}${materialButtonIcon("send")}</a>
           </div>
         </div>
       </div>
@@ -686,12 +716,14 @@ function footer() {
       ["Charts", "/design-system/charts"],
       ["Atomy UI", "/design-system/atomy-ui"],
       ["Sekcje", "/design-system/sekcje"],
+      ["Ilustracje produktowe", "/design-system/ilustracje-produktowe"],
     ]
     : [
       ["Overview", "/en/design-system"],
       ["Charts", "/en/design-system/charts"],
       ["UI atoms", "/en/design-system/ui-atoms"],
       ["Sections", "/en/design-system/sections"],
+      ["Product illustrations", "/en/design-system/product-illustrations"],
     ];
   return `<footer class="bg-[#0F1E34] py-14 text-white">
     <div class="mx-auto grid max-w-7xl gap-10 px-5 sm:px-6 lg:grid-cols-12 lg:px-8">
@@ -1436,8 +1468,257 @@ function offerContextSection(page) {
   });
 }
 
+function aiSearchOfferFeatureCard([title, text, value], index) {
+  return `<article class="product-feature-card rounded-xl border border-[#E6EAF2] bg-white p-5">
+    <div class="grid gap-6 lg:grid-cols-12 lg:items-start">
+      <div class="lg:col-span-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="text-sm font-semibold text-[#015BFE]">${String(index + 1).padStart(2, "0")}</span>
+            <h3 class="mt-2 text-2xl font-semibold leading-tight">${title}</h3>
+          </div>
+          <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon(index % 4 === 0 ? "spell-check" : index % 4 === 1 ? "search" : index % 4 === 2 ? "sliders-horizontal" : "sparkles", "h-5 w-5")}</div>
+        </div>
+        <p class="mt-5 text-base leading-7 text-[#595959]">${text}</p>
+        <div class="mt-5 rounded-xl border border-[#E6EAF2] bg-[#FAFAFA] p-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#015BFE]">Wartości biznesowe</p>
+          <p class="mt-2 text-sm leading-6 text-[#595959]">${value}</p>
+        </div>
+      </div>
+      <div class="lg:col-span-7">${generatedProductIllustration(title, index)}</div>
+    </div>
+  </article>`;
+}
+
+function personalizationOfferFeatureCard([title, text, value], index) {
+  const icons = ["database", "user-round-check", "sparkles", "workflow", "send", "chart-no-axes-combined"];
+  return `<article class="product-feature-card rounded-xl border border-[#E6EAF2] bg-white p-5">
+    <div class="grid gap-6 lg:grid-cols-12 lg:items-start">
+      <div class="lg:col-span-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="text-sm font-semibold text-[#015BFE]">${String(index + 1).padStart(2, "0")}</span>
+            <h3 class="mt-2 text-2xl font-semibold leading-tight">${title}</h3>
+          </div>
+          <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon(icons[index] || "sparkles", "h-5 w-5")}</div>
+        </div>
+        <p class="mt-5 text-base leading-7 text-[#595959]">${text}</p>
+        <div class="mt-5 rounded-xl border border-[#E6EAF2] bg-[#FAFAFA] p-4">
+          <p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#015BFE]">Wartości biznesowe</p>
+          <p class="mt-2 text-sm leading-6 text-[#595959]">${value}</p>
+        </div>
+      </div>
+      <div class="lg:col-span-7">${generatedPersonalizationProductIllustration(title, index)}</div>
+    </div>
+  </article>`;
+}
+
+function personalizationFrameworkSection() {
+  const steps = [
+    ["01", "Mapa danych i ścieżek", "Porządkujemy źródła danych, punkty styku i momenty, w których personalizacja może realnie zmienić decyzję klienta.", "map"],
+    ["02", "Scenariusze i priorytety", "Wybieramy rekomendacje, segmenty, kanały i komunikaty o największym wpływie na konwersję, AOV lub retencję.", "target"],
+    ["03", "Konfiguracja i testy", "Łączymy profile, reguły, modele rekomendacji i aktywacje, a następnie mierzymy efekt na grupach kontrolnych.", "flask-conical"],
+    ["04", "Optymalizacja ciągła", "Rozwijamy scenariusze na podstawie upliftu, jakości segmentów, marży, dostępności produktów i zachowania klientów.", "trending-up"],
+  ];
+  return section({
+    variant: "dark",
+    children: `<div class="grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        ${badge("Framework Persooa", true)}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Od danych klienta do personalizacji, która pracuje na KPI</h2>
+        <p class="mt-5 text-lg leading-8 text-white/68">Łączymy strategię, CDP, rekomendacje, kanały komunikacji i pomiar wpływu, żeby personalizacja była procesem wzrostu, a nie zbiorem pojedynczych kampanii.</p>
+      </div>
+      <div class="grid gap-4 lg:col-span-8 md:grid-cols-2">${steps.map(([number, title, text, iconName]) => `<article class="rounded-xl border border-white/12 bg-white/[0.04] p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-[#41DBC3]">${icon(iconName, "h-5 w-5")}</div>
+          <span class="text-sm font-semibold text-[#41DBC3]">${number}</span>
+        </div>
+        <h3 class="mt-5 text-2xl font-semibold">${title}</h3>
+        <p class="mt-3 text-sm leading-6 text-white/68">${text}</p>
+      </article>`).join("")}</div>
+    </div>`,
+  });
+}
+
+function personalizationProductPage(page) {
+  const l = lang();
+  const title = gradientTitleTail(l === "pl" ? page.title : page.enTitle);
+  const lead = l === "pl" ? page.lead : page.enLead;
+  const variant = heroVariant("dark");
+  const frameworkButton = `<md-outlined-button trailing-icon class="persooa-md-button persooa-md-button--hero-dark-secondary" onclick="document.getElementById('framework-persooa')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"><span>Zobacz framework</span>${materialButtonSlotIcon("target")}</md-outlined-button>`;
+  const stats = [
+    ["1:1", "rekomendacje i komunikaty dopasowane do profilu, intencji i etapu ścieżki"],
+    ["real-time", "reakcja na sygnały z web, app, CRM, koszyka i historii zakupów"],
+    ["omnichannel", "spójna aktywacja w kanałach komunikacji i na stronie"],
+    ["uplift", "pomiar wpływu scenariuszy na konwersję, AOV, retencję i przychód"],
+  ];
+  return `<main class="route-view">
+    ${heroIllustrationSection({
+      eyebrow: page.eyebrow,
+      title,
+      lead,
+      visual: heroVisual(page.visualKey, variant),
+      variant,
+      primaryLabel: t("ask"),
+      primaryHref: l === "pl" ? "/kontakt" : "/en/contact",
+      secondaryButtonMarkup: frameworkButton,
+    })}
+    ${section({ children: `<div class="grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        ${badge("Dlaczego")}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Personalizacja działa, gdy decyzje są połączone z danymi</h2>
+      </div>
+      <div class="lg:col-span-7">
+        <p class="text-lg leading-8 text-[#595959]">Skuteczna personalizacja nie polega na ręcznym przygotowaniu wielu wariantów kampanii. To system, który rozpoznaje intencję klienta, wybiera najlepszy kolejny krok i aktywuje go w odpowiednim kanale.</p>
+        <div class="mt-8 grid gap-4 md:grid-cols-2">${stats.map(([value, label]) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5">
+          <strong class="text-4xl font-semibold text-[#015BFE]">${value}</strong>
+          <p class="mt-3 text-sm leading-6 text-[#595959]">${label}</p>
+        </article>`).join("")}</div>
+      </div>
+    </div>` })}
+    ${section({ variant: "lightBlue", children: `<div class="grid gap-10 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-5">
+        ${badge("Mechanika produktu")}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Od sygnału klienta do rekomendacji, treści i automatyzacji</h2>
+        <p class="mt-5 text-lg leading-8 text-[#595959]">Łączymy profil klienta, katalog produktów, segmenty, predykcje i reguły biznesowe, aby sklep mógł reagować na zachowanie użytkownika bez dodatkowej pracy operacyjnej.</p>
+        <div class="mt-8 grid gap-3">${["Jeden profil klienta dla scenariuszy web, CRM i mobile", "Rekomendacje produktów, treści i Next Best Offer", "Aktywacja w kanałach komunikacji i na stronie", "Pomiar upliftu oraz rozwój scenariuszy na podstawie danych"].map((item) => `<div class="flex items-start gap-3 rounded-xl border border-[#E6EAF2] bg-white p-4"><div class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F4F6FD] text-[#015BFE]">${icon("check-circle-2", "h-4 w-4")}</div><p class="text-sm leading-6 text-[#0F1E34]">${item}</p></div>`).join("")}</div>
+      </div>
+      <div class="lg:col-span-7">${generatedPersonalizationProductIllustration("Profil klienta w czasie rzeczywistym", 1)}</div>
+    </div>` })}
+    ${section({ children: `<div class="mx-auto max-w-3xl text-center">
+      ${badge("Obszary")}
+      <h2 class="mt-5 text-4xl font-semibold leading-tight">6 obszarów personalizacji AI, które przekładają dane na wzrost</h2>
+      <p class="mt-5 text-lg leading-8 text-[#595959]">Każdy obszar ma własną rolę: od integracji danych, przez decyzje i rekomendacje, po aktywację oraz pomiar efektu biznesowego.</p>
+    </div>
+    <div class="mt-12 grid gap-6">${personalizationIllustrationFeatures.map(personalizationOfferFeatureCard).join("")}</div>` })}
+    <div id="framework-persooa">${personalizationFrameworkSection()}</div>
+    ${section({ variant: "muted", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-5">
+        ${badge("Efekt biznesowy")}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Więcej trafnych decyzji w całej ścieżce klienta</h2>
+        <p class="mt-5 text-lg leading-8 text-[#595959]">Personalizacja pomaga zespołom szybciej przechodzić od danych do działających scenariuszy, które można mierzyć i rozwijać bez dokładania ręcznej pracy.</p>
+      </div>
+      <div class="grid gap-4 lg:col-span-7 md:grid-cols-2">${page.outcomes.map((outcome) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-6">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon("target", "h-5 w-5")}</div>
+        <h3 class="mt-5 text-xl font-semibold">${outcome}</h3>
+      </article>`).join("")}</div>
+    </div>` })}
+    ${section({ variant: "dark", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-7">
+        ${badge("Następny krok", true)}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Sprawdź, które scenariusze personalizacji mają największy potencjał</h2>
+        <p class="mt-5 text-lg leading-8 text-white/68">Zaczniemy od mapy danych, ścieżek klienta i miejsc, w których rekomendacje, dynamiczne treści albo automatyzacja mogą najszybciej poprawić KPI.</p>
+      </div>
+      <div class="flex flex-wrap gap-4 lg:col-span-5 lg:justify-end">${button("Umów konsultację", l === "pl" ? "/kontakt" : "/en/contact", "heroDark", "send")}${button("Zobacz ROI", l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days", "heroDarkSecondary", "target")}</div>
+    </div>` })}
+  </main>`;
+}
+
+function aiSearchFrameworkSection() {
+  const steps = [
+    ["01", "Diagnoza search", "Analizujemy frazy, zapytania bez wyników, CTR wyników, konwersję z wyszukiwarki, jakość katalogu i miejsca utraty użytkowników.", "search"],
+    ["02", "Model i konfiguracja", "Dobieramy algorytmy rankingu, synonimy, atrybuty, reguły promowania, personalizację oraz integrację z katalogiem produktów.", "settings"],
+    ["03", "Testy i wdrożenie", "Uruchamiamy testy A/B, mierzymy wpływ konfiguracji na konwersję, przychód i CTR, a następnie publikujemy zwycięskie ustawienia.", "flask-conical"],
+    ["04", "Optymalizacja ciągła", "Rozwijamy analitykę, rekomendacje, retail media, listingi produktowe i nowe scenariusze w oparciu o dane sprzedażowe.", "trending-up"],
+  ];
+  return section({
+    variant: "dark",
+    children: `<div class="grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        ${badge("Framework Persooa", true)}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Od audytu wyszukiwarki do skalowania przychodu</h2>
+        <p class="mt-5 text-lg leading-8 text-white/68">Łączymy strategię, konfigurację Synerise, dane produktowe, testy i stałą optymalizację, żeby wyszukiwarka była mierzalnym kanałem sprzedaży.</p>
+      </div>
+      <div class="grid gap-4 lg:col-span-8 md:grid-cols-2">${steps.map(([number, title, text, iconName]) => `<article class="rounded-xl border border-white/12 bg-white/[0.04] p-6">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10 text-[#41DBC3]">${icon(iconName, "h-5 w-5")}</div>
+          <span class="text-sm font-semibold text-[#41DBC3]">${number}</span>
+        </div>
+        <h3 class="mt-5 text-2xl font-semibold">${title}</h3>
+        <p class="mt-3 text-sm leading-6 text-white/68">${text}</p>
+      </article>`).join("")}</div>
+    </div>`,
+  });
+}
+
+function aiSearchProductPage(page) {
+  const l = lang();
+  const title = gradientTitleTail("Wyszukiwarka AI, która sprzedaje");
+  const lead = "Zamień pole wyszukiwania w najskuteczniejszy kanał sprzedaży w swoim e-commerce.";
+  const variant = heroVariant("dark");
+  const frameworkButton = `<md-outlined-button trailing-icon class="persooa-md-button persooa-md-button--hero-dark-secondary" onclick="document.getElementById('framework-persooa')?.scrollIntoView({ behavior: 'smooth', block: 'start' })"><span>Zobacz framework</span>${materialButtonSlotIcon("target")}</md-outlined-button>`;
+  const stats = [
+    ["20%", "średnio całkowitego przychodu może pochodzić z dobrze zoptymalizowanej wyszukiwarki"],
+    ["8-43%", "zakres udziału przychodu z wyszukiwarki zależnie od segmentu"],
+    ["40-60%", "użytkowników mobile zaczyna wizytę od skorzystania z wyszukiwarki"],
+    ["75%", "użytkowników oczekuje spersonalizowanych doświadczeń na stronie"],
+  ];
+  return `<main class="route-view">
+    ${heroIllustrationSection({
+      eyebrow: page.eyebrow,
+      title,
+      lead,
+      visual: heroVisual("search", variant),
+      variant,
+      primaryLabel: t("ask"),
+      primaryHref: l === "pl" ? "/kontakt" : "/en/contact",
+      secondaryButtonMarkup: frameworkButton,
+    })}
+    ${section({ children: `<div class="grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        ${badge("Dlaczego")}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Dlaczego zwykła wyszukiwarka nie wystarcza?</h2>
+      </div>
+      <div class="lg:col-span-7">
+        <p class="text-lg leading-8 text-[#595959]">Wyszukiwarka wykorzystująca algorytmy AI działa niczym doświadczony sprzedawca w sklepie. Rozumie potrzeby klienta i podpowiada najtrafniejsze wyniki, tak aby klient znalazł poszukiwany produkt. W swoich podpowiedziach bierze pod uwagę historię zakupową, katalog produktów oraz wiele zmiennych odpowiadających za personalizację wyników.</p>
+        <div class="mt-8 grid gap-4 md:grid-cols-2">${stats.map(([value, label]) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5">
+          <strong class="text-4xl font-semibold text-[#015BFE]">${value}</strong>
+          <p class="mt-3 text-sm leading-6 text-[#595959]">${label}</p>
+        </article>`).join("")}</div>
+      </div>
+    </div>` })}
+    ${section({ variant: "lightBlue", children: `<div class="grid gap-10 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-5">
+        ${badge("Mechanika produktu")}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Search jako kanał sprzedaży, personalizacji i merchandisingu</h2>
+        <p class="mt-5 text-lg leading-8 text-[#595959]">AI Search łączy intencję użytkownika z katalogiem produktów, regułami biznesowymi, rekomendacjami i analityką. Dzięki temu sklep nie pokazuje tylko listy wyników, ale prowadzi klienta do decyzji zakupowej.</p>
+        <div class="mt-8 grid gap-3">${["Rozumienie zapytań, literówek i synonimów", "Personalizacja kolejności wyników na podstawie zachowań", "Promowanie produktów i monetyzacja przestrzeni search", "Analityka fraz, filtrów i zapytań bez wyników"].map((item) => `<div class="flex items-start gap-3 rounded-xl border border-[#E6EAF2] bg-white p-4"><div class="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F4F6FD] text-[#015BFE]">${icon("check-circle-2", "h-4 w-4")}</div><p class="text-sm leading-6 text-[#0F1E34]">${item}</p></div>`).join("")}</div>
+      </div>
+      <div class="lg:col-span-7">${generatedProductIllustration("Personalizacja wyników wyszukiwania", 5)}</div>
+    </div>` })}
+    ${section({ children: `<div class="mx-auto max-w-3xl text-center">
+      ${badge("Funkcje")}
+      <h2 class="mt-5 text-4xl font-semibold leading-tight">16 elementów wyszukiwarki AI, które pracują na przychód</h2>
+      <p class="mt-5 text-lg leading-8 text-[#595959]">Każdy moduł ma konkretną rolę w skracaniu ścieżki do produktu, ograniczaniu pustych wyników i zwiększaniu wartości ruchu z wyszukiwarki.</p>
+    </div>
+    <div class="mt-12 grid gap-6">${aiSearchIllustrationFeatures.map(aiSearchOfferFeatureCard).join("")}</div>` })}
+    <div id="framework-persooa">${aiSearchFrameworkSection()}</div>
+    ${section({ variant: "muted", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-5">
+        ${badge("Efekt biznesowy")}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Mniej pustych wyników, więcej sesji zakupowych domkniętych przez search</h2>
+        <p class="mt-5 text-lg leading-8 text-[#595959]">Wyszukiwarka staje się miejscem, w którym sklep rozumie intencję, dopasowuje ofertę i steruje ekspozycją produktów bez dokładania pracy po stronie zespołu IT.</p>
+      </div>
+      <div class="grid gap-4 lg:col-span-7 md:grid-cols-2">${page.outcomes.map((outcome) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-6">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon("target", "h-5 w-5")}</div>
+        <h3 class="mt-5 text-xl font-semibold">${outcome}</h3>
+      </article>`).join("")}</div>
+    </div>` })}
+    ${section({ variant: "dark", children: `<div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+      <div class="lg:col-span-7">
+        ${badge("Następny krok", true)}
+        <h2 class="mt-5 text-4xl font-semibold leading-tight">Sprawdź, ile przychodu może odzyskać Twoja wyszukiwarka</h2>
+        <p class="mt-5 text-lg leading-8 text-white/68">Zaczniemy od analizy obecnych zapytań, pustych wyników, konwersji z search i jakości katalogu produktowego.</p>
+      </div>
+      <div class="flex flex-wrap gap-4 lg:col-span-5 lg:justify-end">${button("Umów konsultację", l === "pl" ? "/kontakt" : "/en/contact", "heroDark", "send")}${button("Zobacz ROI", l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days", "heroDarkSecondary", "target")}</div>
+    </div>` })}
+  </main>`;
+}
+
 function offerPage(page) {
   const l = lang();
+  if (page.slug === "personalizacja-ai") return personalizationProductPage(page);
+  if (page.slug === "wyszukiwarka-ai") return aiSearchProductPage(page);
   const title = gradientTitleTail(l === "pl" ? page.title : page.enTitle);
   const lead = l === "pl" ? page.lead : page.enLead;
   const problem = l === "pl" ? page.problem : "Growth is often blocked by fragmented data, slow campaign execution and unclear ownership of measurable results.";
@@ -1627,6 +1908,259 @@ function designSystemSectionsPage() {
   </main>`;
 }
 
+const aiSearchIllustrationFeatures = [
+  ["Korekta literówek i synonimy", "Wyszukiwarka automatycznie koryguje literówki i rozpoznaje synonimy, dzięki czemu zwraca trafne wyniki nawet przy nieprecyzyjnych lub błędnie wpisanych zapytaniach. Użytkownik szybciej znajduje produkt bez konieczności poprawiania zapytania. Dla sklepu oznacza to niższy wskaźnik porzucenia — aż 30% odwiedzających opuszcza e-sklep, gdy wyszukiwarka nie zwraca żadnych wyników.", "Redukcja porzuceń o nawet 30%, więcej domkniętych sesji zakupowych, mniejsza utrata ruchu na błędnych zapytaniach.", "Pokaż pole wyszukiwania z błędnym zapytaniem, automatyczną korektą i trzema trafnymi kartami produktu."],
+  ["Autouzupełnianie", "Wyszukiwarka wyświetla proponowane frazy i produkty już po wpisaniu pierwszego znaku — w czasie poniżej 0,3 sekundy. Sugestie bazują na popularności wyszukiwań oraz skuteczności wyników, które generują, dzięki czemu użytkownik szybciej trafia do pożądanego produktu. Sklep zyskuje kontrolę: może definiować listy promowanych fraz według celów sprzedażowych oraz blokować wyrażenia, które nie powinny się pojawiać w podpowiedziach.", "Skrócenie ścieżki do produktu, wyższa konwersja z pola wyszukiwania, sterowanie sprzedażą poprzez promowane frazy.", "Pokaż aktywne pole search, listę sugestii, promowaną frazę i małą metrykę czasu reakcji 0,3 s."],
+  ["Brak wyników wyszukiwania", "Wyszukiwarka przeszukuje nie tylko nazwę i markę, ale także kolor, atrybuty, kategorie i pełny opis produktu, co znacząco zwiększa szansę na trafny wynik. Jeśli mimo to system nie znajdzie żadnego dopasowania, prezentuje produkty rekomendowane na podstawie modelu behawioralnego użytkownika — zamiast pustej strony klient widzi propozycje. W zoptymalizowanym sklepie średni odsetek wyszukiwań bez wyników spada z 13% do 1-5%.", "Spadek wyszukiwań bez wyników z 13% do 1-5%, ratowanie sesji rekomendacjami, więcej ruchu konwertującego.", "Pokaż stan zero-result zamieniony w sekcję rekomendacji: puste zapytanie, trzy rekomendacje i wskaźnik 1-5%."],
+  ["Monetyzacja wyszukiwarki", "Wyszukiwarka umożliwia kontrolowane wypozycjonowanie produktów partnerów handlowych na czołowych miejscach wyników — podobnie jak w modelu retail media. Użytkownik wciąż otrzymuje trafne wyniki, a sklep generuje dodatkowy strumień przychodów z opłat sponsorowanych. To szansa na monetyzację najcenniejszej przestrzeni w e-sklepie bez konieczności budowania osobnej platformy reklamowej.", "Nowy strumień przychodów z opłat sponsorowanych, wyższa marża na ruchu z wyszukiwarki, monetyzacja bez osobnej platformy ad-tech.", "Pokaż listę wyników z oznaczonym sponsorowanym produktem, budżetem partnera i zachowaną trafnością wyników."],
+  ["Testy A/B", "Wyszukiwarka pozwala uruchamiać testy A/B różnych konfiguracji — algorytmów rankingu, reguł promowania, sortowań — i porównywać ich wpływ na konwersję, przychody oraz CTR. Decyzje opierasz na danych, a nie intuicji, dzięki czemu stopniowo dostrajasz wyszukiwarkę do swojego asortymentu i klientów. Według badań Monetate optymalizacja przez testy A/B może podnieść konwersję nawet o 50%.", "Wzrost konwersji nawet o 50% (badania Monetate), decyzje oparte na danych zamiast intuicji, ciągła optymalizacja przychodu.", "Pokaż dwa warianty rankingu A/B, prosty wykres upliftu i zwycięski wariant z etykietą winner."],
+  ["Personalizacja wyników", "Wyszukiwarka analizuje zachowania, historię zakupów i preferencje każdego użytkownika, aby na pierwszych miejscach pokazywać produkty najbardziej dopasowane do jego potrzeb. Klient szybciej trafia na to, czego szuka, i czuje, że sklep go rozumie. Dla sklepu oznacza to wyższe konwersje, większą wartość koszyka i lepsze doświadczenie zakupowe — 75% użytkowników oczekuje dziś spersonalizowanych doświadczeń.", "Wyższa konwersja i wartość koszyka (AOV), większa lojalność klientów, odpowiedź na oczekiwania 75% kupujących.", "Pokaż profil klienta połączony z listą wyników, gdzie pierwsze pozycje są opisane jako dopasowane do preferencji."],
+  ["Filtrowanie po atrybutach", "Użytkownik może zawężać wyniki po dowolnym atrybucie produktu — marce, kolorze, rozmiarze, cenie, dostępności czy własnych cechach z katalogu. Filtry pozwalają szybko dotrzeć do produktów spełniających konkretne kryteria zamiast przeglądać długą listę wyników. Skraca to ścieżkę zakupową, redukuje porzucanie sesji i przekłada się bezpośrednio na wzrost konwersji.", "Skrócenie ścieżki zakupowej, mniej porzuconych sesji, wyższa konwersja na długich listach wyników.", "Pokaż panel filtrów z aktywnymi chipami oraz listę produktów zawężoną do konkretnego koloru i rozmiaru."],
+  ["Sortowanie wyników", "Wyszukiwarka dynamicznie zmienia kolejność prezentowanych produktów w odpowiedzi na preferencje użytkownika — żadne pozycje nie znikają, ale najtrafniejsze trafiają na samą górę listy. Klient dostaje to, co najbardziej go interesuje, bez konieczności scrollowania. Dla sklepu oznacza to wyższe CTR na czołowych pozycjach i większą szansę na sprzedaż popularnych lub strategicznych produktów.", "Wyższy CTR na czołowych pozycjach, większa sprzedaż produktów strategicznych, mniej scrollowania = szybsza decyzja.", "Pokaż listę produktów przed i po sortowaniu, z linią wskazującą awans najtrafniejszego produktu na pierwsze miejsce."],
+  ["Promowanie produktów", "Bez pomocy dewelopera możesz wypozycjonować dowolny produkt na czele wyników — globalnie lub dla wybranych segmentów klientów. To narzędzie marketingowe pozwala szybko reagować na promocje, wyprzedaże sezonowe, nowości czy nadmiar magazynowy, dopasowując wystawę do bieżących celów sprzedażowych. Klient widzi produkty trafniej dopasowane do swojej grupy, a sklep może w czasie rzeczywistym sterować widocznością swojego asortymentu.", "Szybka reakcja na promocje i sezony bez pracy IT, upłynnianie nadmiaru magazynowego, sterowanie ekspozycją w czasie rzeczywistym.", "Pokaż prosty panel merchandisingowy: reguła segmentu, promowany produkt i podgląd pozycji numer 1."],
+  ["Historia wyszukiwania cross-device", "Wyszukiwarka synchronizuje historię zapytań i ostatnio przeglądanych produktów między urządzeniami — komputerem, smartfonem i tabletem. Klient może zacząć wyszukiwanie na telefonie w drodze do pracy i bez wysiłku dokończyć zakup wieczorem na laptopie. Dla sklepu oznacza to więcej domkniętych konwersji w wielokanałowych ścieżkach zakupowych i mniejsze ryzyko utraty klienta między sesjami.", "Więcej domkniętych konwersji w ścieżkach wielokanałowych, mniejsza utrata klienta między sesjami, lepsze doświadczenie omnichannel.", "Pokaż trzy urządzenia połączone linią, wspólną historię zapytań i produkt kontynuowany na laptopie."],
+  ["Podpowiedzi popularnych fraz", "Wyszukiwarka pokazuje statystycznie najczęściej wyszukiwane frazy w sklepie oraz te, które zyskują popularność w czasie rzeczywistym. Klient, który jeszcze nie wie czego dokładnie szuka, dostaje inspirację od razu po kliknięciu w pole wyszukiwania. Sklep może dzięki temu wzmacniać sprzedaż bestsellerów, eksponować sezonowe trendy i przyspieszać odkrywanie nowo wprowadzonego asortymentu.", "Wzmocnienie sprzedaży bestsellerów, szybsze odkrywanie nowości, monetyzacja trendów sezonowych.", "Pokaż dropdown po kliknięciu w search: popularne frazy, trendujące tagi i bestseller jako rekomendacja."],
+  ["Analityka", "Moduł analityczny prezentuje najczęściej wyszukiwane frazy, najpopularniejsze filtry, zapytania bez wyników oraz wskaźniki konwersji z wyszukiwarki. Daje to zespołowi sklepu wgląd w realne potrzeby klientów — czego szukają, czego nie znajdują i czego brakuje w ofercie. Na tej podstawie możesz rozszerzać asortyment, dostrajać wyszukiwarkę i podejmować decyzje merchandisingowe oparte na twardych danych.", "Decyzje merchandisingowe oparte na danych, identyfikacja luk w asortymencie, niższe ryzyko błędnych zakupów towaru.", "Pokaż lekki dashboard z wykresem fraz, listą no-result i rekomendacją uzupełnienia asortymentu."],
+  ["Wyszukiwanie wizualne", "Użytkownik może wyszukać produkty poprzez przesłanie zdjęcia zamiast wpisywania zapytania. System analizuje kształty, kolory i tekstury obrazu, a następnie znajduje wizualnie podobne pozycje w katalogu. To rozwiązanie szczególnie cenne w branżach takich jak moda, wnętrzarstwo czy DIY — klient nie musi znać nazwy ani opisu produktu, by go znaleźć, a sklep ma szansę dotrzeć do osoby, która inaczej zrezygnowałaby z poszukiwań.", "Dotarcie do klientów, którzy nie znają nazwy produktu, przewaga konkurencyjna w modzie/wnętrzach, wyższa konwersja na ruchu mobilnym.", "Pokaż upload zdjęcia, analizę obrazu i trzy wizualnie podobne produkty w formie siatki."],
+  ["Wyszukiwanie głosowe", "Użytkownik może wyszukać produkt wypowiadając zapytanie zamiast je wpisywać — szczególnie wygodnie na urządzeniach mobilnych. System rozpoznaje mowę, interpretuje intencję i zwraca trafne wyniki, co przyspiesza dotarcie do produktu i obniża friction zakupowy. Funkcja zwiększa dostępność sklepu — użyteczna w ruchu, dla osób z niepełnosprawnościami oraz dla rosnącej grupy klientów preferujących konwersacyjne interakcje.", "Niższy friction zakupowy na mobile, szersza dostępność sklepu (w tym WCAG), gotowość na rosnący kanał asystentów głosowych.", "Pokaż mikrofon, falę głosu, transkrypcję zapytania i wynik dopasowany do intencji."],
+  ["Rozumienie języka naturalnego", "Wyszukiwarka interpretuje zapytania w pełnych zdaniach i potocznym języku, tak jak klient zadałby pytanie sprzedawcy w sklepie stacjonarnym. Wykorzystując przetwarzanie języka naturalnego (NLP) i wyszukiwanie semantyczne, rozumie złożone zapytania typu „czerwone buty sportowe do biegania w deszczu poniżej 300 zł” i zwraca wyniki uwzględniające wszystkie kryteria naraz. Klient otrzymuje trafniejsze wyniki bez uczenia się składni zapytań, a sklep zyskuje przewagę nad konkurencją opartą na klasycznym dopasowaniu słów kluczowych — szczególnie przy długich i głosowych zapytaniach.", "Trafniejsze wyniki na long-tail i zapytaniach głosowych, przewaga nad klasycznym keyword search, wyższa konwersja na złożonych zapytaniach.", "Pokaż długie zapytanie rozbite na intencje: kolor, typ produktu, zastosowanie, budżet i warunki."],
+  ["Filtrowanie na listingach produktów", "Ten sam silnik AI, który obsługuje wyszukiwarkę, może napędzać również strony kategorii i listingi produktów — z personalizowaną kolejnością, filtrami opartymi na atrybutach katalogu i regułami merchandisingowymi. Klient na stronie kategorii widzi produkty ułożone według swoich preferencji i może w kilka kliknięć zawęzić wybór, co znacząco skraca ścieżkę zakupową. Dla sklepu oznacza to spójne doświadczenie między wyszukiwarką a PLP, lepsze wykorzystanie ruchu z kategorii oraz wyższe konwersje na najważniejszych stronach katalogu.", "Wyższa konwersja na PLP i kategoriach, spójne doświadczenie między wyszukiwarką a listingami, lepsze wykorzystanie ruchu z kategorii.", "Pokaż stronę kategorii z AI rankingiem, filtrami i tym samym panelem reguł co w wyszukiwarce."],
+];
+
+const productIllustrationAssets = [
+  "01-typos-synonyms.png",
+  "02-autocomplete.png",
+  "03-zero-results.png",
+  "04-monetization.png",
+  "05-ab-tests.png",
+  "06-personalization.png",
+  "07-attribute-filtering.png",
+  "08-sorting.png",
+  "09-product-promotion.png",
+  "10-cross-device.png",
+  "11-popular-phrases.png",
+  "12-analytics.png",
+  "13-visual-search.png",
+  "14-voice-search.png",
+  "15-natural-language.png",
+  "16-plp-filtering.png",
+];
+
+const personalizationIllustrationAssets = [
+  "01-data-integration.png",
+  "02-customer-profile.png",
+  "03-next-best-offer.png",
+  "04-campaign-automation.png",
+  "05-omnichannel-activation.png",
+  "06-ai-analytics.png",
+];
+
+const personalizationIllustrationFeatures = [
+  ["Integracja danych", "Łączymy dane z e-commerce, CRM, aplikacji, programu lojalnościowego i kanałów komunikacji, aby scenariusze personalizacji działały na jednym obrazie klienta.", "Spójny profil klienta, mniej ręcznego łączenia danych i szybszy start scenariuszy personalizacji."],
+  ["Profil klienta w czasie rzeczywistym", "Zachowania web/app, historia zakupowa, porzucone koszyki i segmenty aktualizują profil klienta, zanim użytkownik przejdzie do kolejnego kroku.", "Trafniejsze decyzje w sesji, szybsza reakcja na intencję i mniej utraconych momentów zakupowych."],
+  ["Rekomendacje i Next Best Offer", "Modele rekomendacji dobierają produkty, benefity i kolejne komunikaty do kontekstu klienta, a reguły biznesowe pozwalają kontrolować priorytety sprzedażowe.", "Wyższa konwersja, większy koszyk i lepsza ekspozycja produktów strategicznych."],
+  ["Automatyzacja kampanii", "Scenariusze lifecycle uruchamiają komunikację po sygnałach takich jak porzucony koszyk, spadek aktywności, powrót do kategorii albo gotowość do cross-sellu.", "Mniej pracy ręcznej, szybsze kampanie i większa powtarzalność działań CRM."],
+  ["Aktywacja omnichannel", "Jedna decyzja personalizacyjna może zasilać web, e-mail, mobile app, push, SMS i inne kanały, aby klient widział spójny komunikat w całej ścieżce.", "Spójniejsze doświadczenie klienta, lepsza retencja i mniej rozjazdów między kanałami."],
+  ["Analityka AI", "Mierzymy uplift, AOV, retencję, skuteczność segmentów i wpływ scenariuszy, żeby rozwijać personalizację na podstawie danych zamiast intuicji.", "Czytelny wpływ na KPI, lepsza priorytetyzacja scenariuszy i ciągła optymalizacja."],
+];
+
+const productIllustrationBasePrompt = "Very simple e-commerce AI product UI illustration. Show only one full Material Design 3 inspired interface screen with a sparse layout matched to the current offer: one focused product UI surface, maximum 2-3 cards or rows, maximum 1 small metric chip, and optional maximum 1 rounded action button. Do not include a visible top title/header with the product name such as AI Search or AI Personalization. Small readable UI labels, source names, metric labels, profile labels, product names and button text are allowed and should look like a realistic product interface. Buttons must match the Persooa website style: pill-shaped, very rounded, flat MD3 filled/outlined/tonal buttons, no gradient, no square corners. No Persooa logo, no Persooa wordmark, no client logo, no brand mark. Use flat Material color surfaces: Brand Blue #015BFE and neutral UI colors should dominate. Gradient is allowed only as a tiny non-button accent such as an AI badge or small ranking indicator; never on buttons. Product photos inside cards should show products only in black, grey or blue colorways. White or very light #F4F6FD background, thin #E6EAF2 borders, 8-16px radius on cards, flat MD3 surfaces, no heavy shadows, no 3D glass, no decorative objects. Simplicity rule: fewer elements than a dashboard, no split-screen comparison unless explicitly requested, no more than one chart/metric, no dense tables, no busy labels. Important negative prompt: no people, no hands, no phones photographed in a scene, no boxes, no shoes or objects outside product cards, no side decorations, no floating panels outside the UI, no abstract shapes in the background, no extra left/right visual elements, no city, no robots, no particles, no glow trails, no dark cyber style, no stock-photo scene. Elements should be suitable for staggered fade-in animation: primary UI element first, cards/rows second, metric or button last.";
+
+function generatedProductIllustration(title, index) {
+  const fileName = productIllustrationAssets[index] || productIllustrationAssets[0];
+  return `<figure class="generated-product-illustration" aria-label="${title}">
+    <img src="../assets/exports/illustrations/generated/product-illustrations/${fileName}" alt="${title}" loading="lazy" />
+  </figure>`;
+}
+
+function generatedPersonalizationProductIllustration(title, index) {
+  const fileName = personalizationIllustrationAssets[index] || personalizationIllustrationAssets[0];
+  return `<figure class="generated-product-illustration" aria-label="${title}">
+    <img src="../assets/exports/illustrations/generated/product-illustrations/personalizacja-ai/${fileName}" alt="${title}" loading="lazy" />
+  </figure>`;
+}
+
+function productIllustrationPreviewExample() {
+  return `<figure class="generated-product-illustration" aria-label="Przykład ilustracji produktowej AI Search">
+    <img src="../assets/exports/illustrations/generated/product-illustrations/ui-v2-preview/ai-search-md3-simple-pill-preview.png" alt="Przykład prostej ilustracji produktowej AI Search w stylu Material UI" loading="lazy" />
+  </figure>`;
+}
+
+function productBars(values = [34, 52, 44, 72, 64, 86], offset = 6) {
+  return `<div class="product-illustration-part product-mini-chart" style="--part-index:${offset}">${values.map((height) => `<span style="height:${height}%"></span>`).join("")}</div>`;
+}
+
+function productResultCards(items, offset = 3) {
+  return `<div class="product-illustration-grid">${items.map(([title, meta], index) => `<div class="product-illustration-part product-result-card" style="--part-index:${offset + index}"><span></span><strong>${title}</strong><em>${meta}</em></div>`).join("")}</div>`;
+}
+
+function productSearchFrame({ type = "search", label = "AI Search", query = "buty sportowe do biegania w deszczu", chips = ["buty", "czerwone", "300 zł"], iconName = "search", body = "", metric = "AI" }) {
+  return `<figure class="product-illustration product-illustration--${type}" aria-label="${label}">
+    <div class="product-illustration-part product-illustration-toolbar" style="--part-index:0"><span>${icon(type === "analytics" ? "bar-chart-3" : iconName, "h-4 w-4")}</span><strong>${label}</strong><em>${metric}</em></div>
+    <div class="product-illustration-part product-search-field" style="--part-index:1">${icon(iconName, "h-4 w-4")}<span>${query}</span></div>
+    <div class="product-illustration-part product-chip-row" style="--part-index:2">${chips.map((chip) => `<span>${chip}</span>`).join("")}</div>
+    ${body}
+  </figure>`;
+}
+
+function productIllustrationMockup(type = "search", label = "AI Search") {
+  const variants = {
+    search: () => productSearchFrame({
+      type,
+      label,
+      query: "czrwone buty biegowe",
+      chips: ["auto-correct", "synonimy", "trafność 98%"],
+      body: `${productResultCards([["czerwone buty", "korekta"], ["obuwie sportowe", "synonim"], ["buty running", "dopasowane"]])}${productBars([28, 42, 54, 64, 76, 88])}`,
+    }),
+    suggest: () => productSearchFrame({
+      type,
+      label,
+      query: "b",
+      chips: ["0,3 s", "popularne", "promowane"],
+      body: `<div class="product-suggestion-list">${["buty damskie", "buty do biegania", "buty trekkingowe"].map((item, index) => `<div class="product-illustration-part product-suggestion-row" style="--part-index:${3 + index}">${icon("search", "h-4 w-4")}<strong>${item}</strong><span>${index === 0 ? "promo" : "trend"}</span></div>`).join("")}</div>`,
+    }),
+    zero: () => productSearchFrame({
+      type,
+      label,
+      query: "neonowe buty zimowe",
+      chips: ["zero-result", "rekomendacje", "1-5%"],
+      body: `<div class="product-empty-state product-illustration-part" style="--part-index:3">${icon("search-x", "h-5 w-5")}<strong>Brak dokładnego wyniku</strong><span>pokazujemy alternatywy</span></div>${productResultCards([["podobny kolor", "rekomendacja"], ["podobny model", "behaviour"], ["bestseller", "ratowana sesja"]], 4)}`,
+    }),
+    media: () => productSearchFrame({
+      type,
+      label,
+      query: "kurtka narciarska",
+      chips: ["sponsored", "retail media", "marża"],
+      body: `${productResultCards([["Partner #1", "sponsored"], ["Best match", "organic"], ["Premium", "high margin"]])}<div class="product-illustration-part product-rule-panel" style="--part-index:6"><strong>Retail media revenue</strong><span>+12% margin uplift</span></div>`,
+    }),
+    ab: () => productSearchFrame({
+      type,
+      label,
+      query: "ranking test",
+      chips: ["A/B", "CTR", "winner"],
+      body: `<div class="product-split-test"><div class="product-illustration-part product-variant-card" style="--part-index:3"><strong>Variant A</strong><span>CTR 4,2%</span></div><div class="product-illustration-part product-variant-card is-winner" style="--part-index:4"><strong>Variant B</strong><span>CTR 6,4%</span></div></div>${productBars([38, 44, 48, 58, 68, 82], 5)}`,
+    }),
+    personal: () => productSearchFrame({
+      type,
+      label,
+      query: "buty treningowe",
+      chips: ["profile", "AOV", "75%"],
+      body: `<div class="product-personal-layout"><div class="product-illustration-part product-profile-card" style="--part-index:3"><span></span><strong>Anna</strong><em>running · red · mobile</em></div>${productResultCards([["Best for Anna", "personalized"], ["Higher AOV", "+18%"], ["Loyalty fit", "segment"]], 4)}</div>`,
+    }),
+    filters: () => productSearchFrame({
+      type,
+      label,
+      query: "buty sportowe",
+      chips: ["marka", "kolor", "rozmiar"],
+      body: `<div class="product-filter-layout"><div class="product-illustration-part product-filter-panel" style="--part-index:3">${["Nike", "czerwony", "42", "<300 zł"].map((item) => `<span>${item}</span>`).join("")}</div>${productResultCards([["Filtered #1", "red · 42"], ["Filtered #2", "available"], ["Filtered #3", "under 300"]], 4)}</div>`,
+    }),
+    sort: () => productSearchFrame({
+      type,
+      label,
+      query: "sortowanie wyników",
+      chips: ["ranking", "CTR", "top 1"],
+      body: `<div class="product-ranking-list">${["01 Najtrafniejszy produkt", "02 Produkt strategiczny", "03 Bestseller"].map((item, index) => `<div class="product-illustration-part product-rank-row" style="--part-index:${3 + index}"><span>${item.slice(0, 2)}</span><strong>${item.slice(3)}</strong>${icon(index === 0 ? "arrow-up" : "grip", "h-4 w-4")}</div>`).join("")}</div>${productBars([40, 52, 63, 70, 78, 84], 6)}`,
+    }),
+    promo: () => productSearchFrame({
+      type,
+      label,
+      query: "kampania sezonowa",
+      chips: ["no-code", "segment", "promo"],
+      body: `<div class="product-illustration-part product-rule-panel" style="--part-index:3"><strong>Promote product</strong><span>segment: runners · position #1</span></div>${productResultCards([["Seasonal item", "promoted"], ["Regular match", "organic"], ["Stock clear", "rule"]], 4)}`,
+    }),
+    devices: () => productSearchFrame({
+      type,
+      label,
+      query: "historia cross-device",
+      chips: ["mobile", "desktop", "tablet"],
+      body: `<div class="product-device-row">${["phone", "tablet", "laptop"].map((device, index) => `<div class="product-illustration-part product-device-card" style="--part-index:${3 + index}">${icon(device === "phone" ? "smartphone" : device === "tablet" ? "tablet" : "monitor", "h-5 w-5")}<strong>${device}</strong><span>buty czerwone</span></div>`).join("")}</div><div class="product-illustration-part product-sync-line" style="--part-index:6"><span></span></div>`,
+    }),
+    trends: () => productSearchFrame({
+      type,
+      label,
+      query: "popularne frazy",
+      chips: ["trend", "bestseller", "season"],
+      body: `<div class="product-trend-list">${["buty do biegania", "kurtka softshell", "plecak trekkingowy", "mata joga"].map((item, index) => `<div class="product-illustration-part product-trend-row" style="--part-index:${3 + index}"><strong>${item}</strong><span>+${[24, 18, 12, 9][index]}%</span></div>`).join("")}</div>`,
+    }),
+    analytics: () => productSearchFrame({
+      type,
+      label,
+      query: "dashboard wyszukiwarki",
+      iconName: "bar-chart-3",
+      chips: ["CTR", "No results", "Revenue"],
+      metric: "30D",
+      body: `${productBars([28, 44, 35, 58, 72, 62, 78, 88], 3)}<div class="product-analytics-list">${["frazy bez wyników", "top filtry", "luki w asortymencie"].map((item, index) => `<div class="product-illustration-part product-analytics-row" style="--part-index:${4 + index}"><strong>${item}</strong><span></span></div>`).join("")}</div>`,
+    }),
+    visual: () => productSearchFrame({
+      type,
+      label,
+      query: "image-upload.jpg",
+      iconName: "image",
+      chips: ["kształt", "kolor", "tekstura"],
+      body: `<div class="product-visual-search"><div class="product-illustration-part product-upload-card" style="--part-index:3">${icon("scan-search", "h-6 w-6")}<strong>analiza obrazu</strong></div>${productResultCards([["similar #1", "visual"], ["similar #2", "texture"], ["similar #3", "color"]], 4)}</div>`,
+    }),
+    voice: () => productSearchFrame({
+      type,
+      label,
+      query: "czerwone buty do biegania",
+      iconName: "mic",
+      chips: ["voice", "intent", "mobile"],
+      body: `<div class="product-voice-wave product-illustration-part" style="--part-index:3">${[34, 58, 42, 76, 54, 88, 46, 66].map((height) => `<span style="height:${height}%"></span>`).join("")}</div>${productResultCards([["voice match", "mobile"], ["intent fit", "NLP"], ["accessible", "WCAG"]], 4)}`,
+    }),
+    nlp: () => productSearchFrame({
+      type,
+      label,
+      query: "czerwone buty sportowe do biegania w deszczu poniżej 300 zł",
+      chips: ["long-tail", "NLP", "semantic"],
+      body: `<div class="product-intent-map">${["kolor: czerwony", "typ: buty sportowe", "warunek: deszcz", "budżet: <300 zł"].map((item, index) => `<div class="product-illustration-part product-intent-chip" style="--part-index:${3 + index}">${item}</div>`).join("")}</div>${productResultCards([["semantic match", "4 kryteria"], ["long-tail", "trafne"], ["voice ready", "intent"]], 7)}`,
+    }),
+    plp: () => productSearchFrame({
+      type,
+      label,
+      query: "listing kategorii",
+      chips: ["PLP", "AI ranking", "filters"],
+      body: `<div class="product-plp-layout"><div class="product-illustration-part product-filter-panel" style="--part-index:3">${["marka", "kolor", "cena"].map((item) => `<span>${item}</span>`).join("")}</div>${productResultCards([["category #1", "AI rank"], ["category #2", "personal"], ["category #3", "promo"]], 4)}</div>`,
+    }),
+  };
+  return (variants[type] || variants.search)();
+}
+
+function benchmarkMockups() {
+  return `<div class="grid gap-5 lg:grid-cols-2">
+    <article class="benchmark-card">
+      <div class="benchmark-head">${icon("shield", "h-4 w-4")}<strong>Access Control</strong><span>${icon("lock", "h-4 w-4")}</span></div>
+      ${["Admin", "Analyst", "Viewer"].map((role, index) => `<div class="benchmark-row product-illustration-part" style="--part-index:${index}"><span>${icon("key-round", "h-4 w-4")}</span><div><strong>${role}</strong><em></em></div><mark class="${index === 2 ? "" : "is-active"}"></mark></div>`).join("")}
+      <div class="benchmark-log product-illustration-part" style="--part-index:4"><strong>Audit Log</strong><span>API key rotated · 4m ago</span><span>Role updated · 18m ago</span></div>
+    </article>
+    <article class="benchmark-card">
+      <div class="benchmark-head">${icon("layout-dashboard", "h-4 w-4")}<strong>Analytics Dashboard</strong><nav><span>1D</span><span>7D</span><strong>30D</strong></nav></div>
+      <div class="benchmark-bars">${[28, 44, 35, 58, 72, 62, 78, 66, 54, 42, 64, 76].map((height, index) => `<span class="product-illustration-part" style="--part-index:${index};height:${height}%"></span>`).join("")}</div>
+      <div class="benchmark-funnel product-illustration-part" style="--part-index:13"><span></span><span></span><span></span><span></span></div>
+    </article>
+  </div>`;
+}
+
+function productIllustrationFeatureCard([title, text, value, context], index) {
+  const visualType = ["search", "suggest", "zero", "media", "ab", "personal", "filters", "sort", "promo", "devices", "trends", "analytics", "visual", "voice", "nlp", "plp"][index] || "search";
+  return `<article class="product-feature-card rounded-xl border border-[#E6EAF2] bg-white p-5">
+    <div class="flex items-start justify-between gap-4"><div><span class="text-sm font-semibold text-[#015BFE]">${String(index + 1).padStart(2, "0")}</span><h3 class="mt-2 text-2xl font-medium leading-tight">${title}</h3></div><div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#F4F6FD] text-[#015BFE]">${icon(index % 3 === 0 ? "search" : index % 3 === 1 ? "sparkles" : "chart-no-axes-combined", "h-5 w-5")}</div></div>
+    <p class="mt-4 text-sm leading-6 text-[#595959]">${text}</p>
+    <div class="mt-5 rounded-xl border border-[#E6EAF2] bg-[#FAFAFA] p-4"><p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#015BFE]">Wartości biznesowe</p><p class="mt-2 text-sm leading-6 text-[#595959]">${value}</p></div>
+    <div class="mt-5"><p class="text-xs font-semibold uppercase tracking-[0.14em] text-[#015BFE]">Kontekst ilustracji</p><p class="mt-2 text-sm leading-6 text-[#595959]">${context}</p></div>
+    <div class="mt-5">${generatedProductIllustration(title, index)}</div>
+  </article>`;
+}
+
+function designSystemProductIllustrationsPage() {
+  const l = lang();
+  return `<main class="route-view">
+    ${section({ children: `<div class="grid gap-10 lg:grid-cols-12 lg:items-center"><div class="lg:col-span-5">${badge(l === "pl" ? "Ilustracje produktowe" : "Product illustrations")}<h1 class="mt-6 text-5xl font-semibold leading-none md:text-6xl">${l === "pl" ? "Ilustracje produktowe dla oferty" : "Product illustration system"}</h1><p class="mt-6 text-lg leading-8 text-[#595959]">${l === "pl" ? "Katalog pokazuje aktualny wzorzec dla ilustracji produktowych: prosty ekran Material UI, karty produktów, jeden akcent metryki i button jak na stronie Persooa." : "This catalog shows the current product illustration pattern: simple Material UI screen, product cards, one metric accent and a button matching the Persooa website."}</p></div><div class="lg:col-span-7">${productIllustrationPreviewExample()}</div></div>` })}
+    ${section({ variant: "lightBlue", children: `<div class="grid gap-10 lg:grid-cols-12"><div class="lg:col-span-4">${badge("Benchmark")}<h2 class="mt-5 text-4xl font-semibold leading-tight">${l === "pl" ? "Kierunek wizualny" : "Visual direction"}</h2><p class="mt-5 text-lg leading-8 text-[#595959]">${l === "pl" ? "Bardzo proste Material UI e-commerce: search bar, 2-3 karty produktu, jedna metryka i ewentualnie jeden button. Buttony jak na stronie Persooa: pill, mocno zaokrąglone, płaskie filled/outlined/tonal, bez gradientu." : "Very simple Material e-commerce UI: search bar, 2-3 product cards, one metric and optionally one button. Buttons like Persooa website buttons: pill-shaped, strongly rounded, flat filled/outlined/tonal, no gradient."}</p></div><div class="grid gap-4 lg:col-span-8 md:grid-cols-3">${[["UI only", "Bez scenek, ludzi, telefonów, pudełek, dekoracji i obiektów poza interfejsem."], ["Material", "Search bar, cards, chips, Material Symbols i pill buttony zgodne ze stroną."], ["Simplicity", "Maksymalnie 2-3 produkty, jedna metryka, jasna hierarchia i dużo światła."]].map(([title, text]) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5"><h3 class="text-xl font-medium">${title}</h3><p class="mt-3 text-sm leading-6 text-[#595959]">${text}</p></article>`).join("")}</div></div>` })}
+    ${section({ children: `<div class="grid gap-10 lg:grid-cols-12"><div class="lg:col-span-5">${badge("Brief")}<h2 class="mt-5 text-4xl font-semibold leading-tight">Wyszukiwarka AI, która sprzedaje</h2><p class="mt-5 text-lg leading-8 text-[#595959]">Zamień pole wyszukiwania w najskuteczniejszy kanał sprzedaży w swoim e-commerce.</p></div><div class="grid gap-4 lg:col-span-7 md:grid-cols-3">${[["Cel", "Pokazać search jako prosty, czytelny fragment produktu."], ["Mechanika", "Search bar, ranking AI, 2-3 produkty i jedna metryka wyniku."], ["Animacja", "Elementy mogą wchodzić jako fade-in: search, produkty, metryka albo button."]].map(([title, text]) => `<article class="rounded-xl border border-[#E6EAF2] bg-white p-5"><h3 class="text-xl font-medium">${title}</h3><p class="mt-3 text-sm leading-6 text-[#595959]">${text}</p></article>`).join("")}</div></div>` })}
+    ${section({ variant: "dark", children: `<div class="grid gap-8 lg:grid-cols-12"><div class="lg:col-span-5">${badge("Prompt", true)}<h2 class="mt-5 text-4xl font-semibold leading-tight">${l === "pl" ? "Prompt bazowy do ilustracji produktowych" : "Base product illustration prompt"}</h2><p class="mt-5 text-lg leading-8 text-white/68">${l === "pl" ? "Ten prompt jest katalogowym kierunkiem dla nowych ilustracji: sam interfejs produktowy, bez dodatkowej scenografii." : "This is the catalog direction for new illustrations: product UI only, without extra scenery."}</p></div><div class="lg:col-span-7"><div class="rounded-xl border border-white/12 bg-white/[0.04] p-6 text-sm leading-7 text-white/72"><p>${productIllustrationBasePrompt}</p></div></div></div>` })}
+  </main>`;
+}
+
 function designSystemPage() {
   const l = lang();
   return `<main class="route-view">
@@ -1685,12 +2219,12 @@ function designSystemAtomsPage() {
     {
       title: "Button primary",
       light: button(l === "pl" ? "Zapytaj o projekt" : "Ask about a project", l === "pl" ? "/kontakt" : "/en/contact", "primary", "send"),
-      dark: `<a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-base font-medium text-[#05070D] transition hover:bg-[#F4F6FD]"><span>${l === "pl" ? "Zapytaj o projekt" : "Ask about a project"}</span>${icon("send", "h-4 w-4")}</a>`,
+      dark: `<a href="${href(l === "pl" ? "/kontakt" : "/en/contact")}" class="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-base font-medium text-[#05070D] transition hover:bg-[#F4F6FD]"><span>${l === "pl" ? "Zapytaj o projekt" : "Ask about a project"}</span>${materialButtonIcon("send")}</a>`,
     },
     {
       title: "Button secondary",
       light: button(l === "pl" ? "Zobacz ROI" : "View ROI", l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days", "secondary"),
-      dark: `<a href="${href(l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days")}" class="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/16 px-6 text-base font-medium text-white transition hover:bg-white hover:text-[#05070D]"><span>${l === "pl" ? "Zobacz ROI" : "View ROI"}</span>${icon("arrow-right", "h-4 w-4")}</a>`,
+      dark: `<a href="${href(l === "pl" ? "/oferta/roi-w-90dni" : "/en/offer/roi-in-90-days")}" class="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/16 px-6 text-base font-medium text-white transition hover:bg-white hover:text-[#05070D]"><span>${l === "pl" ? "Zobacz ROI" : "View ROI"}</span>${materialButtonIcon("arrow-right")}</a>`,
     },
     {
       title: "Badge",
@@ -2439,6 +2973,7 @@ function render() {
   if (r.type === "design-system-charts") content = designSystemChartsPage();
   if (r.type === "design-system-atoms") content = designSystemAtomsPage();
   if (r.type === "design-system-sections") content = designSystemSectionsPage();
+  if (r.type === "design-system-product-illustrations") content = designSystemProductIllustrationsPage();
   if (r.type === "offer") content = offerPage(r.page);
   if (r.type === "about") content = aboutPage();
   if (r.type === "partners") content = partnersPage();
@@ -2552,6 +3087,9 @@ function initPageMotion() {
     "section .grid > div",
     "section form",
     ".minimal-illustration",
+    ".product-illustration",
+    ".generated-product-illustration",
+    ".benchmark-card",
   ];
 
   const revealItems = [...new Set(Array.from(root.querySelectorAll(revealSelectors.join(","))))]
@@ -2564,7 +3102,7 @@ function initPageMotion() {
     const siblingIndex = Math.max(0, siblings.indexOf(el));
     el.style.setProperty("--reveal-delay", `${Math.min(siblingIndex * 70, 280)}ms`);
 
-    if (el.matches(".hero-visual-stage, .minimal-illustration, figure")) {
+    if (el.matches(".hero-visual-stage, .minimal-illustration, .product-illustration, .generated-product-illustration, figure")) {
       el.style.setProperty("--reveal-y", "18px");
       el.style.setProperty("--reveal-scale", "0.985");
     }
@@ -2590,7 +3128,7 @@ function initPageMotion() {
 
   revealItems.forEach((el) => observer.observe(el));
 
-  const scrollItems = Array.from(root.querySelectorAll(".scroll-section, .hero-shell, .hero-visual-stage, .minimal-illustration"));
+  const scrollItems = Array.from(root.querySelectorAll(".scroll-section, .hero-shell, .hero-visual-stage, .minimal-illustration, .product-illustration, .generated-product-illustration"));
   let rafId = 0;
 
   const updateScrollMotion = () => {
@@ -2616,6 +3154,10 @@ function initPageMotion() {
       if (el.matches(".minimal-illustration")) {
         el.style.setProperty("--art-parallax-y", `${centered * -18}px`);
         el.style.setProperty("--art-scale", `${1.025 + progress * 0.02}`);
+      }
+
+      if (el.matches(".product-illustration, .generated-product-illustration")) {
+        el.style.setProperty("--art-parallax-y", `${centered * -10}px`);
       }
 
       if (el.classList.contains("dark-grid")) {
